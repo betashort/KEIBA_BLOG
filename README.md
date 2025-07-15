@@ -7,4 +7,4 @@
 
 ## 参考・メモ
 
-(参考・メモ)[./doc/reference/]
+(参考・メモ)[./doc/reference/memo.md]
