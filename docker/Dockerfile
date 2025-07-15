@@ -1,0 +1,3 @@
+FROM node
+WORKDIR /projects
+EXPOSE 3000
