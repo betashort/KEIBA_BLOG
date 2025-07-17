@@ -1,9 +1,22 @@
 # 構築
+1. [docker 開発環境構築](#docker-開発環境構築)
+2. [プロジェクトを作成する](#プロジェクトを作成する)
+3. [ライブラリ](#ライブラリ)
+   1. [react-router-dom](#react-router-dom)
+   2. [tailwindをインストールする](#tailwindをインストールする)
+   3. [MUIのインストール](#muiのインストール)
+   4. [Drawer](#drawer)
+   5. [axio](#axio)
+   6. [fullcalendar](#fullcalendar)
+
+## docker 開発環境構築
+
+
 
 ## プロジェクトを作成する
 
 ```bash
-npx create-react-app . --template typescript
+npm create vite@latest keiba-blog --template react-ts
 ```
 
 ## ライブラリ
@@ -11,6 +24,11 @@ npx create-react-app . --template typescript
 * react-router-dom
 * gray-matter
 * react-markdown
+
+```bash
+npm install gray-matter react-markdown
+npm install react-router-dom
+```
 
 ### react-router-dom
 

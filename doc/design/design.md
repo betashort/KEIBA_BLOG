@@ -22,14 +22,61 @@
 
 ### ホームページ
 
-### レース一覧
+### レース
+
+```
+keiba-blog/
+├── public/
+│   └── image/
+│       ├── report/
+│           └── 2025/
+│                └── 20250716/
+│                   └── hello/
+|                       └── hello.png
+├── src/
+│   ├── report/
+│       └── 2025/
+│            └── 20250716/
+│              └── hello.htmls
+```
+
+#### レース一覧
+
+#### 過去レース一覧
+
+#### レース詳細
+
 
 ### 競馬勉強会
 
+```
+keiba-blog/
+├── public/
+│   └── image/
+│       ├── blog/
+│           └── hello/
+|               └── hello.png
+├── src/
+│   ├── report/
+│       └── hello.md
+```
+
 ### 競馬ブログ
 
-### 自己紹介
+```
+keiba-blog/
+├── public/
+│   └── image/
+│       ├── blog/
+│           └── hello/
+|               └── hello.png
+├── src/
+│   ├── blog/
+│       └── hello.md
+```
 
+
+### 自己紹介
 
 ## 共通設計
 

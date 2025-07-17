@@ -3,7 +3,9 @@ services:
   node:
     build: ./docker
     ports:
-      - "3000:3000"
+      - "5173:5173"
     volumes:
       - ".:/projects"
+    environment:
+      - HOST=0.0.0.0  # 外部アクセス許可
     tty: true
