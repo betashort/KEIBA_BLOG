@@ -53,11 +53,11 @@ keiba-blog/
 keiba-blog/
 ├── public/
 │   └── image/
-│       ├── blog/
+│       ├── study/
 │           └── hello/
 |               └── hello.png
 ├── src/
-│   ├── report/
+│   ├── study/
 │       └── hello.md
 ```
 
