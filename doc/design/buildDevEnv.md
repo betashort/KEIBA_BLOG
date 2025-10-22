@@ -1,7 +1,8 @@
 # 構築
 1. [docker 開発環境構築](#docker-開発環境構築)
-2. [プロジェクトを作成する](#プロジェクトを作成する)
-3. [ライブラリ](#ライブラリ)
+2. [ビルドコマンド](#ビルドコマンド)
+3. [プロジェクトを作成する](#プロジェクトを作成する)
+4. [ライブラリ](#ライブラリ)
    1. [react-router-dom](#react-router-dom)
    2. [tailwindをインストールする](#tailwindをインストールする)
    3. [MUIのインストール](#muiのインストール)
@@ -11,7 +12,20 @@
 
 ## docker 開発環境構築
 
+```bash
+docker-compose up -d
+docker-compose exec node bash
+```
 
+## ビルドコマンド
+
+```bash
+npm run dev
+```
+
+```bash
+npm run build
+```
 
 ## プロジェクトを作成する
 
