@@ -2,7 +2,8 @@
 
 ## 設計
 
-[設計](./doc/design/design_V0.md)
+[要求仕様](./doc/requirement/requirement.md)
+[設計](./doc/design/design.md)
 
 ## 参考・メモ
 
