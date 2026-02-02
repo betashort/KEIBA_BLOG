@@ -7,7 +7,7 @@
 2. [ページ一覧](#ページ一覧)
 3. [ページUI](#ページui)
    1. [ホームページ](#ホームページ)
-   2. [競馬ブログ](#競馬ブログ-1)
+   2. [ブログ](#ブログ)
    3. [競馬研究](#競馬研究)
    4. [自己紹介](#自己紹介)
 4. [設計](#設計)
@@ -23,7 +23,8 @@
       1. [ブログ記事](#ブログ記事)
       2. [研究記事](#研究記事)
 8. [Xserverへのデプロイ](#xserverへのデプロイ)
-   1. [.htaccess](#htaccess)
+
+<div style="page-break-after: always;"></div>
 
 ## アーキテクチャ
 
@@ -47,14 +48,18 @@
 
 * XServer
 
+<div style="page-break-after: always;"></div>
+
 ## ページ一覧
 
 | ページ名     | URL                |
 | ------------ | ------------------ |
 | ホームページ | base-url/          |
-| 競馬ブログ   | base-url/blog/     |
+| ブログ       | base-url/blog/     |
 | 競馬研究     | base-url/research/ |
 | 自己紹介     | base-url/profile   |
+
+<div style="page-break-after: always;"></div>
 
 ## ページUI
 
@@ -62,7 +67,7 @@
 
 <img src="../page_design/ホームページ/HomePage.png">
 
-### 競馬ブログ
+### ブログ
 
 <img src="../page_design/競馬ブログ/KeibaBlog_home.png">
 
@@ -78,6 +83,7 @@
 
 <img src="../page_design/">
 
+<div style="page-break-after: always;"></div>
 
 ## 設計
 
@@ -124,13 +130,19 @@ export const router = createBrowserRouter([
 ]);
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## 共通コンポーネント
 
 ### カード
 
 ### スライドショー
 
+<div style="page-break-after: always;"></div>
+
 ## スマホ対応
+
+<div style="page-break-after: always;"></div>
 
 ## 記事の構成
 
@@ -177,8 +189,11 @@ keiba-blog/src/articles/
 │     └─ hero.png
 ```
 
+<div style="page-break-after: always;"></div>
 
 ## Xserverへのデプロイ
+
+```
 
 ### .htaccess
 
