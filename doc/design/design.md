@@ -1,201 +1,247 @@
-# 競馬ブログ
-1. [アーキテクチャ](#アーキテクチャ)
-   1. [使用技術](#使用技術)
-   2. [React](#react)
-   3. [レンダリング方式](#レンダリング方式)
-   4. [公開方法](#公開方法)
-2. [ページ一覧](#ページ一覧)
-3. [ページUI](#ページui)
-   1. [ホームページ](#ホームページ)
-   2. [ブログ](#ブログ)
-   3. [競馬研究](#競馬研究)
-   4. [自己紹介](#自己紹介)
-4. [設計](#設計)
-   1. [ルーティング](#ルーティング)
-      1. [参考コード](#参考コード)
-5. [共通コンポーネント](#共通コンポーネント)
-   1. [カード](#カード)
-   2. [スライドショー](#スライドショー)
-6. [スマホ対応](#スマホ対応)
-7. [記事の構成](#記事の構成)
-   1. [Markdown記事の構成](#markdown記事の構成)
-   2. [フォルダ構成](#フォルダ構成)
-      1. [ブログ記事](#ブログ記事)
-      2. [研究記事](#研究記事)
-8. [Xserverへのデプロイ](#xserverへのデプロイ)
+# ソフトウェア設計書（競馬ブログ）
+
+1. [1. はじめに](#1-はじめに)
+   1. [1.1 目的](#11-目的)
+   2. [1.2 対象読者](#12-対象読者)
+   3. [1.3 用語・略語](#13-用語略語)
+2. [2. システム概要](#2-システム概要)
+   1. [2.1 システム構成図](#21-システム構成図)
+   2. [2.2 処理概要](#22-処理概要)
+3. [3. 設計方針](#3-設計方針)
+   1. [3.1 設計方針](#31-設計方針)
+   2. [3.2 命名規則](#32-命名規則)
+   3. [3.3 コーディング規約](#33-コーディング規約)
+4. [4. 画面設計（UI設計）](#4-画面設計ui設計)
+   1. [4.1. 画面一覧](#41-画面一覧)
+   2. [4.2 画面詳細](#42-画面詳細)
+      1. [4.2.1. 画面ID：S-003（ブログ記事）](#421-画面ids-003ブログ記事)
+         1. [4.2.1.1. 表示項目](#4211-表示項目)
+5. [5. 機能設計（処理設計）](#5-機能設計処理設計)
+   1. [5.1. 機能一覧](#51-機能一覧)
+   2. [5.2 機能詳細](#52-機能詳細)
+      1. [5.2.1. 機能ID：F-001 記事表示](#521-機能idf-001-記事表示)
+6. [6. データベース設計](#6-データベース設計)
+   1. [6.1 データ管理方針](#61-データ管理方針)
+   2. [6.2 フォルダ構成](#62-フォルダ構成)
+7. [7. API設計](#7-api設計)
+8. [8. 非機能設計](#8-非機能設計)
+   1. [8.1 性能要件](#81-性能要件)
+   2. [8.2 セキュリティ](#82-セキュリティ)
+   3. [8.3 SEO・OGP](#83-seoogp)
+9. [9. テスト観点（設計レベル）](#9-テスト観点設計レベル)
+   1. [9.1 単体テスト観点](#91-単体テスト観点)
+   2. [9.2 結合テスト観点](#92-結合テスト観点)
+10. [10. トレーサビリティ](#10-トレーサビリティ)
+11. [11. デプロイ設計](#11-デプロイ設計)
+    1. [11.1 デプロイ先](#111-デプロイ先)
+    2. [11.2 設定](#112-設定)
+12. [12. 変更履歴](#12-変更履歴)
 
 <div style="page-break-after: always;"></div>
 
-## アーキテクチャ
+## 1. はじめに
 
-### 使用技術
+### 1.1 目的
 
-* React
-  * TypeScript
-  * Vite
-  * react-router-dom
-  * gray-matter
-  * marked
+本書は、競馬ブログシステムのソフトウェア設計内容を明確にし、  
+開発・テスト・保守を円滑に進めることを目的とする。
 
-### React
+### 1.2 対象読者
 
-* コンポーネント
-  * 関数を使用する。
+- 開発者
+- テスター
+- プロジェクト管理者
+- 保守担当者
 
-### レンダリング方式
+### 1.3 用語・略語
 
-### 公開方法
-
-* XServer
-
-<div style="page-break-after: always;"></div>
-
-## ページ一覧
-
-| ページ名     | URL                |
-| ------------ | ------------------ |
-| ホームページ | base-url/          |
-| ブログ       | base-url/blog/     |
-| 競馬研究     | base-url/research/ |
-| 自己紹介     | base-url/profile   |
+| 用語         | 説明                                   |
+| ------------ | -------------------------------------- |
+| Markdown     | 記事作成に使用する軽量マークアップ言語 |
+| OGP          | SNS共有時に表示されるメタ情報          |
+| Twitter Card | X（旧Twitter）向けOGP拡張              |
 
 <div style="page-break-after: always;"></div>
 
-## ページUI
+## 2. システム概要
 
-### ホームページ
+### 2.1 システム構成図
 
-<img src="../page_design/ホームページ/HomePage.png">
+（静的サイト構成：React + Vite + Xserver）
 
-### ブログ
+### 2.2 処理概要
 
-<img src="../page_design/競馬ブログ/KeibaBlog_home.png">
-
-<img src="../page_design/競馬ブログ/KeibaBlog.png">
-
-### 競馬研究
-
-<img src="../page_design/競馬ブログ/KeibaBlog_home.png">
-
-<img src="../page_design/競馬ブログ/KeibaBlog.png">
-
-### 自己紹介
-
-<img src="../page_design/">
+- Markdownで作成した記事をビルド時にHTMLへ変換
+- 変換したHTMLを記事ページ・一覧ページに表示
+- 静的ファイルとしてXserverへデプロイ
 
 <div style="page-break-after: always;"></div>
 
-## 設計
+## 3. 設計方針
 
-### ルーティング
+### 3.1 設計方針
 
-<table>
-   <tr>
-      <th>ページ</th>
-      <th>URL</th>
-   </tr>
-   <tr>
-      <td>ホームページ</td>
-      <td>baseURL</td>
-   </tr>
-   <tr>
-      <td>ブログ</td>
-      <td>baseURL/blog</td>
-   </tr>
-   <tr>
-      <td>ブログ記事</td>
-      <td>baseURL/blog/article</td>
-   </tr>
-   <tr>
-      <td>研究</td>
-      <td>baseURL/study</td>
-   </tr>
-   <tr>
-      <td>研究記事</td>
-      <td>baseURL/study/article</td>
-   </tr>
-</table>
+- スマートフォン閲覧を前提としたモバイルファースト設計
+- 静的ビルドによる高速表示
+- 記事追加・修正が容易な構成
+- SEO・OGPを重視した設計
 
-#### 参考コード
+### 3.2 命名規則
 
-```typescript
-//src/router.tsx
-import { createBrowserRouter } from "react-router-dom";
-import BlogList from "./pages/BlogList";
-import BlogArticle from "./pages/BlogArticle";
+- コンポーネント名：PascalCase
+- ファイル名：camelCase
+- URLスラッグ：kebab-case
 
-export const router = createBrowserRouter([
-  { path: "/blog", element: <BlogList /> },
-  { path: "/blog/:slug", element: <BlogArticle /> },
-]);
-```
+### 3.3 コーディング規約
+
+- 使用言語：TypeScript
+- フレームワーク：React
+- ビルドツール：Vite
+- UI：Tailwind CSS
 
 <div style="page-break-after: always;"></div>
 
-## 共通コンポーネント
+## 4. 画面設計（UI設計）
 
-### カード
+### 4.1. 画面一覧
 
-### スライドショー
+| 画面ID | 画面名       | URL          | 概要           |
+| ------ | ------------ | ------------ | -------------- |
+| S-001  | ホーム       | /            | トップページ   |
+| S-002  | ブログ一覧   | /blog        | ブログ記事一覧 |
+| S-003  | ブログ記事   | /blog/:slug  | ブログ記事詳細 |
+| S-004  | 競馬研究一覧 | /study       | 研究記事一覧   |
+| S-005  | 競馬研究記事 | /study/:slug | 研究記事詳細   |
+| S-006  | プロフィール | /profile     | 自己紹介       |
+
+### 4.2 画面詳細
+
+#### 4.2.1. 画面ID：S-003（ブログ記事）
+
+- URL：/blog/:slug
+- 説明：Markdownから変換された記事を表示
+
+##### 4.2.1.1. 表示項目
+
+| 項目     | 説明             |
+| -------- | ---------------- |
+| タイトル | 記事タイトル     |
+| 本文     | Markdown変換HTML |
+| カテゴリ | 記事カテゴリ     |
+| タグ     | 記事タグ         |
+| OGP画像  | 記事ごとに設定   |
 
 <div style="page-break-after: always;"></div>
 
-## スマホ対応
+## 5. 機能設計（処理設計）
 
-<div style="page-break-after: always;"></div>
+### 5.1. 機能一覧
 
-## 記事の構成
+| 機能ID | 機能名             | 概要               | 要件ID |
+| ------ | ------------------ | ------------------ | ------ |
+| F-001  | 記事表示           | Markdown記事の表示 | R-001  |
+| F-002  | 記事一覧表示       | 新着順一覧表示     | R-002  |
+| F-003  | カテゴリ・タグ管理 | 記事分類           | R-003  |
+| F-004  | OGP表示            | SNS共有対応        | R-004  |
+| F-005  | 広告表示           | Google Ads表示     | R-005  |
 
-### Markdown記事の構成
+### 5.2 機能詳細
 
-```markdown
+#### 5.2.1. 機能ID：F-001 記事表示
+
+- 概要：MarkdownをHTMLへ変換し表示
+- 入力：Markdownファイル
+- 出力：HTMLページ
+- 処理内容：
+  - gray-matterでFrontMatter解析
+  - markedでMarkdownをHTML変換
+  - dangerouslySetInnerHTMLで描画
+- 例外処理：未定義
+
 ---
-title: Reactブログを作る
-date: 2026-01-30
-category: React
-tags: [frontend, javascript]
----
 
-# Reactブログを作る
+## 6. データベース設計
 
-ViteとMarkdownで静的ブログを作ります。
-```
+※本システムはDBを使用しない
 
-### フォルダ構成
+### 6.1 データ管理方針
 
-#### ブログ記事
+- 記事データはMarkdownファイルで管理
+- 画像は記事フォルダ配下に配置
 
-```text
-keiba-blog/src/articles/
+### 6.2 フォルダ構成
+
+```txt
+src/articles/
 ├─ blog/
-│  ├─ blog1
-│     ├─ index.md
-│     └─ hero.png
-│  ├─ blog2
-│     ├─ index.md
-│     └─ hero.png
-```
-
-#### 研究記事
-
-```text
-keiba-blog/src/articles/
+│  ├─ article1/
+│  │  ├─ index.md
+│  │  └─ hero.png
 ├─ study/
-│  ├─ blog1
-│     ├─ index.md
-│     └─ hero.png
-│  ├─ blog2
-│     ├─ index.md
-│     └─ hero.png
+│  ├─ article1/
+│  │  ├─ index.md
+│  │  └─ hero.png
 ```
 
 <div style="page-break-after: always;"></div>
 
-## Xserverへのデプロイ
+## 7. API設計
 
-```
+本システムではAPIは使用しない
 
-### .htaccess
+
+## 8. 非機能設計
+
+### 8.1 性能要件
+
+* LCP 2.5秒以内を目標
+* 静的ビルドによる高速表示
+
+### 8.2 セキュリティ
+
+* ユーザー入力機能なし
+* Markdownは管理者作成のみ
+* 外部スクリプトは信頼済みのみ使用
+
+### 8.3 SEO・OGP
+
+* title / meta description 設定
+* h1は1ページ1つ
+* パンくずリスト設置
+* OGP・Twitter Card対応
+* sitemap.xml / robots.txt生成
+
+<div style="page-break-after: always;"></div>
+
+## 9. テスト観点（設計レベル）
+
+### 9.1 単体テスト観点
+
+* Markdown変換結果の確認
+* ルーティング動作確認
+
+### 9.2 結合テスト観点
+
+* 記事一覧 → 記事表示遷移
+* SEO / OGP反映確認
+
+<div style="page-break-after: always;"></div>
+
+## 10. トレーサビリティ
+
+| 要件ID | 機能ID | 画面ID | テストID |
+| ------ | ------ | ------ | -------- |
+| R-001  | F-001  | S-003  | T-001    |
+
+---
+
+## 11. デプロイ設計
+
+### 11.1 デプロイ先
+
+* Xserver
+
+### 11.2 設定
 
 ```txt
 RewriteEngine On
@@ -203,4 +249,12 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]
 ```
+
+<div style="page-break-after: always;"></div>
+
+## 12. 変更履歴
+
+| 日付       | 版  | 内容     | 担当   |
+| ---------- | --- | -------- | ------ |
+| 2026-02-02 | 1.0 | 初版作成 | βshort |
 
