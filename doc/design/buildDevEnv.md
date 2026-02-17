@@ -8,7 +8,6 @@
    3. [MUIのインストール](#muiのインストール)
    4. [Drawer](#drawer)
    5. [axio](#axio)
-   6. [fullcalendar](#fullcalendar)
 
 ## docker 開発環境構築
 
@@ -99,9 +98,4 @@ npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 ### axio
 ```bash
 npm i axios
-```
-
-### fullcalendar
-```bash
-npm install @fullcalendar/react @fullcalendar/core @fullcalendar/daygrid
 ```
