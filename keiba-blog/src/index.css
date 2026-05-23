@@ -1,1 +1,54 @@
 @import "tailwindcss";
+
+body {
+  @apply bg-white text-gray-900 antialiased;
+}
+
+.article-body h2 {
+  @apply mt-8 mb-3 text-xl font-semibold;
+}
+
+.article-body h3 {
+  @apply mt-6 mb-2 text-lg font-semibold;
+}
+
+.article-body p {
+  @apply my-3 leading-relaxed;
+}
+
+.article-body ul {
+  @apply my-3 list-disc pl-6;
+}
+
+.article-body ol {
+  @apply my-3 list-decimal pl-6;
+}
+
+.article-body table {
+  @apply my-4 w-full border-collapse text-sm;
+}
+
+.article-body th,
+.article-body td {
+  @apply border border-gray-300 px-3 py-2;
+}
+
+.article-body th {
+  @apply bg-gray-50 font-semibold;
+}
+
+.article-body a {
+  @apply text-blue-600 underline;
+}
+
+.article-body code {
+  @apply rounded bg-gray-100 px-1 py-0.5 text-sm;
+}
+
+.article-body pre {
+  @apply my-4 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-gray-100;
+}
+
+.article-body pre code {
+  @apply bg-transparent p-0 text-inherit;
+}

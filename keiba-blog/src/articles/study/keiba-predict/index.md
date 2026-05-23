@@ -1,11 +1,10 @@
 ---
-title: "初めてのブログ"
+title: "競馬予想の因子"
 date: "2025-07-16"
-thumbnail: "/images/2025-07-16-hello/thumbnail.jpg"
-category: "blog"
+description: "競走馬の能力・コース適正・展開適正など、競馬予想の基本因子"
+category: "study"
+tags: ["予想", "研究"]
 ---
-
-# 競馬予想の因子
 
 * 競走馬の能力
 * 競走馬のコース適正(競馬場・コース)

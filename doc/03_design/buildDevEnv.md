@@ -12,9 +12,26 @@
 ## docker 開発環境構築
 
 ```bash
-docker-compose up -d
-docker-compose exec node bash
+docker compose up -d
+docker compose exec node bash
 ```
+
+### Cursor Agent 向け設定
+
+Agent がホストの `npm` ではなく Docker 上でビルドするよう、プロジェクトルールを置いている。
+
+| ファイル | 内容 |
+| -------- | ---- |
+| `.cursor/rules/docker-compose-build.mdc` | `alwaysApply: true` で npm / Vite をコンテナ経由に固定 |
+
+Agent / ターミナルで使うコマンド例（リポジトリルートで実行）:
+
+```bash
+docker compose exec node sh -c "cd keiba-blog && npm install"
+docker compose exec node sh -c "cd keiba-blog && npm run build"
+```
+
+ルールを変更したら、Cursor を再読み込みするか新しいチャットで反映を確認する。
 
 ## ビルドコマンド
 
