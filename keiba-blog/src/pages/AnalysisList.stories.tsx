@@ -4,6 +4,7 @@ import { withAppLayout } from "../storybook/decorators";
 
 /**
  * UI設計: analysis/list.md — レース分析一覧 `/analysis`
+ * 新着カード縦並び一覧（blog/study と同型）＋ページネーション
  */
 const meta = {
   title: "Pages/Analysis/List",
@@ -15,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "レース分析カテゴリの記事一覧。現状記事 0 件時は空状態（UI_design/analysis/list.md）。",
+          "レース分析カテゴリの新着カード一覧（縦並び・最大10件/ページ）（UI_design/analysis/list.md）。",
       },
     },
   },
@@ -25,5 +26,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "通常（空状態の可能性あり）",
+  name: "通常（記事あり）",
 };

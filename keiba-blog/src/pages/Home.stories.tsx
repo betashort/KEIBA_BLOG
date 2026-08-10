@@ -4,7 +4,7 @@ import { withAppLayout } from "../storybook/decorators";
 
 /**
  * UI設計: home/home.md — ホーム `/`
- * サイトタイトル・説明・各セクション導線
+ * 新着スライドショー ＋ カテゴリタブ（レース予想 / 競馬研究 / ブログ）最大5件
  */
 const meta = {
   title: "Pages/Home",
@@ -16,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "サイトトップ。ブログ・研究・レース分析・レース予想・プロフィールへの導線（UI_design/home/home.md）。",
+          "サイトトップ。新着記事スライドと、タブ付きカテゴリ新着（最大5件・縦並び）（UI_design/home/home.md）。",
       },
     },
   },

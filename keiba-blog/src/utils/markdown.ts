@@ -11,6 +11,10 @@ export interface ArticleFrontMatter {
   thumbnail?: string;
   ogImage?: string;
   noindex?: boolean;
+  /** レース分析記事向け: レース名 */
+  raceName?: string;
+  /** レース分析記事向け: レース情報（開催日・場・距離など） */
+  raceInfo?: string;
 }
 
 export interface Article {
@@ -76,6 +80,8 @@ function normalizeFrontMatter(
       typeof data.thumbnail === "string" ? data.thumbnail : undefined,
     ogImage: typeof data.ogImage === "string" ? data.ogImage : undefined,
     noindex: data.noindex === true,
+    raceName: typeof data.raceName === "string" ? data.raceName : undefined,
+    raceInfo: typeof data.raceInfo === "string" ? data.raceInfo : undefined,
   };
 }
 

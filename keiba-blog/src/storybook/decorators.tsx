@@ -1,14 +1,9 @@
 import type { Decorator } from "@storybook/react-vite";
-import Header from "../component/Header";
-import Footer from "../component/Footer";
+import AppShell from "../component/AppShell";
 
-/** 画面設計書の共通レイアウト: Header + Main + Footer */
+/** 画面設計書の共通レイアウト: Header + SideNav + Main + Footer */
 export const withAppLayout: Decorator = (Story) => (
-  <div className="flex min-h-screen flex-col">
-    <Header />
-    <main className="flex-1">
-      <Story />
-    </main>
-    <Footer />
-  </div>
+  <AppShell>
+    <Story />
+  </AppShell>
 );

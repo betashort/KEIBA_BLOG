@@ -4,6 +4,7 @@ import { withAppLayout } from "../storybook/decorators";
 
 /**
  * UI設計: blog/list.md — ブログ一覧 `/blog`
+ * 縦並びカード（サムネ・タイトル・公開日・タグ）＋ 10件/ページのページネーション
  */
 const meta = {
   title: "Pages/Blog/List",
@@ -15,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "ブログカテゴリの記事を新着順で一覧表示。BlogCard × N + AdUnit（UI_design/blog/list.md）。",
+          "ブログカテゴリの新着カード一覧（縦並び・最大10件/ページ）（UI_design/blog/list.md）。",
       },
     },
   },

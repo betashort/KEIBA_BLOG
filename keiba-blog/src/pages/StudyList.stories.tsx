@@ -4,6 +4,7 @@ import { withAppLayout } from "../storybook/decorators";
 
 /**
  * UI設計: study/list.md — 競馬研究一覧 `/study`
+ * 縦並びカード＋ページネーション
  */
 const meta = {
   title: "Pages/Study/List",
@@ -15,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "研究カテゴリの記事を新着順で一覧表示（UI_design/study/list.md）。",
+          "研究カテゴリの新着カード一覧（縦並び・最大10件/ページ）（UI_design/study/list.md）。",
       },
     },
   },

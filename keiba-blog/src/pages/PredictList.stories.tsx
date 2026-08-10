@@ -4,6 +4,7 @@ import { withAppLayout } from "../storybook/decorators";
 
 /**
  * UI設計: predict/list.md — レース予想一覧 `/predict`
+ * 年・開催日・競馬場タブ。レース行に予想印・買い目。詳細記事は任意リンク
  */
 const meta = {
   title: "Pages/Predict/List",
@@ -15,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "レース予想カテゴリの記事一覧。現状記事 0 件時は空状態（UI_design/predict/list.md）。",
+          "開催日・競馬場単位のレース予想一覧。予想印（◎〇▲△★）・買い目・詳細記事リンク（UI_design/predict/list.md）。",
       },
     },
   },
@@ -25,5 +26,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "通常（空状態の可能性あり）",
+  name: "開催日・場のレース一覧",
 };
