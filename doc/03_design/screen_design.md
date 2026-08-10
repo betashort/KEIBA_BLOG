@@ -1,12 +1,13 @@
 # 画面設計書（競馬ブログ）
 
 上位文書: [アーキテクチャ設計書](./architecture_design.md)  
-関連文書: [機能コンポーネント設計書](./component_design.md) / [画面ワイヤー（page_design/）](./page_design/)
+関連文書: [機能コンポーネント設計書](./component_design.md) / [UI設計（個別画面・UI_design/）](./UI_design/) / [画面ワイヤー（page_design/）](./page_design/)
 
 1. [1. はじめに](#1-はじめに)
    1. [1.1 目的](#11-目的)
    2. [1.2 対象読者](#12-対象読者)
 2. [2. 画面一覧](#2-画面一覧)
+   1. [2.1 画面遷移図](#21-画面遷移図)
 3. [3. 画面詳細](#3-画面詳細)
    1. [3.1 ホーム](#31-ホーム)
    2. [3.2 ブログ一覧・記事](#32-ブログ一覧記事)
@@ -48,11 +49,89 @@ UI実装および画面テストの基準とすることを目的とする。
 | レース予想記事 | レース予想記事詳細   |
 | プロフィール | 自己紹介                 |
 
-共通レイアウト：Header（ナビゲーション）＋ メインコンテンツ ＋ Footer
+共通レイアウト：Header（ロゴ＋ハンバーガー）＋ SideNav（ドロワーナビ）＋ メインコンテンツ ＋ Footer  
+詳細は [UI設計：共通レイアウト](./UI_design/common.md) を参照。
+
+### 2.1 画面遷移図
+
+```plantuml
+@startuml screen_transition
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName Meiryo
+skinparam ArrowColor #555555
+skinparam RectangleBorderColor #666666
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam PackageBorderColor #666666
+skinparam PackageBackgroundColor #FAFAFA
+skinparam NoteBorderColor #999999
+skinparam NoteBackgroundColor #FFFDE7
+skinparam ActorBorderColor #333333
+skinparam ActorBackgroundColor #F5F5F5
+
+title 競馬ブログ — 画面遷移図
+
+actor "閲覧者" as Visitor
+
+rectangle "ホーム\n/" as Home #E8F5E9
+
+package "ブログ" as BlogPkg {
+  rectangle "ブログ一覧\n/blog" as BlogList
+  rectangle "ブログ記事\n/blog/{article_name}" as BlogArticle
+}
+
+package "競馬研究" as StudyPkg {
+  rectangle "競馬研究一覧\n/study" as StudyList
+  rectangle "競馬研究記事\n/study/{article_name}" as StudyArticle
+}
+
+package "レース分析" as AnalysisPkg {
+  rectangle "レース分析一覧\n/analysis" as AnalysisList
+  rectangle "レース分析記事\n/analysis/{article_name}" as AnalysisArticle
+}
+
+package "レース予想" as PredictPkg {
+  rectangle "レース予想一覧\n/predict" as PredictList
+  rectangle "レース予想記事\n/predict/{article_name}" as PredictArticle
+}
+
+rectangle "プロフィール\n/profile" as Profile
+
+Visitor --> Home : サイト入場
+
+Home --> BlogList : 導線
+Home --> StudyList : 導線
+Home --> AnalysisList : 導線
+Home --> PredictList : 導線
+Home --> Profile : 導線
+
+BlogList <--> BlogArticle : 記事選択 / パンくず
+StudyList <--> StudyArticle : 記事選択 / パンくず
+AnalysisList <--> AnalysisArticle : 記事選択 / パンくず
+PredictList <--> PredictArticle : 記事選択 / パンくず
+
+BlogList ..> Home : パンくず
+StudyList ..> Home : パンくず
+AnalysisList ..> Home : パンくず
+PredictList ..> Home : パンくず
+Profile ..> Home : SideNav
+
+note bottom of Home
+  Header のハンバーガーから開く
+  SideNav（共通ナビ）から
+  ホーム・各一覧・プロフィールへ
+  どの画面からでも遷移可能
+end note
+
+@enduml
+```
 
 <div style="page-break-after: always;"></div>
 
 ## 3. 画面詳細
+
+レイアウト・UI要素・状態・レスポンシブ等の詳細は [UI設計（個別画面）](./UI_design/) を参照。
 
 ### 3.1 ホーム
 
@@ -140,3 +219,6 @@ UI実装および画面テストの基準とすることを目的とする。
 | 2026-05-23 | 1.1 | 仕様書に基づき更新                         | βshort |
 | 2026-05-23 | 1.3 | レース分析・レース予想の画面を追加         | βshort |
 | 2026-08-10 | 2.0 | design.md から画面設計書として分割         | βshort |
+| 2026-08-10 | 2.1 | 画面遷移図を PlantUML で追加               | βshort |
+| 2026-08-10 | 2.2 | 画面詳細の詳細は UI_design/ へ委譲する旨を追記 | βshort |
+| 2026-08-10 | 2.3 | 共通ナビを Header 横並びからハンバーガー＋SideNav に変更 | βshort |

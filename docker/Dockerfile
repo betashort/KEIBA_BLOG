@@ -6,3 +6,4 @@ RUN apk add --no-cache bash
 WORKDIR /projects
 
 EXPOSE 5173
+EXPOSE 6006

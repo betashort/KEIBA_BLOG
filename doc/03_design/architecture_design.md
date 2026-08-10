@@ -76,8 +76,6 @@
 
 ### 2.2 システム構成図
 
-出典: [system_architecture.puml](./diagrams/system_architecture.puml)
-
 ```plantuml
 @startuml system_architecture
 !theme plain
