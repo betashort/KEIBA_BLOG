@@ -2,8 +2,11 @@
 
 ## 設計
 
-* [要求仕様](./doc/requirement/requirement.md)
-* [設計](./doc/design/design.md)
+* [要求仕様](./doc/01_requirement/requirement.md)
+* [設計書（索引）](./doc/03_design/design.md)
+* [アーキテクチャ設計書](./doc/03_design/architecture_design.md)
+* [画面設計書](./doc/03_design/screen_design.md)
+* [機能コンポーネント設計書](./doc/03_design/component_design.md)
 
 ## 参考・メモ
 

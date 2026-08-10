@@ -1,0 +1,55 @@
+@startuml system_architecture
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName Meiryo
+skinparam componentStyle rectangle
+skinparam ArrowColor #555555
+skinparam ActorBorderColor #333333
+skinparam ActorBackgroundColor #F5F5F5
+skinparam PackageBorderColor #666666
+skinparam PackageBackgroundColor #FAFAFA
+skinparam NodeBorderColor #666666
+skinparam NodeBackgroundColor #FFFFFF
+skinparam DatabaseBorderColor #666666
+skinparam NoteBorderColor #999999
+skinparam NoteBackgroundColor #FFFDE7
+
+title 競馬ブログ — システム構成図
+
+actor "管理者" as Admin
+actor "一般閲覧者\n(スマートフォン / PC)" as Visitor
+
+package "開発環境" as DevEnv {
+  component "React + Vite + TypeScript\nTailwind CSS / react-router-dom" as App
+  artifact "Markdown記事\n(Front Matter + 本文)" as Md
+  artifact "画像等静的アセット\n(public/images 等)" as Assets
+}
+
+cloud "外部サービス" as Ext {
+  component "Google Ads\n(埋め込みスクリプト)" as Ads
+}
+
+node "ビルド成果物" as Build {
+  artifact "静的ファイル\n(HTML / CSS / JS / 画像)" as Dist
+}
+
+node "Xserver\n(公開Webサーバー)" as Xserver {
+  component "静的ホスティング\n(.htaccess で SPA ルーティング)" as Host
+}
+
+Admin --> Md : Markdown作成・編集
+Md --> App
+Assets --> App
+App --> Dist : npm run build\n(Markdown→HTML変換)
+Dist --> Host : FTP等でアップロード
+Visitor --> Host : HTTPS で閲覧
+Host ..> Ads : 広告スクリプト読込
+Visitor ..> Ads : 広告表示
+
+note right of Dist
+  DB・CMS・バックエンドAPIなし
+  ランタイムは静的配信のみ
+end note
+
+@enduml

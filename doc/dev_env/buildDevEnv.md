@@ -1,13 +1,11 @@
 # 構築
 1. [docker 開発環境構築](#docker-開発環境構築)
+   1. [Cursor Agent 向け設定](#cursor-agent-向け設定)
 2. [ビルドコマンド](#ビルドコマンド)
 3. [プロジェクトを作成する](#プロジェクトを作成する)
 4. [ライブラリ](#ライブラリ)
    1. [react-router-dom](#react-router-dom)
    2. [tailwindをインストールする](#tailwindをインストールする)
-   3. [MUIのインストール](#muiのインストール)
-   4. [Drawer](#drawer)
-   5. [axio](#axio)
 
 ## docker 開発環境構築
 
@@ -100,19 +98,4 @@ module.exports = {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-```
-
-### MUIのインストール
-
-```bash
-npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
-```
-
-### Drawer
-
-* https://mui.com/material-ui/react-drawer/
-
-### axio
-```bash
-npm i axios
 ```

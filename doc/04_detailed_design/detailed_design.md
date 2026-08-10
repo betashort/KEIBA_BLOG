@@ -1,6 +1,6 @@
 # 詳細設計書（競馬ブログ）
 
-上位文書: [基本設計書（design.md）](../03_design/design.md)  
+上位文書: [基本設計書（索引）](../03_design/design.md) / [アーキテクチャ設計書](../03_design/architecture_design.md) / [画面設計書](../03_design/screen_design.md) / [機能コンポーネント設計書](../03_design/component_design.md)  
 実装対象: `keiba-blog/`
 
 1. [1. はじめに](#1-はじめに)
@@ -24,7 +24,7 @@
 
 ### 1.1 目的
 
-本書は、基本設計書（`doc/03_design/design.md`）に基づき **実際に実装した内容** をモジュール単位で記述する。  
+本書は、基本設計書（`doc/03_design/` 配下のアーキテクチャ／画面／機能コンポーネント設計書）に基づき **実際に実装した内容** をモジュール単位で記述する。  
 実装の追跡、改修、テスト作成時に、ソースコードと設計の対応を確認するために用いる。
 
 ### 1.2 対象読者
@@ -39,7 +39,10 @@
 | ---- | ---- |
 | 要求仕様書 | `doc/01_requirement/requirement.md` |
 | 要件定義書 | `doc/02_specification/specification.md` |
-| 基本設計書 | `doc/03_design/design.md` |
+| 基本設計書（索引） | `doc/03_design/design.md` |
+| アーキテクチャ設計書 | `doc/03_design/architecture_design.md` |
+| 画面設計書 | `doc/03_design/screen_design.md` |
+| 機能コンポーネント設計書 | `doc/03_design/component_design.md` |
 | 開発環境構築 | `doc/03_design/buildDevEnv.md` |
 
 <div style="page-break-after: always;"></div>
