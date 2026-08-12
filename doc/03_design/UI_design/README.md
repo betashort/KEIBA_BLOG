@@ -52,10 +52,35 @@ drawio / png は各画面フォルダに同居させる。
 | `predict/` | 当面 `analysis/` のレース系資産を参照 |
 | `profile/` | `AboutMe.drawio` |
 
+## Storybook スクリーンショット（自動更新）
+
+ワイヤーフレームの直後に、Storybook の実装画面を Playwright で自動撮影した PNG を挿入する。
+
+| 項目 | 内容 |
+| ---- | ---- |
+| 対応 Story | `keiba-blog/src/**/*.stories.tsx`（各ファイル先頭の `UI設計:` コメントで紐付け） |
+| マニフェスト | `keiba-blog/scripts/ui-design-screenshots/manifest.ts` |
+| 出力先 | 各画面フォルダの `*-storybook.png` |
+| ビューポート | 390×844（モバイルファースト） |
+
+### 実行方法
+
+Storybook 開発サーバーが起動中ならそれを利用する。未起動時は静的ビルド後に一時サーバーで撮影する。
+
+```bash
+# Docker Compose 経由（推奨）
+docker compose exec node sh -c "cd keiba-blog && npm install && npx playwright install chromium && npm run ui-design:screenshots"
+
+# 開発サーバーを使う場合（別ターミナルで storybook 起動済み）
+docker compose exec node sh -c "cd keiba-blog && STORYBOOK_URL=http://127.0.0.1:6006 npm run ui-design:screenshots"
+```
+
+再実行すると `<!-- ui-design-screenshot:begin/end -->` マーカー内の画像ブロックを差し替える。新規画面を追加するときは `manifest.ts` にエントリを足し、対応する `.stories.tsx` を用意する。
+
 ## 変更履歴
 
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
 | 2026-08-10 | 1.0 | 個別画面 UI 設計ドキュメントを新設 | βshort |
 | 2026-08-10 | 1.1 | 既存 drawio/png を各画面フォルダへ移動 | βshort |
-| 2026-08-10 | 1.2 | 日本語フォルダのレガシー資産を英語フォルダへ再配置。一覧パターンを明記 | βshort |
+| 2026-08-12 | 1.3 | Storybook + Playwright による実装スクリーンショット自動更新を追加 | βshort |

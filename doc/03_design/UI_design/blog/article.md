@@ -41,6 +41,15 @@
 +--------------------------------------------------------+
 ```
 
+<!-- ui-design-screenshot:begin -->
+
+**実装スクリーンショット**（Storybook 自動撮影）
+
+![ブログ記事（Storybook）](./blog-article-storybook.png)
+
+<!-- ui-design-screenshot:end -->
+
+
 ## 9. 変更履歴
 
 | 日付 | 版 | 内容 | 担当 |

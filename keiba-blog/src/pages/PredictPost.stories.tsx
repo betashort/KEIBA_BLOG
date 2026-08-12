@@ -29,6 +29,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Default: Story = {
+  name: "通常",
+  parameters: {
+    initialEntries: ["/predict/sample-predict"],
+  },
+};
+
 export const NotFoundArticle: Story = {
   name: "記事なし（404）",
   parameters: {

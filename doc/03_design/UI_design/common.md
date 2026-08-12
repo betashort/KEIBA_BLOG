@@ -44,6 +44,20 @@ SideNav 開時：
 - Header 内に横並びのグローバルナビは置かない
 - 画面遷移はハンバーガーから開く SideNav で行う
 
+<!-- ui-design-screenshot:begin -->
+
+**実装スクリーンショット**（Storybook 自動撮影）
+
+![Header（Storybook）](./common-header-storybook.png)
+
+![SideNav（閉）（Storybook）](./common-sidenav-closed-storybook.png)
+
+![SideNav（開）（Storybook）](./common-sidenav-open-storybook.png)
+
+![Footer（Storybook）](./common-footer-storybook.png)
+
+<!-- ui-design-screenshot:end -->
+
 ## 3. UI要素一覧
 
 ### 3.1 Header
