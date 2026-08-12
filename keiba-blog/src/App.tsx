@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppShell from "./component/AppShell.tsx";
 import Home from "./pages/Home.tsx";
 import Profile from "./pages/Profile.tsx";
+import HitokuchiPortfolio from "./pages/HitokuchiPortfolio.tsx";
+import AibaDiary from "./pages/AibaDiary.tsx";
+import BakenPortfolio from "./pages/BakenPortfolio.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import BlogList from "./pages/BlogList.tsx";
 import StudyList from "./pages/StudyList.tsx";
@@ -28,6 +31,15 @@ export default function App() {
           <Route path="/predict" element={<PredictList />} />
           <Route path="/predict/:article_name" element={<PredictPost />} />
           <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile/hitokuchi-portfolio"
+            element={<HitokuchiPortfolio />}
+          />
+          <Route
+            path="/profile/hitokuchi-portfolio/:bamei"
+            element={<AibaDiary />}
+          />
+          <Route path="/profile/baken-portfolio" element={<BakenPortfolio />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AppShell>

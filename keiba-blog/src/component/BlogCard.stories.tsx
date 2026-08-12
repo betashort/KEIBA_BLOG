@@ -6,11 +6,11 @@ const baseArticle: Article = {
   slug: "sample-article",
   category: "blog",
   frontMatter: {
-    title: "サンプル記事タイトル",
+    title: "ダミー サンプル記事タイトル",
     date: "2026-08-01",
     category: "blog",
     tags: ["馬券", "初心者"],
-    description: "サンプル説明。ホームのタブ一覧では抜粋として表示される。",
+    description: "ダミー。ホームのタブ一覧では抜粋として表示される。",
   },
   contentHtml: "<p>本文</p>",
 };

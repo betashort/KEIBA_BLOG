@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import MetaTags from "../component/MetaTags";
 import { SITE_DESCRIPTION, SITE_NAME } from "../utils/site";
 
@@ -18,6 +19,20 @@ export default function Profile() {
           <h2 className="text-lg font-semibold text-gray-900">サイト概要</h2>
           <p>{SITE_DESCRIPTION}</p>
         </section>
+        <nav aria-label="関連ページ" className="mt-8 flex flex-wrap gap-3">
+          <Link
+            to="/profile/hitokuchi-portfolio"
+            className="inline-flex items-center border border-gray-300 px-4 py-2 text-sm text-gray-800 hover:bg-gray-50"
+          >
+            一口馬主ポートフォリオ
+          </Link>
+          <Link
+            to="/profile/baken-portfolio"
+            className="inline-flex items-center border border-gray-300 px-4 py-2 text-sm text-gray-800 hover:bg-gray-50"
+          >
+            馬券ポートフォリオ
+          </Link>
+        </nav>
       </div>
     </>
   );

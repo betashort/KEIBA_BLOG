@@ -15,7 +15,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "運営者の自己紹介とサイト概要（UI_design/profile/profile.md）。",
+          "運営者の自己紹介とサイト概要。一口馬主・馬券ポートフォリオへの導線（UI_design/profile/profile.md）。",
       },
     },
   },

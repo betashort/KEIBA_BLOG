@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import DummyBadge from "../component/DummyBadge";
 import MetaTags from "../component/MetaTags";
 import {
   getPredictDates,
@@ -44,7 +45,10 @@ export default function PredictList() {
       />
       <div className="mx-auto max-w-4xl px-4 py-8">
         <div className="mb-6 flex items-baseline justify-between gap-4">
-          <h1 className="text-2xl font-bold text-gray-900">レース予想</h1>
+          <h1 className="flex flex-wrap items-center gap-2 text-2xl font-bold text-gray-900">
+            レース予想
+            <DummyBadge />
+          </h1>
           <label className="flex items-center gap-2 text-sm text-gray-700">
             <span className="sr-only">年</span>
             <select

@@ -50,7 +50,6 @@
 
 <!-- ui-design-screenshot:end -->
 
-
 ## 9. 変更履歴
 
 | 日付 | 版 | 内容 | 担当 |

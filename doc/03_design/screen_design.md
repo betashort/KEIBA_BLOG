@@ -15,6 +15,9 @@
    4. [3.4 レース分析一覧・記事](#34-レース分析一覧記事)
    5. [3.5 レース予想一覧・記事](#35-レース予想一覧記事)
    6. [3.6 プロフィール](#36-プロフィール)
+      1. [3.6.1 一口馬主ポートフォリオ](#361-一口馬主ポートフォリオ)
+         1. [3.6.1.1 愛馬日記](#3611-愛馬日記)
+      2. [3.6.2 馬券ポートフォリオ](#362-馬券ポートフォリオ)
 4. [4. 変更履歴](#4-変更履歴)
 
 <div style="page-break-after: always;"></div>
@@ -50,6 +53,9 @@ UI実装および画面テストの基準とすることを目的とする。
 | レース予想一覧 | `/predict` | 開催日・競馬場単位のレース予想一覧 | [list.md](./UI_design/predict/list.md) |
 | レース予想記事 | `/predict/{article_name}` | 予想記事詳細 | [article.md](./UI_design/predict/article.md) |
 | プロフィール | `/profile` | 自己紹介 | [profile.md](./UI_design/profile/profile.md) |
+| 一口馬主ポートフォリオ | `/profile/hitokuchi-portfolio` | 出資馬の保有状況一覧・可視化 | [hitokuchi-portfolio.md](./UI_design/profile/hitokuchi-portfolio.md) |
+| 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | 出資馬ごとの日記・観戦記 | [aiba-diary.md](./UI_design/profile/aiba-diary.md) |
+| 馬券ポートフォリオ | `/profile/baken-portfolio` | 馬券成績・購入傾向の可視化 | [baken-portfolio.md](./UI_design/profile/baken-portfolio.md) |
 
 共通レイアウト：Header（ロゴ＋ハンバーガー）＋ SideNav（ドロワーナビ）＋ メインコンテンツ ＋ Footer  
 詳細は [UI設計：共通レイアウト](./UI_design/common.md) を参照。
@@ -98,7 +104,12 @@ package "レース予想" as PredictPkg {
   rectangle "レース予想記事\n/predict/{article_name}" as PredictArticle
 }
 
-rectangle "プロフィール\n/profile" as Profile
+package "プロフィール" as ProfilePkg {
+  rectangle "プロフィール\n/profile" as Profile
+  rectangle "一口馬主ポートフォリオ\n/profile/hitokuchi-portfolio" as HitokuchiPortfolio
+  rectangle "愛馬日記\n/profile/hitokuchi-portfolio/{bamei}" as AibaDiary
+  rectangle "馬券ポートフォリオ\n/profile/baken-portfolio" as BakenPortfolio
+}
 
 Visitor --> Home : サイト入場
 
@@ -113,6 +124,12 @@ StudyList <--> StudyArticle : 記事選択 / パンくず
 AnalysisList <--> AnalysisArticle : 記事選択 / パンくず
 PredictList --> PredictArticle : 詳細記事リンク（任意）
 PredictArticle --> PredictList : パンくず
+
+Profile --> HitokuchiPortfolio : 導線
+Profile --> BakenPortfolio : 導線
+HitokuchiPortfolio <--> AibaDiary : 馬選択 / パンくず
+HitokuchiPortfolio --> Profile : パンくず
+BakenPortfolio --> Profile : パンくず
 
 BlogList ..> Home : パンくず
 StudyList ..> Home : パンくず
@@ -130,6 +147,11 @@ end note
 note bottom of PredictList
   開催日・競馬場でレースを絞り込み
   詳細記事があるレースのみ記事へ遷移可
+end note
+
+note bottom of HitokuchiPortfolio
+  出資馬リストから各馬の
+  愛馬日記へ遷移
 end note
 
 @enduml
@@ -227,6 +249,33 @@ end note
 - 主な表示項目：プロフィール本文、サイト概要
 - UI設計：[profile/profile.md](./UI_design/profile/profile.md)
 
+#### 3.6.1 一口馬主ポートフォリオ
+
+- URL: `/profile/hitokuchi-portfolio`
+- 内容: 一口馬主（クラブ馬）の保有状況を一覧・可視化。出資馬リスト、成績など全体のポートフォリオを表示する。
+- 主な項目:
+  - 出資馬リスト（馬名、所属クラブ、戦績、最新近況）
+  - ポートフォリオサマリ（総出資馬数、現役／獲得賞金など）
+- UI設計：[profile/hitokuchi-portfolio.md](./UI_design/profile/hitokuchi-portfolio.md)
+
+##### 3.6.1.1 愛馬日記
+
+- URL: `/profile/hitokuchi-portfolio/{bamei}`
+- 説明: 一口馬主として出資している馬ごとの日記や観戦記、思い出を記録・表示する画面。各馬の成長や出走体験、イベント、写真などを自由形式で表示する。hitokuchi-portfolioのリンクから表示する。
+- 主な表示項目:
+  - 投稿詳細（本文、写真、関連馬情報のリンクなど）
+- UI設計：[profile/aiba-diary.md](./UI_design/profile/aiba-diary.md)
+
+#### 3.6.2 馬券ポートフォリオ
+
+- URL: `/profile/baken-portfolio`
+- 内容: 馬券成績（収支・的中率・回収率など）や購入傾向を集計し、グラフやダイジェストで可視化する。
+- 主な項目:
+  - 年月別および全体の収支・成績グラフ
+  - 券種/カテゴリ別の詳細分析
+  - 購入履歴まとめ
+- UI設計：[profile/baken-portfolio.md](./UI_design/profile/baken-portfolio.md)
+
 <div style="page-break-after: always;"></div>
 
 ## 4. 変更履歴
@@ -241,3 +290,5 @@ end note
 | 2026-08-10 | 2.2 | 画面詳細の詳細は UI_design/ へ委譲する旨を追記 | βshort |
 | 2026-08-10 | 2.3 | 共通ナビを Header 横並びからハンバーガー＋SideNav に変更 | βshort |
 | 2026-08-10 | 2.4 | UI_design に合わせて画面一覧・詳細を整理。page_design 参照を削除。予想一覧を開催日・場単位に更新 | βshort |
+| 2026-08-13 | 2.5 | 一口馬主ポートフォリオ・愛馬日記・馬券ポートフォリオの UI 設計参照と画面一覧・遷移図を追加 | βshort |
+| 2026-08-13 | 2.6 | 愛馬日記の UI 設計ファイル名を aiba-diary.md に変更 | βshort |

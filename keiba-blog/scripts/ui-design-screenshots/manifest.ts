@@ -127,6 +127,33 @@ export const SCREENSHOT_TARGETS: ScreenshotTarget[] = [
     },
   },
   {
+    kind: "page",
+    docPath: "profile/hitokuchi-portfolio.md",
+    entry: {
+      storyId: "pages-profile-hitokuchi-portfolio--default",
+      filename: "hitokuchi-portfolio-storybook.png",
+      label: "一口馬主ポートフォリオ",
+    },
+  },
+  {
+    kind: "page",
+    docPath: "profile/aiba-diary.md",
+    entry: {
+      storyId: "pages-profile-aiba-diary--default",
+      filename: "aiba-diary-storybook.png",
+      label: "愛馬日記",
+    },
+  },
+  {
+    kind: "page",
+    docPath: "profile/baken-portfolio.md",
+    entry: {
+      storyId: "pages-profile-baken-portfolio--default",
+      filename: "baken-portfolio-storybook.png",
+      label: "馬券ポートフォリオ",
+    },
+  },
+  {
     kind: "common",
     docPath: "common.md",
     insertBefore: "## 3. UI要素一覧",

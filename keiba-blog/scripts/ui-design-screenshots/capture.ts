@@ -1,3 +1,5 @@
+import { access } from "node:fs/promises";
+import { constants as fsConstants } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { chromium, type Browser } from "playwright";
@@ -8,6 +10,40 @@ import {
   type ScreenshotEntry,
   type Viewport,
 } from "./manifest.ts";
+
+const SYSTEM_CHROMIUM_CANDIDATES = [
+  "/usr/bin/chromium-browser",
+  "/usr/bin/chromium",
+  "/usr/bin/google-chrome",
+  "/usr/bin/google-chrome-stable",
+];
+
+async function fileExists(filePath: string): Promise<boolean> {
+  try {
+    await access(filePath, fsConstants.X_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function resolveChromiumExecutable(): Promise<string | undefined> {
+  const fromEnv = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+  if (fromEnv) return fromEnv;
+
+  for (const candidate of SYSTEM_CHROMIUM_CANDIDATES) {
+    if (await fileExists(candidate)) return candidate;
+  }
+  return undefined;
+}
+
+async function launchBrowser(): Promise<Browser> {
+  const executablePath = await resolveChromiumExecutable();
+  return chromium.launch({
+    executablePath,
+    args: ["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],
+  });
+}
 
 export type CaptureOptions = {
   baseUrl: string;
@@ -35,7 +71,7 @@ export async function captureScreenshots({
   viewport = DEFAULT_VIEWPORT,
 }: CaptureOptions): Promise<void> {
   const entries = collectEntries();
-  const browser: Browser = await chromium.launch();
+  const browser: Browser = await launchBrowser();
 
   try {
     const context = await browser.newContext({

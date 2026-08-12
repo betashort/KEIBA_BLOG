@@ -14,7 +14,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "ハンバーガーから開くドロワー型グローバルナビ。ホーム・各一覧・プロフィールへ遷移（UI_design/common.md）。",
+          "ハンバーガーから右側に開くドロワー型グローバルナビ。ホーム・各一覧・プロフィールへ遷移（UI_design/common.md）。",
       },
     },
   },

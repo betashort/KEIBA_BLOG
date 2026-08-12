@@ -57,8 +57,8 @@ export default function SideNav({ open, onClose }: SideNavProps) {
       <nav
         id="side-nav"
         aria-label="サイドナビゲーション"
-        className={`absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-white shadow-xl transition-transform duration-200 ease-out ${
-          open ? "translate-x-0" : "-translate-x-full"
+        className={`absolute inset-y-0 right-0 flex w-72 max-w-[85vw] flex-col bg-white shadow-xl transition-transform duration-200 ease-out ${
+          open ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
