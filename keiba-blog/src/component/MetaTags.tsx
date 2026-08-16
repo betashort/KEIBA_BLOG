@@ -3,6 +3,7 @@ import {
   DEFAULT_OG_IMAGE,
   SITE_DESCRIPTION,
   SITE_NAME,
+  toAbsoluteUrl,
 } from "../utils/site";
 
 interface MetaTagsProps {
@@ -14,17 +15,6 @@ interface MetaTagsProps {
   noindex?: boolean;
 }
 
-function toAbsoluteUrl(path: string): string {
-  if (path.startsWith("http://") || path.startsWith("https://")) {
-    return path;
-  }
-  const origin =
-    typeof window !== "undefined"
-      ? window.location.origin
-      : "";
-  return `${origin}${path.startsWith("/") ? path : `/${path}`}`;
-}
-
 export default function MetaTags({
   title,
   description = SITE_DESCRIPTION,
@@ -34,12 +24,7 @@ export default function MetaTags({
   noindex = false,
 }: MetaTagsProps) {
   const pageTitle = title === SITE_NAME ? SITE_NAME : `${title} | ${SITE_NAME}`;
-  const url =
-    path && typeof window !== "undefined"
-      ? toAbsoluteUrl(path)
-      : typeof window !== "undefined"
-        ? window.location.href
-        : "";
+  const url = path ? toAbsoluteUrl(path) : undefined;
   const imageUrl = toAbsoluteUrl(ogImage);
 
   return (

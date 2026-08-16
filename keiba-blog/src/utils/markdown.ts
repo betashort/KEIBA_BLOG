@@ -137,12 +137,25 @@ export function getArticle(
   );
 }
 
+const TOKYO_TIME_ZONE = "Asia/Tokyo";
+
+function parseDateAsTokyo(dateStr: string): Date | null {
+  const day = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (day) {
+    const parsed = new Date(`${day[1]}-${day[2]}-${day[3]}T00:00:00+09:00`);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+  const parsed = new Date(dateStr);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
 export function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-  return date.toLocaleDateString("ja-JP", {
+  const date = parseDateAsTokyo(dateStr);
+  if (!date) return dateStr;
+  return new Intl.DateTimeFormat("ja-JP", {
+    timeZone: TOKYO_TIME_ZONE,
     year: "numeric",
     month: "long",
     day: "numeric",
-  });
+  }).format(date);
 }
