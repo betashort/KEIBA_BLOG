@@ -26,6 +26,7 @@
 | 一口馬主ポートフォリオ | `/profile/hitokuchi-portfolio` | [profile/hitokuchi-portfolio.md](./profile/hitokuchi-portfolio.md) |
 | 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | [profile/aiba-diary.md](./profile/aiba-diary.md) |
 | 馬券ポートフォリオ | `/profile/baken-portfolio` | [profile/baken-portfolio.md](./profile/baken-portfolio.md) |
+| 月次馬券成績 | `/profile/baken-portfolio/{YYYY-MM}` | [profile/baken-monthly.md](./profile/baken-monthly.md) |
 
 ## 一覧パターン
 
@@ -89,3 +90,4 @@ docker compose exec node sh -c "cd keiba-blog && STORYBOOK_URL=http://127.0.0.1:
 | 2026-08-12 | 1.3 | Storybook + Playwright による実装スクリーンショット自動更新を追加 | βshort |
 | 2026-08-13 | 1.4 | 一口馬主ポートフォリオ・愛馬日記・馬券ポートフォリオを追加 | βshort |
 | 2026-08-13 | 1.5 | 愛馬日記の文書名を aiba-diary.md に変更 | βshort |
+| 2026-08-17 | 1.6 | 月次馬券成績を追加 | βshort |

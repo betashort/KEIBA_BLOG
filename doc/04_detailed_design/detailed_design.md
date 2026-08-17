@@ -116,6 +116,8 @@ keiba-blog/
 │  │  ├─ study/{slug}/index.md
 │  │  ├─ analysis/{slug}/index.md
 │  │  ├─ predict/{slug}/index.md
+│  │  ├─ hitokuchi/{bamei}/index.md  # 出資馬データ + 愛馬日記
+│  │  ├─ baken/{YYYY-MM}/index.md    # 月次馬券成績
 │  │  └─ template/index.md  # 雛形（一覧非表示）
 │  ├─ pages/                # 画面コンポーネント（設計書の画面一覧）
 │  ├─ component/            # 共通・部品コンポーネント
@@ -136,6 +138,24 @@ keiba-blog/
 | category | `blog` \| `study` \| `analysis` \| `predict` |
 | slug | kebab-case（例: `howtobet-baken`） |
 | URL | `/{category}/{slug}`（例: `/blog/howtobet-baken`） |
+
+愛馬日記は4カテゴリとは別系統とする。
+
+| 項目 | 規則 |
+| ---- | ---- |
+| パス | `src/articles/hitokuchi/{bamei}/index.md` |
+| bamei | URL パラメータ（フォルダ名。例: `サンプルスター`） |
+| URL | `/profile/hitokuchi-portfolio/{bamei}` |
+| 読込 | `src/data/hitokuchiHorses.ts`（`template` 除外）。ブログ等の一覧には出さない |
+
+馬券成績も4カテゴリとは別系統とする。
+
+| 項目 | 規則 |
+| ---- | ---- |
+| パス | `src/articles/baken/{YYYY-MM}/index.md` |
+| yearMonth | `YYYY-MM`（フォルダ名。例: `2025-08`） |
+| URL | `/profile/baken-portfolio/{YYYY-MM}` |
+| 読込 | `src/data/bakenPortfolio.ts`（`template` 除外）。ブログ等の一覧には出さない |
 
 <div style="page-break-after: always;"></div>
 
@@ -166,6 +186,10 @@ keiba-blog/
 | `/predict` | PredictList | `pages/PredictList.tsx` |
 | `/predict/:article_name` | PredictPost | `pages/PredictPost.tsx` |
 | `/profile` | Profile | `pages/Profile.tsx` |
+| `/profile/hitokuchi-portfolio` | HitokuchiPortfolio | `pages/HitokuchiPortfolio.tsx` |
+| `/profile/hitokuchi-portfolio/:bamei` | AibaDiary | `pages/AibaDiary.tsx` |
+| `/profile/baken-portfolio` | BakenPortfolio | `pages/BakenPortfolio.tsx` |
+| `/profile/baken-portfolio/:yearMonth` | BakenMonthlyPost | `pages/BakenMonthlyPost.tsx` |
 | `*` | NotFound | `pages/NotFound.tsx` |
 
 ### 4.3 カテゴリ別コンポーネントの委譲
@@ -250,7 +274,7 @@ interface Article {
 
 | ステップ | 処理 |
 | -------- | ---- |
-| 1 | `import.meta.glob("../articles/**/index.md", { eager: true, query: "?raw" })` |
+| 1 | `import.meta.glob` で `blog` / `study` / `analysis` / `predict` 配下の `index.md` を読込 |
 | 2 | パスから `category`・`slug` を正規表現抽出 |
 | 3 | `parseFrontMatter` でメタ情報と本文分離 |
 | 4 | `normalizeFrontMatter` で必須項目補完 |
@@ -549,3 +573,5 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
 | 2026-05-24 | 1.0 | 実装内容に基づき初版作成 | βshort |
+| 2026-08-17 | 1.1 | 出資馬・愛馬日記を `src/articles/hitokuchi/{bamei}/index.md` で管理 | βshort |
+| 2026-08-17 | 1.2 | 馬券成績を `src/articles/baken/{YYYY-MM}/index.md` で月次管理 | βshort |

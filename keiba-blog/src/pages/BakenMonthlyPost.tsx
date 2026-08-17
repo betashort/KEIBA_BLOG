@@ -1,97 +1,62 @@
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import DummyBadge from "../component/DummyBadge";
 import MetaTags from "../component/MetaTags";
 import {
   formatPercent,
   formatYen,
-  formatYearMonth,
-  getBakenHistory,
-  getBakenMonthlyResults,
-  getBakenSummary,
-  getBakenTicketTypes,
+  formatYearMonthLabel,
+  getBakenMonth,
+  hitRate,
+  monthTicketTypes,
   profitYen,
   recoveryRate,
 } from "../data/bakenPortfolio";
 import { SITE_DESCRIPTION } from "../utils/site";
-
-function MonthlyChart() {
-  const monthly = getBakenMonthlyResults();
-  const maxAbs = Math.max(...monthly.map((item) => Math.abs(item.profitYen)), 1);
-
-  if (monthly.length === 0) {
-    return <p className="text-sm text-gray-500">月次成績の記事がまだありません。</p>;
-  }
-
-  return (
-    <ul className="space-y-2">
-      {monthly.map((item) => {
-        const positive = item.profitYen >= 0;
-        return (
-          <li key={item.yearMonth} className="flex items-center gap-2 text-sm">
-            <Link
-              to={`/profile/baken-portfolio/${item.yearMonth}`}
-              className="w-10 shrink-0 text-blue-600 hover:underline"
-            >
-              {formatYearMonth(item.yearMonth)}
-            </Link>
-            <div className="h-3 flex-1 bg-gray-100">
-              <div
-                className={positive ? "h-3 bg-emerald-500" : "h-3 bg-red-400"}
-                style={{
-                  width: `${(Math.abs(item.profitYen) / maxAbs) * 100}%`,
-                }}
-              />
-            </div>
-            <span
-              className={`w-24 shrink-0 text-right tabular-nums ${
-                positive ? "text-emerald-700" : "text-red-600"
-              }`}
-            >
-              {formatYen(item.profitYen)}
-            </span>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
+import NotFound from "./NotFound";
 
 /**
- * UI設計: profile/baken-portfolio.md
- * 全体サマリ・収支グラフ・券種別分析・購入履歴
- * 月次成績は src/articles/baken/{YYYY-MM}/index.md から集計
+ * UI設計: profile/baken-monthly.md
+ * 月次の馬券成績記事。サマリ・券種・購入履歴・本文
  */
-export default function BakenPortfolio() {
-  const summary = getBakenSummary();
-  const ticketTypes = getBakenTicketTypes();
-  const history = getBakenHistory();
-  const pl = profitYen(summary);
-  const recovery = recoveryRate(summary);
+export default function BakenMonthlyPost() {
+  const { yearMonth } = useParams<{ yearMonth: string }>();
+  const article = yearMonth ? getBakenMonth(yearMonth) : undefined;
+
+  if (!yearMonth || !article) {
+    return <NotFound />;
+  }
+
+  const path = `/profile/baken-portfolio/${article.yearMonth}`;
+  const pl = profitYen(article);
+  const recovery = recoveryRate(article);
+  const monthHitRate = hitRate(article.hitCount, article.ticketCount);
+  const ticketTypes = monthTicketTypes(article);
 
   return (
     <>
       <MetaTags
-        title="馬券ポートフォリオ"
-        description={`馬券成績（収支・的中率・回収率）の可視化。${SITE_DESCRIPTION}`}
-        path="/profile/baken-portfolio"
+        title={article.title}
+        description={article.description ?? SITE_DESCRIPTION}
+        ogType="article"
+        path={path}
+        noindex={article.noindex}
       />
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <article className="mx-auto max-w-3xl px-4 py-8">
         <Breadcrumb
           items={[
             { label: "ホーム", path: "/" },
             { label: "プロフィール", path: "/profile" },
-            { label: "馬券ポートフォリオ" },
+            { label: "馬券ポートフォリオ", path: "/profile/baken-portfolio" },
+            { label: formatYearMonthLabel(article.yearMonth) },
           ]}
         />
-        <h1 className="mb-6 flex flex-wrap items-center gap-2 text-2xl font-bold text-gray-900">
-          馬券ポートフォリオ
-          <DummyBadge />
-        </h1>
-
-        <section aria-label="全体サマリ" className="mb-8">
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">全体サマリ</h2>
-          <dl className="grid grid-cols-3 gap-2 text-center">
+        <header className="mb-6 border-b border-gray-200 pb-4">
+          <h1 className="flex flex-wrap items-center gap-2 text-2xl font-bold text-gray-900">
+            {article.title}
+            <DummyBadge />
+          </h1>
+          <dl className="mt-4 grid grid-cols-3 gap-2 text-center">
             <div className="border border-gray-200 px-2 py-3">
               <dt className="text-xs text-gray-500">収支</dt>
               <dd
@@ -105,7 +70,7 @@ export default function BakenPortfolio() {
             <div className="border border-gray-200 px-2 py-3">
               <dt className="text-xs text-gray-500">的中率</dt>
               <dd className="mt-1 text-base font-semibold text-gray-900">
-                {formatPercent(summary.hitRate)}
+                {formatPercent(monthHitRate)}
               </dd>
             </div>
             <div className="border border-gray-200 px-2 py-3">
@@ -116,26 +81,22 @@ export default function BakenPortfolio() {
             </div>
           </dl>
           <p className="mt-2 text-xs text-gray-500">
-            購入 {formatYen(summary.purchaseYen, false)} / 払戻{" "}
-            {formatYen(summary.payoutYen, false)} / {summary.hitCount} /{" "}
-            {summary.ticketCount} 的中
+            購入 {formatYen(article.purchaseYen, false)} / 払戻{" "}
+            {formatYen(article.payoutYen, false)} / {article.hitCount} /{" "}
+            {article.ticketCount} 的中
           </p>
-        </section>
+        </header>
 
-        <section aria-label="収支・成績グラフ" className="mb-8">
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">
-            収支・成績グラフ（年月別 / 全体）
-          </h2>
-          <MonthlyChart />
-        </section>
+        {article.contentHtml.trim() ? (
+          <div
+            className="article-body prose prose-gray max-w-none"
+            dangerouslySetInnerHTML={{ __html: article.contentHtml }}
+          />
+        ) : null}
 
-        <section aria-label="券種別詳細分析" className="mb-8">
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">
-            券種 / カテゴリ別 詳細分析
-          </h2>
-          {ticketTypes.length === 0 ? (
-            <p className="text-sm text-gray-500">券種別の集計データがありません。</p>
-          ) : (
+        {ticketTypes.length > 0 ? (
+          <section className="mt-8" aria-label="券種別">
+            <h2 className="mb-3 text-lg font-semibold text-gray-900">券種別</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-sm">
                 <thead>
@@ -172,16 +133,12 @@ export default function BakenPortfolio() {
                 </tbody>
               </table>
             </div>
-          )}
-        </section>
+          </section>
+        ) : null}
 
-        <section aria-label="購入履歴まとめ">
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">
-            購入履歴まとめ
-          </h2>
-          {history.length === 0 ? (
-            <p className="text-sm text-gray-500">購入履歴がありません。</p>
-          ) : (
+        {article.history.length > 0 ? (
+          <section className="mt-8" aria-label="購入履歴">
+            <h2 className="mb-3 text-lg font-semibold text-gray-900">購入履歴</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-sm">
                 <thead>
@@ -194,7 +151,7 @@ export default function BakenPortfolio() {
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((row) => (
+                  {article.history.map((row) => (
                     <tr key={`${row.date}-${row.race}-${row.ticketType}`}>
                       <td className="border border-gray-200 px-2 py-2 whitespace-nowrap">
                         {row.date}
@@ -218,9 +175,9 @@ export default function BakenPortfolio() {
                 </tbody>
               </table>
             </div>
-          )}
-        </section>
-      </div>
+          </section>
+        ) : null}
+      </article>
     </>
   );
 }

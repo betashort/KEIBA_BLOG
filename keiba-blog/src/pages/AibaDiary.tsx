@@ -1,5 +1,3 @@
-import { marked } from "marked";
-import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import ClubMark from "../component/ClubMark";
@@ -23,11 +21,6 @@ export default function AibaDiary() {
   const { bamei } = useParams<{ bamei: string }>();
   const horse = bamei ? getHorse(bamei) : undefined;
 
-  const bodyHtml = useMemo(() => {
-    if (!horse) return "";
-    return marked.parse(horse.diaryMarkdown, { async: false }) as string;
-  }, [horse]);
-
   if (!bamei || !horse) {
     return <NotFound />;
   }
@@ -39,7 +32,11 @@ export default function AibaDiary() {
     <>
       <MetaTags
         title={`${horse.name}｜愛馬日記`}
-        description={`${horse.name}の日記・観戦記。${SITE_DESCRIPTION}`}
+        description={
+          horse.description
+            ? horse.description
+            : `${horse.name}の日記・観戦記。${SITE_DESCRIPTION}`
+        }
         ogType="article"
         path={path}
       />
@@ -81,7 +78,7 @@ export default function AibaDiary() {
 
         <div
           className="article-body prose prose-gray max-w-none"
-          dangerouslySetInnerHTML={{ __html: bodyHtml }}
+          dangerouslySetInnerHTML={{ __html: horse.contentHtml }}
         />
 
         {horse.photos.length > 0 ? (

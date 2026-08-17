@@ -6,6 +6,7 @@ import Profile from "./pages/Profile.tsx";
 import HitokuchiPortfolio from "./pages/HitokuchiPortfolio.tsx";
 import AibaDiary from "./pages/AibaDiary.tsx";
 import BakenPortfolio from "./pages/BakenPortfolio.tsx";
+import BakenMonthlyPost from "./pages/BakenMonthlyPost.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import BlogList from "./pages/BlogList.tsx";
 import StudyList from "./pages/StudyList.tsx";
@@ -40,6 +41,10 @@ export default function App() {
           element={<AibaDiary />}
         />
         <Route path="/profile/baken-portfolio" element={<BakenPortfolio />} />
+        <Route
+          path="/profile/baken-portfolio/:yearMonth"
+          element={<BakenMonthlyPost />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AppShell>

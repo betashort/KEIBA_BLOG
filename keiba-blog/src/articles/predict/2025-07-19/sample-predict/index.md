@@ -4,6 +4,8 @@ date: "2025-07-19"
 description: "2025年7月19日 小倉 R11 中京記念のレース予想"
 category: "predict"
 tags: ["予想", "小倉", "G3"]
+venue: "小倉"
+raceNumber: 11
 ---
 
 ## 本命

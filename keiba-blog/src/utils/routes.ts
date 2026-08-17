@@ -1,3 +1,4 @@
+import { getBakenMonths } from "../data/bakenPortfolio";
 import { HITOKUCHI_HORSES } from "../data/hitokuchiHorses";
 import { getAllArticles, getArticlesByCategory } from "./markdown";
 import { CATEGORY_CONFIG, type ArticleCategory } from "./site";
@@ -24,6 +25,13 @@ function latestArticleDate(category?: ArticleCategory): string | undefined {
 
 function latestEventDate(dates: string[]): string | undefined {
   return [...dates].sort((a, b) => b.localeCompare(a))[0];
+}
+
+function latestBakenMonthDate(): string | undefined {
+  const months = [...getBakenMonths()].sort((a, b) =>
+    b.date.localeCompare(a.date),
+  );
+  return months[0]?.date;
 }
 
 export function getPublicRoutes(): PublicRoute[] {
@@ -78,6 +86,7 @@ export function getPublicRoutes(): PublicRoute[] {
     {
       path: "/profile/baken-portfolio",
       includeInSitemap: true,
+      lastmod: latestBakenMonthDate(),
       changefreq: "monthly",
       priority: "0.5",
     },
@@ -97,7 +106,18 @@ export function getPublicRoutes(): PublicRoute[] {
     routes.push({
       path: `/profile/hitokuchi-portfolio/${horse.bamei}`,
       includeInSitemap: true,
-      lastmod: latestEventDate(horse.events.map((event) => event.date)),
+      lastmod:
+        latestEventDate(horse.events.map((event) => event.date)) ?? horse.date,
+      changefreq: "monthly",
+      priority: "0.6",
+    });
+  }
+
+  for (const month of getBakenMonths()) {
+    routes.push({
+      path: `/profile/baken-portfolio/${month.yearMonth}`,
+      includeInSitemap: month.noindex !== true,
+      lastmod: month.date,
       changefreq: "monthly",
       priority: "0.6",
     });

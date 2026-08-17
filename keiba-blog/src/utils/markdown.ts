@@ -15,6 +15,10 @@ export interface ArticleFrontMatter {
   raceName?: string;
   /** レース分析記事向け: レース情報（開催日・場・距離など） */
   raceInfo?: string;
+  /** レース予想（注目レース）向け: 競馬場。開催日データとの紐付けに使用 */
+  venue?: string;
+  /** レース予想（注目レース）向け: レース番号 */
+  raceNumber?: number;
 }
 
 export interface Article {
@@ -24,17 +28,32 @@ export interface Article {
   contentHtml: string;
 }
 
-const articleModules = import.meta.glob("../articles/**/index.md", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-}) as Record<string, string>;
+const articleModules = import.meta.glob(
+  [
+    "../articles/blog/**/index.md",
+    "../articles/study/**/index.md",
+    "../articles/analysis/**/index.md",
+    "../articles/predict/*/*/index.md",
+  ],
+  {
+    query: "?raw",
+    import: "default",
+    eager: true,
+  },
+) as Record<string, string>;
 
 function parseArticlePath(
   path: string,
 ): { category: ArticleCategory; slug: string } | null {
+  const predictRace = path.match(
+    /articles\/predict\/\d{4}-\d{2}-\d{2}\/([^/]+)\/index\.md$/,
+  );
+  if (predictRace) {
+    return { category: "predict", slug: predictRace[1] };
+  }
+
   const match = path.match(
-    /articles\/(blog|study|analysis|predict)\/([^/]+)\/index\.md$/,
+    /articles\/(blog|study|analysis)\/([^/]+)\/index\.md$/,
   );
   if (!match) return null;
   return { category: match[1] as ArticleCategory, slug: match[2] };
@@ -82,6 +101,11 @@ function normalizeFrontMatter(
     noindex: data.noindex === true,
     raceName: typeof data.raceName === "string" ? data.raceName : undefined,
     raceInfo: typeof data.raceInfo === "string" ? data.raceInfo : undefined,
+    venue: typeof data.venue === "string" ? data.venue : undefined,
+    raceNumber:
+      typeof data.raceNumber === "number" && Number.isInteger(data.raceNumber)
+        ? data.raceNumber
+        : undefined,
   };
 }
 

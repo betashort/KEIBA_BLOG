@@ -18,6 +18,7 @@
       1. [3.6.1 一口馬主ポートフォリオ](#361-一口馬主ポートフォリオ)
          1. [3.6.1.1 愛馬日記](#3611-愛馬日記)
       2. [3.6.2 馬券ポートフォリオ](#362-馬券ポートフォリオ)
+         1. [3.6.2.1 月次馬券成績](#3621-月次馬券成績)
 4. [4. 変更履歴](#4-変更履歴)
 
 <div style="page-break-after: always;"></div>
@@ -56,6 +57,7 @@ UI実装および画面テストの基準とすることを目的とする。
 | 一口馬主ポートフォリオ | `/profile/hitokuchi-portfolio` | 出資馬の保有状況一覧・可視化 | [hitokuchi-portfolio.md](./UI_design/profile/hitokuchi-portfolio.md) |
 | 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | 出資馬ごとの日記・観戦記 | [aiba-diary.md](./UI_design/profile/aiba-diary.md) |
 | 馬券ポートフォリオ | `/profile/baken-portfolio` | 馬券成績・購入傾向の可視化 | [baken-portfolio.md](./UI_design/profile/baken-portfolio.md) |
+| 月次馬券成績 | `/profile/baken-portfolio/{YYYY-MM}` | 月次の馬券成績記事 | [baken-monthly.md](./UI_design/profile/baken-monthly.md) |
 
 共通レイアウト：Header（ロゴ＋ハンバーガー）＋ SideNav（ドロワーナビ）＋ メインコンテンツ ＋ Footer  
 詳細は [UI設計：共通レイアウト](./UI_design/common.md) を参照。
@@ -109,6 +111,7 @@ package "プロフィール" as ProfilePkg {
   rectangle "一口馬主ポートフォリオ\n/profile/hitokuchi-portfolio" as HitokuchiPortfolio
   rectangle "愛馬日記\n/profile/hitokuchi-portfolio/{bamei}" as AibaDiary
   rectangle "馬券ポートフォリオ\n/profile/baken-portfolio" as BakenPortfolio
+  rectangle "月次馬券成績\n/profile/baken-portfolio/{YYYY-MM}" as BakenMonthly
 }
 
 Visitor --> Home : サイト入場
@@ -130,6 +133,7 @@ Profile --> BakenPortfolio : 導線
 HitokuchiPortfolio <--> AibaDiary : 馬選択 / パンくず
 HitokuchiPortfolio --> Profile : パンくず
 BakenPortfolio --> Profile : パンくず
+BakenPortfolio <--> BakenMonthly : 年月選択 / パンくず
 
 BlogList ..> Home : パンくず
 StudyList ..> Home : パンくず
@@ -269,12 +273,22 @@ end note
 #### 3.6.2 馬券ポートフォリオ
 
 - URL: `/profile/baken-portfolio`
-- 内容: 馬券成績（収支・的中率・回収率など）や購入傾向を集計し、グラフやダイジェストで可視化する。
+- 内容: 馬券成績（収支・的中率・回収率など）や購入傾向を集計し、グラフやダイジェストで可視化する。月次成績は `src/articles/baken/{YYYY-MM}/index.md` から集計する。
 - 主な項目:
-  - 年月別および全体の収支・成績グラフ
+  - 年月別および全体の収支・成績グラフ（年月から月次記事へ）
   - 券種/カテゴリ別の詳細分析
   - 購入履歴まとめ
 - UI設計：[profile/baken-portfolio.md](./UI_design/profile/baken-portfolio.md)
+
+##### 3.6.2.1 月次馬券成績
+
+- URL: `/profile/baken-portfolio/{YYYY-MM}`
+- 説明: 月次の馬券成績記事。当月サマリ・券種・購入履歴と振り返り本文を表示する。馬券ポートフォリオの年月リンクから表示する。
+- 主な表示項目:
+  - 当月サマリ（収支・的中率・回収率）
+  - 本文（Markdown）
+  - 券種別・購入履歴（Front Matter）
+- UI設計：[profile/baken-monthly.md](./UI_design/profile/baken-monthly.md)
 
 <div style="page-break-after: always;"></div>
 
@@ -292,3 +306,4 @@ end note
 | 2026-08-10 | 2.4 | UI_design に合わせて画面一覧・詳細を整理。page_design 参照を削除。予想一覧を開催日・場単位に更新 | βshort |
 | 2026-08-13 | 2.5 | 一口馬主ポートフォリオ・愛馬日記・馬券ポートフォリオの UI 設計参照と画面一覧・遷移図を追加 | βshort |
 | 2026-08-13 | 2.6 | 愛馬日記の UI 設計ファイル名を aiba-diary.md に変更 | βshort |
+| 2026-08-17 | 2.7 | 月次馬券成績画面を追加。成績を article で月次管理 | βshort |

@@ -154,6 +154,15 @@ export const SCREENSHOT_TARGETS: ScreenshotTarget[] = [
     },
   },
   {
+    kind: "page",
+    docPath: "profile/baken-monthly.md",
+    entry: {
+      storyId: "pages-profile-baken-monthly--default",
+      filename: "baken-monthly-storybook.png",
+      label: "月次馬券成績",
+    },
+  },
+  {
     kind: "common",
     docPath: "common.md",
     insertBefore: "## 3. UI要素一覧",

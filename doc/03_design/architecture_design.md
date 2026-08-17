@@ -258,8 +258,9 @@ tsc -b
 | 種別 | 対象 | 生成元 |
 | ---- | ---- | ------ |
 | 固定ページ | `/`, `/blog`, `/study`, `/analysis`, `/predict`, `/profile`, `/profile/hitokuchi-portfolio`, `/profile/baken-portfolio` | ルート定義 |
-| 記事詳細 | `/blog/{article_name}` 等（4カテゴリ） | `src/articles/**/index.md`（`template` 除外） |
-| 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | 一口馬主データ |
+| 記事詳細 | `/blog/{article_name}` 等（4カテゴリ） | `src/articles/{blog,study,analysis,predict}/**/index.md`（`template` 除外） |
+| 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | `src/articles/hitokuchi/{bamei}/index.md`（`template` 除外） |
+| 月次馬券成績 | `/profile/baken-portfolio/{YYYY-MM}` | `src/articles/baken/{YYYY-MM}/index.md`（`template` 除外） |
 
 対象外:
 
@@ -312,7 +313,7 @@ title ビルド時プリレンダーの流れ
 
 start
 :Vite でクライアントバンドルを dist/ に出力;
-:公開 URL 一覧を収集\n(固定ページ + 記事 + 愛馬日記);
+:公開 URL 一覧を収集\n(固定ページ + 記事 + 愛馬日記 + 月次馬券);
 repeat
   :StaticRouter で対象 URL を renderToString;
   :Helmet から title / meta / OGP を取得;
@@ -345,6 +346,7 @@ stop
 | 記事詳細 | 当該記事 Front Matter の `date` | monthly | 0.7 |
 | プロフィール系固定ページ | 省略可 | monthly | 0.5 |
 | 愛馬日記 | 当該馬データの最新イベント日。無ければ省略 | monthly | 0.6 |
+| 月次馬券成績 | 当該記事 Front Matter の `date` | monthly | 0.6 |
 
 **robots.txt**
 
@@ -367,6 +369,9 @@ stop
 ### 4.1 データ管理方針
 
 - 記事データは Markdown ファイルで管理
+- 一口馬主の出資馬データと愛馬日記本文も Markdown（`src/articles/hitokuchi/{bamei}/index.md`）で管理する。所属クラブ定義のみ `src/data/hitokuchiHorses.ts` に置く
+- 馬券成績は月次 Markdown（`src/articles/baken/{YYYY-MM}/index.md`）で管理する。ポートフォリオ画面はこれを集計する
+- レース予想の開催データは Markdown（`src/articles/predict/{YYYY-MM-DD}/index.md`）で日ごとに管理する。注目レースの詳細記事は同日付フォルダ直下の `{article_name}/index.md`。型と読込は `src/data/predictMeetings.ts`
 - 画像は記事フォルダ配下または `public/images/` に配置
 - ビルド時にファイルを読み込み、ランタイムでは静的データとして扱う
 - 公開ドメインは `SITE_ORIGIN`（`src/utils/site.ts`）に定数として持ち、OGP・sitemap・robots.txt の絶対 URL に使う。`window.location.origin` には依存しない
@@ -383,6 +388,95 @@ tags: ["競馬", "予想"]          # 任意。配列
 thumbnail: "/images/.../thumb.jpg"  # 任意。一覧サムネイル
 ogImage: "/images/.../og.jpg"       # 任意。未設定時はデフォルトOGP画像
 noindex: false                  # 任意。true で meta robots=noindex、sitemap から除外
+---
+```
+
+愛馬日記（`src/articles/hitokuchi/{bamei}/index.md`）は上記に加え、馬属性を Front Matter に持つ。`category` は付けない（ブログ等の4カテゴリ一覧には出さない）。フォルダ名 `{bamei}` が URL パラメータになる。
+
+```yaml
+---
+title: "馬名"                    # 必須。表示名（h1）
+date: "2025-06-08"              # 推奨。sitemap lastmod のフォールバック
+description: "要約"             # 推奨。meta description
+sex: "牡"                       # 必須。牡 | 牝 | セ
+clubId: "shadai"                # 必須。CLUBS の id
+stable: "美浦・サンプル厩舎"     # 必須
+prizeMan: 8500                  # 必須。獲得賞金（万円）
+className: "オープン"            # 必須。オープン〜引退
+record: "12戦3勝"               # 必須
+photos:                         # 任意。愛馬日記の写真プレースホルダ
+  - alt: "パドックの様子"
+    caption: "重賞前のパドック"
+events:                         # 任意。出走・イベント
+  - date: "2025-03-30"
+    title: "大阪杯 5着"
+    detail: "阪神芝2000m"
+---
+```
+
+本文は愛馬日記（Markdown）。`hitokuchi/template/` は読み込み対象外。
+
+馬券成績（`src/articles/baken/{YYYY-MM}/index.md`）も4カテゴリ一覧には出さない。フォルダ名 `{YYYY-MM}` が URL パラメータになる。ポートフォリオは全月次記事を集計する。
+
+```yaml
+---
+title: "2025年8月の馬券成績"    # 必須。ページ h1
+date: "2025-08-31"              # 必須。sitemap lastmod
+description: "当月の要約"       # 推奨。meta description
+purchaseYen: 156000             # 必須。購入額
+payoutYen: 210000               # 必須。払戻額
+ticketCount: 22                 # 必須。購入件数
+hitCount: 7                     # 必須。的中件数
+ticketTypes:                    # 任意。券種別（ポートフォリオで合算）
+  - type: "単勝"
+    count: 6
+    hitCount: 2
+    purchaseYen: 24000
+    payoutYen: 30200
+history:                        # 任意。購入履歴
+  - date: "2025-08-10"
+    race: "新潟11R 関屋記念"
+    ticketType: "馬連"
+    result: "的中"
+    profitYen: 18400
+noindex: false                  # 任意
+---
+```
+
+本文は当月の振り返り（Markdown）。`baken/template/` は読み込み対象外。
+
+レース予想の開催日ファイル（`src/articles/predict/{YYYY-MM-DD}/index.md`）は一覧用データであり、記事詳細 URL にはしない。`predict/template/` は読み込み対象外。
+
+```yaml
+---
+date: "2025-07-19"              # 必須。フォルダ名 {YYYY-MM-DD} と一致させる
+category: "predict"
+meetings:
+  - venue: "福島"               # 必須。競馬場タブ
+    races:
+      - number: 1               # 必須。レース番号
+        className: "未勝利"     # 必須
+        name: "3歳未勝利"       # 必須
+        course: "芝1200m"       # 必須
+        runners: 16             # 必須。頭数
+        marks:                  # 任意。◎ 〇 ▲ △ ★
+          "◎": "1 サンプルホース"
+        bets: ["単勝 1"]        # 任意
+        articleSlug: "sample-predict"  # 任意。注目レース記事のフォルダ名。未指定時は記事 Front Matter の venue + raceNumber で紐付け
+---
+```
+
+注目レース記事（`src/articles/predict/{YYYY-MM-DD}/{article_name}/index.md`）は共通 Front Matter に加え、一覧との紐付け用フィールドを持つ。URL は `/predict/{article_name}`（日付はパスに含めない。`article_name` は一意にする）。
+
+```yaml
+---
+title: "中京記念 予想"
+date: "2025-07-19"
+description: "2025年7月19日 小倉 R11 中京記念のレース予想"
+category: "predict"
+tags: ["予想", "小倉", "G3"]
+venue: "小倉"                   # 必須（自動紐付け時）。開催日ファイルの venue と一致
+raceNumber: 11                  # 必須（自動紐付け時）。開催日ファイルの number と一致
 ---
 ```
 
@@ -411,10 +505,18 @@ keiba-blog/
 │  │  │  └─ {article_name}/
 │  │  │     ├─ index.md
 │  │  │     └─ hero.png
-│  │  └─ predict/
-│  │     └─ {article_name}/
-│  │        ├─ index.md
-│  │        └─ hero.png
+│  │  ├─ predict/
+│  │  │  └─ {YYYY-MM-DD}/
+│  │  │     ├─ index.md          # その日の開催・レース一覧（予想印・買い目）
+│  │  │     └─ {article_name}/   # 注目レースの詳細記事
+│  │  │        ├─ index.md
+│  │  │        └─ hero.png
+│  │  ├─ hitokuchi/
+│  │  │  └─ {bamei}/
+│  │  │     └─ index.md    # 出資馬データ（Front Matter）+ 愛馬日記本文
+│  │  └─ baken/
+│  │     └─ {YYYY-MM}/
+│  │        └─ index.md    # 月次馬券成績（Front Matter）+ 振り返り本文
 │  ├─ component/
 │  ├─ pages/
 │  ├─ utils/
@@ -482,7 +584,7 @@ keiba-blog/
 | title / meta description | MetaTags コンポーネントでページ・記事単位に設定。プリレンダー HTML の `<head>` に書き出す |
 | 見出し構造               | Markdown 内で h2〜h3 を論理階層に。h1 はタイトルのみ1つ |
 | パンくずリスト           | Breadcrumb コンポーネントを記事ページに設置        |
-| URL形式                  | `/blog/{article_name}`, `/study/{article_name}`, `/analysis/{article_name}`, `/predict/{article_name}` |
+| URL形式                  | `/blog/{article_name}` 等の4カテゴリ、`/profile/hitokuchi-portfolio/{bamei}`、`/profile/baken-portfolio/{YYYY-MM}` |
 | モバイルファースト       | Tailwind CSS のレスポンシブ設計                    |
 | noindex制御              | Front Matter `noindex`。meta robots を出力し sitemap から除外 |
 | sitemap.xml              | ビルド時に公開 URL から自動生成し `dist/sitemap.xml` へ出力（§3.4.3） |
@@ -518,7 +620,7 @@ keiba-blog/
 - Front Matter 解析（必須項目欠落時のフォールバック）
 - 日付ソート（新着順）の正しさ
 - URLスラッグと記事フォルダ名の対応
-- 公開 URL 一覧（固定ページ + 記事 + 愛馬日記）の収集漏れがないこと
+- 公開 URL 一覧（固定ページ + 記事 + 愛馬日記 + 月次馬券）の収集漏れがないこと
 - sitemap.xml が公開 URL を含み、`noindex` / template を含まないこと
 - `loc` が `SITE_ORIGIN` 付きの絶対 URL であること
 
@@ -615,3 +717,6 @@ RewriteRule ^(.*)$ /$1/index.html [L]
 | 2026-08-10 | 2.0 | design.md からアーキテクチャ設計書として分割 | βshort |
 | 2026-08-10 | 2.1 | システム構成図を PlantUML 化 | βshort |
 | 2026-08-16 | 2.2 | Vite + React 維持、ビルド時プリレンダー、sitemap 自動生成の設計を追加 | βshort |
+| 2026-08-17 | 2.3 | 一口馬主の馬データ・愛馬日記を `src/articles/hitokuchi/{bamei}/index.md` で管理 | βshort |
+| 2026-08-17 | 2.4 | 馬券成績を `src/articles/baken/{YYYY-MM}/index.md` で月次管理 | βshort |
+| 2026-08-17 | 2.5 | レース予想の開催データを `src/articles/predict/{YYYY-MM-DD}/index.md` で日次管理。注目レース記事は同日付フォルダ直下 | βshort |
