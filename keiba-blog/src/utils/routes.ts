@@ -107,7 +107,10 @@ export function getPublicRoutes(): PublicRoute[] {
       path: `/profile/hitokuchi-portfolio/${horse.bamei}`,
       includeInSitemap: true,
       lastmod:
-        latestEventDate(horse.events.map((event) => event.date)) ?? horse.date,
+        latestEventDate([
+          ...horse.diaries.map((entry) => entry.date),
+          ...(horse.date ? [horse.date] : []),
+        ]),
       changefreq: "monthly",
       priority: "0.6",
     });

@@ -259,7 +259,7 @@ tsc -b
 | ---- | ---- | ------ |
 | 固定ページ | `/`, `/blog`, `/study`, `/analysis`, `/predict`, `/profile`, `/profile/hitokuchi-portfolio`, `/profile/baken-portfolio` | ルート定義 |
 | 記事詳細 | `/blog/{article_name}` 等（4カテゴリ） | `src/articles/{blog,study,analysis,predict}/**/index.md`（`template` 除外） |
-| 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | `src/articles/hitokuchi/{bamei}/index.md`（`template` 除外） |
+| 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | `src/articles/hitokuchi/{bamei}/index.md` と `{YYYY-MM-DD}-{slug}.md`（`template` 除外）。日記は個別 URL にしない |
 | 月次馬券成績 | `/profile/baken-portfolio/{YYYY-MM}` | `src/articles/baken/{YYYY-MM}/index.md`（`template` 除外） |
 
 対象外:
@@ -345,7 +345,7 @@ stop
 | カテゴリ一覧 | 当該カテゴリ最新記事の `date` | weekly | 0.8 |
 | 記事詳細 | 当該記事 Front Matter の `date` | monthly | 0.7 |
 | プロフィール系固定ページ | 省略可 | monthly | 0.5 |
-| 愛馬日記 | 当該馬データの最新イベント日。無ければ省略 | monthly | 0.6 |
+| 愛馬日記 | 当該馬の最新日記日。無ければ Front Matter の date | monthly | 0.6 |
 | 月次馬券成績 | 当該記事 Front Matter の `date` | monthly | 0.6 |
 
 **robots.txt**
@@ -369,7 +369,7 @@ stop
 ### 4.1 データ管理方針
 
 - 記事データは Markdown ファイルで管理
-- 一口馬主の出資馬データと愛馬日記本文も Markdown（`src/articles/hitokuchi/{bamei}/index.md`）で管理する。所属クラブ定義のみ `src/data/hitokuchiHorses.ts` に置く
+- 一口馬主の出資馬データは Markdown（`src/articles/hitokuchi/{bamei}/index.md`）で管理する。愛馬日記の各投稿は同フォルダの `{YYYY-MM-DD}-{slug}.md`。所属クラブ定義のみ `src/data/hitokuchiHorses.ts` に置く。表示は愛馬日記1ページに埋め込む
 - 馬券成績は月次 Markdown（`src/articles/baken/{YYYY-MM}/index.md`）で管理する。ポートフォリオ画面はこれを集計する
 - レース予想の開催データは Markdown（`src/articles/predict/{YYYY-MM-DD}/index.md`）で日ごとに管理する。注目レースの詳細記事は同日付フォルダ直下の `{article_name}/index.md`。型と読込は `src/data/predictMeetings.ts`
 - 画像は記事フォルダ配下または `public/images/` に配置
@@ -391,7 +391,7 @@ noindex: false                  # 任意。true で meta robots=noindex、sitema
 ---
 ```
 
-愛馬日記（`src/articles/hitokuchi/{bamei}/index.md`）は上記に加え、馬属性を Front Matter に持つ。`category` は付けない（ブログ等の4カテゴリ一覧には出さない）。フォルダ名 `{bamei}` が URL パラメータになる。
+愛馬日記の馬データ（`src/articles/hitokuchi/{bamei}/index.md`）は上記に加え、馬属性を Front Matter に持つ。`category` は付けない（ブログ等の4カテゴリ一覧には出さない）。フォルダ名 `{bamei}` が URL パラメータになる。紹介は Front Matter の項目を表で表示する。観戦記は同フォルダの個別ファイル。
 
 ```yaml
 ---
@@ -404,17 +404,50 @@ stable: "美浦・サンプル厩舎"     # 必須
 prizeMan: 8500                  # 必須。獲得賞金（万円）
 className: "オープン"            # 必須。オープン〜引退
 record: "12戦3勝"               # 必須
+birthDate: "2024-01-29"         # 任意。誕生日
+breeder: "白老ファーム"         # 任意。生産牧場
+rearingFarm: "社台ファーム"     # 任意。育成牧場
+coatColor: "黒鹿毛"             # 任意。毛色
+recruitPriceMan: 2800           # 任意。募集価格（万円）
+sharePriceMan: 1.4              # 任意。一口価格（万円）
+pedigree:                       # 任意。5代血統表（sire/dam を入れ子）
+  sire:
+    name: "父"
+    color: "栗毛"               # 任意。毛色
+    sire:
+      name: "父父"
+    dam:
+      name: "父母"
+  dam:
+    name: "母"
 photos:                         # 任意。愛馬日記の写真プレースホルダ
   - alt: "パドックの様子"
     caption: "重賞前のパドック"
-events:                         # 任意。出走・イベント
-  - date: "2025-03-30"
-    title: "大阪杯 5着"
-    detail: "阪神芝2000m"
 ---
 ```
 
-本文は愛馬日記（Markdown）。`hitokuchi/template/` は読み込み対象外。
+日記エントリ（`src/articles/hitokuchi/{bamei}/{YYYY-MM-DD}-{slug}.md`）は個別 URL にせず、愛馬日記ページへ日付降順で埋め込む。`race` があるエントリはレース成績表の行になる。
+
+```yaml
+---
+title: "メイクデビュー小倉"      # 必須。日記見出し
+date: "2026-07-11"              # 推奨。未指定時はファイル名の日付
+race:                           # 任意。あるとレース成績表に載る
+  venue: "小倉"                 # 必須（race 時）
+  name: "2歳新馬"               # 必須（race 時）
+  finish: 5                     # 必須（race 時）。着順
+  number: 5                     # 任意。レース番号
+  className: "新馬"             # 任意
+  course: "芝1800m"             # 任意
+  going: "良"                   # 任意
+  fieldSize: 12                 # 任意。頭数
+  popularity: 5                 # 任意
+  jockey: "高杉吏麒"            # 任意
+  time: "1:50.2"                # 任意
+---
+```
+
+`hitokuchi/template/` は読み込み対象外。
 
 馬券成績（`src/articles/baken/{YYYY-MM}/index.md`）も4カテゴリ一覧には出さない。フォルダ名 `{YYYY-MM}` が URL パラメータになる。ポートフォリオは全月次記事を集計する。
 
@@ -513,7 +546,8 @@ keiba-blog/
 │  │  │        └─ hero.png
 │  │  ├─ hitokuchi/
 │  │  │  └─ {bamei}/
-│  │  │     └─ index.md    # 出資馬データ（Front Matter）+ 愛馬日記本文
+│  │  │     ├─ index.md                      # 出資馬データ + 紹介（表）
+│  │  │     └─ {YYYY-MM-DD}-{slug}.md        # 日記（愛馬日記ページへ埋め込み）
 │  │  └─ baken/
 │  │     └─ {YYYY-MM}/
 │  │        └─ index.md    # 月次馬券成績（Front Matter）+ 振り返り本文
@@ -720,3 +754,5 @@ RewriteRule ^(.*)$ /$1/index.html [L]
 | 2026-08-17 | 2.3 | 一口馬主の馬データ・愛馬日記を `src/articles/hitokuchi/{bamei}/index.md` で管理 | βshort |
 | 2026-08-17 | 2.4 | 馬券成績を `src/articles/baken/{YYYY-MM}/index.md` で月次管理 | βshort |
 | 2026-08-17 | 2.5 | レース予想の開催データを `src/articles/predict/{YYYY-MM-DD}/index.md` で日次管理。注目レース記事は同日付フォルダ直下 | βshort |
+| 2026-08-17 | 2.6 | 愛馬日記を `{YYYY-MM-DD}-{slug}.md` で個別管理し、レース成績表を同ページに埋め込み | βshort |
+| 2026-08-17 | 2.7 | 愛馬日記に5代血統表（`pedigree` Front Matter）を追加 | βshort |

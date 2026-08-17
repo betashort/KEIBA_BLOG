@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Route, Routes } from "react-router-dom";
+import { userEvent, within } from "storybook/test";
 import AibaDiary from "./AibaDiary";
 import { withAppLayout } from "../storybook/decorators";
 
@@ -15,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "出資馬ごとの日記・観戦記。パンくず・馬情報・本文・写真・イベント（UI_design/profile/aiba-diary.md）。",
+          "タブ（紹介 / 日記 / 血統 / 分析）。紹介はプロフィールとレース成績（UI_design/profile/aiba-diary.md）。",
       },
     },
   },
@@ -30,16 +31,42 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "通常",
+  name: "紹介タブ",
   parameters: {
-    initialEntries: ["/profile/hitokuchi-portfolio/サンプルスター"],
+    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
   },
 };
 
-export const FemaleHorse: Story = {
-  name: "牝馬",
+export const Diary: Story = {
+  name: "日記タブ",
   parameters: {
-    initialEntries: ["/profile/hitokuchi-portfolio/テストローズ"],
+    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(await canvas.findByRole("tab", { name: "日記" }));
+  },
+};
+
+export const Analysis: Story = {
+  name: "分析タブ",
+  parameters: {
+    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(await canvas.findByRole("tab", { name: "分析" }));
+  },
+};
+
+export const Pedigree: Story = {
+  name: "血統タブ",
+  parameters: {
+    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(await canvas.findByRole("tab", { name: "血統" }));
   },
 };
 

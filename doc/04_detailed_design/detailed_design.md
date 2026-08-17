@@ -116,7 +116,8 @@ keiba-blog/
 │  │  ├─ study/{slug}/index.md
 │  │  ├─ analysis/{slug}/index.md
 │  │  ├─ predict/{slug}/index.md
-│  │  ├─ hitokuchi/{bamei}/index.md  # 出資馬データ + 愛馬日記
+│  │  ├─ hitokuchi/{bamei}/index.md  # 出資馬データ + 紹介（表）
+│  │  ├─ hitokuchi/{bamei}/{YYYY-MM-DD}-{slug}.md  # 日記（埋め込み）
 │  │  ├─ baken/{YYYY-MM}/index.md    # 月次馬券成績
 │  │  └─ template/index.md  # 雛形（一覧非表示）
 │  ├─ pages/                # 画面コンポーネント（設計書の画面一覧）
@@ -143,9 +144,9 @@ keiba-blog/
 
 | 項目 | 規則 |
 | ---- | ---- |
-| パス | `src/articles/hitokuchi/{bamei}/index.md` |
-| bamei | URL パラメータ（フォルダ名。例: `サンプルスター`） |
-| URL | `/profile/hitokuchi-portfolio/{bamei}` |
+| パス | `src/articles/hitokuchi/{bamei}/index.md`（馬データ）と `{YYYY-MM-DD}-{slug}.md`（日記） |
+| bamei | URL パラメータ（フォルダ名。例: `フラッシングルビー`） |
+| URL | `/profile/hitokuchi-portfolio/{bamei}`（日記ファイルは個別 URL にしない） |
 | 読込 | `src/data/hitokuchiHorses.ts`（`template` 除外）。ブログ等の一覧には出さない |
 
 馬券成績も4カテゴリとは別系統とする。
@@ -575,3 +576,4 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 | 2026-05-24 | 1.0 | 実装内容に基づき初版作成 | βshort |
 | 2026-08-17 | 1.1 | 出資馬・愛馬日記を `src/articles/hitokuchi/{bamei}/index.md` で管理 | βshort |
 | 2026-08-17 | 1.2 | 馬券成績を `src/articles/baken/{YYYY-MM}/index.md` で月次管理 | βshort |
+| 2026-08-17 | 1.3 | 愛馬日記を `{YYYY-MM-DD}-{slug}.md` で個別管理し、レース成績表を埋め込み | βshort |
