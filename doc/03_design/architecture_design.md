@@ -420,9 +420,10 @@ pedigree:                       # 任意。5代血統表（sire/dam を入れ子
       name: "父母"
   dam:
     name: "母"
-photos:                         # 任意。愛馬日記の写真プレースホルダ
-  - alt: "パドックの様子"
-    caption: "重賞前のパドック"
+photos:                         # 任意。紹介タブ先頭の写真
+  - alt: "パドックの様子"       # 必須（各写真）
+    caption: "重賞前のパドック" # 任意
+    src: "/images/hitokuchi/馬名/body.jpg"  # 任意。public/images/... に配置
 ---
 ```
 
@@ -444,6 +445,10 @@ race:                           # 任意。あるとレース成績表に載る
   popularity: 5                 # 任意
   jockey: "高杉吏麒"            # 任意
   time: "1:50.2"                # 任意
+photos:                         # 任意。日記タブの各観戦記に表示
+  - alt: "パドック"             # 必須（各写真）
+    caption: "小倉新馬戦"       # 任意
+    src: "/images/hitokuchi/フラッシングルビー/2026-07-11-makedebut.jpg"  # 任意
 ---
 ```
 
@@ -756,3 +761,5 @@ RewriteRule ^(.*)$ /$1/index.html [L]
 | 2026-08-17 | 2.5 | レース予想の開催データを `src/articles/predict/{YYYY-MM-DD}/index.md` で日次管理。注目レース記事は同日付フォルダ直下 | βshort |
 | 2026-08-17 | 2.6 | 愛馬日記を `{YYYY-MM-DD}-{slug}.md` で個別管理し、レース成績表を同ページに埋め込み | βshort |
 | 2026-08-17 | 2.7 | 愛馬日記に5代血統表（`pedigree` Front Matter）を追加 | βshort |
+| 2026-08-17 | 2.8 | 愛馬日記の `photos` を紹介タブ先頭に表示。`src` は `public/images/` | βshort |
+| 2026-08-17 | 2.9 | 日記エントリ Front Matter に `photos` を追加 | βshort |

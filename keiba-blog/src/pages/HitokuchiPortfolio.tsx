@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import ClubMark from "../component/ClubMark";
-import DummyBadge from "../component/DummyBadge";
 import MetaTags from "../component/MetaTags";
 import {
   getClub,
@@ -100,9 +99,6 @@ function AnalysisDummy() {
 
   return (
     <div className="space-y-6">
-      <p className="rounded border border-dashed border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-600">
-        分析内容は未定のため、ダミーを表示しています。
-      </p>
       <dl className="grid grid-cols-3 gap-2 text-center">
         <div className="border border-gray-200 px-2 py-3">
           <dt className="text-xs text-gray-500">総出資馬</dt>
@@ -118,7 +114,7 @@ function AnalysisDummy() {
         </div>
       </dl>
       <section>
-        <h2 className="mb-3 text-sm font-semibold text-gray-900">クラス別頭数（ダミー）</h2>
+        <h2 className="mb-3 text-sm font-semibold text-gray-900">クラス別頭数</h2>
         <ul className="space-y-2">
           {classCounts.map((item) => (
             <li key={item.className} className="flex items-center gap-2 text-sm">
@@ -162,7 +158,6 @@ export default function HitokuchiPortfolio() {
         />
         <h1 className="mb-6 flex flex-wrap items-center gap-2 text-2xl font-bold text-gray-900">
           一口馬主ポートフォリオ
-          <DummyBadge />
         </h1>
 
         <div

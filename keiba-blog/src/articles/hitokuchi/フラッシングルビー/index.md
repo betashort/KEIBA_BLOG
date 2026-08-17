@@ -170,6 +170,14 @@ pedigree:
           dam:
             name: "Push a Button"
 photos:
+  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/フラッシングルビー/body.jpg
+  #     src: "/images/hitokuchi/フラッシングルビー/body.jpg"
+  # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   - alt: "フラッシングルビーの馬体"
     caption: "黒鹿毛の牝馬（Flashing Ruby）"
+    # src: "/images/hitokuchi/フラッシングルビー/body.jpg"
+  - alt: "フラッシングルビーのパドック"
+    caption: "パドック"
+    # src: "/images/hitokuchi/フラッシングルビー/paddock.jpg"
 ---

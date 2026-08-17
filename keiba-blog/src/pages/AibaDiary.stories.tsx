@@ -16,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "タブ（紹介 / 日記 / 血統 / 分析）。紹介はプロフィールとレース成績（UI_design/profile/aiba-diary.md）。",
+          "タブ（紹介 / 日記 / 血統 / 分析）。紹介は写真・プロフィール・レース成績。日記は目次と観戦記（UI_design/profile/aiba-diary.md）。",
       },
     },
   },

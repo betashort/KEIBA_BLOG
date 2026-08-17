@@ -1,13 +1,28 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-const navItems: { to: string; label: string; end?: boolean }[] = [
+type NavItem = {
+  to: string;
+  label: string;
+  end?: boolean;
+  children?: { to: string; label: string }[];
+};
+
+const navItems: NavItem[] = [
   { to: "/", label: "ホーム", end: true },
   { to: "/blog", label: "ブログ" },
   { to: "/study", label: "競馬研究" },
   { to: "/analysis", label: "レース分析" },
   { to: "/predict", label: "レース予想" },
-  { to: "/profile", label: "プロフィール" },
+  {
+    to: "/profile",
+    label: "プロフィール",
+    end: true,
+    children: [
+      { to: "/profile/hitokuchi-portfolio", label: "一口馬主ポートフォリオ" },
+      { to: "/profile/baken-portfolio", label: "馬券ポートフォリオ" },
+    ],
+  },
 ];
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -15,6 +30,13 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive
       ? "bg-blue-50 font-semibold text-blue-700"
       : "text-gray-800 hover:bg-gray-50"
+  }`;
+
+const subNavLinkClass = ({ isActive }: { isActive: boolean }) =>
+  `block px-4 py-2.5 pl-8 text-sm ${
+    isActive
+      ? "bg-blue-50 font-semibold text-blue-700"
+      : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
   }`;
 
 interface SideNavProps {
@@ -75,7 +97,7 @@ export default function SideNav({ open, onClose }: SideNavProps) {
           </button>
         </div>
         <ul className="py-2">
-          {navItems.map(({ to, label, end }) => (
+          {navItems.map(({ to, label, end, children }) => (
             <li key={to}>
               <NavLink
                 to={to}
@@ -86,6 +108,22 @@ export default function SideNav({ open, onClose }: SideNavProps) {
               >
                 {label}
               </NavLink>
+              {children ? (
+                <ul>
+                  {children.map((child) => (
+                    <li key={child.to}>
+                      <NavLink
+                        to={child.to}
+                        className={subNavLinkClass}
+                        onClick={onClose}
+                        tabIndex={open ? 0 : -1}
+                      >
+                        {child.label}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </li>
           ))}
         </ul>

@@ -28,6 +28,8 @@ export interface Club {
 export interface AibaDiaryPhoto {
   alt: string;
   caption?: string;
+  /** `public/` からのサイトルートパス（例: `/images/hitokuchi/フラッシングルビー/body.jpg`） */
+  src?: string;
 }
 
 export interface HorseRaceResult {
@@ -61,6 +63,7 @@ export interface AibaDiaryEntry {
   title: string;
   contentHtml: string;
   race?: HorseRaceResult;
+  photos: AibaDiaryPhoto[];
 }
 
 export interface PedigreeNode {
@@ -176,6 +179,7 @@ function parsePhotos(value: unknown): AibaDiaryPhoto[] {
       {
         alt: rec.alt,
         caption: typeof rec.caption === "string" ? rec.caption : undefined,
+        src: optionalString(rec.src),
       },
     ];
   });
@@ -293,6 +297,7 @@ function parseDiary(slug: string, filenameDate: string, raw: string): AibaDiaryE
     title,
     contentHtml: marked.parse(content, { async: false }) as string,
     race,
+    photos: parsePhotos(data.photos),
   };
 }
 

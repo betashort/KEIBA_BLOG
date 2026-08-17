@@ -52,3 +52,7 @@ body {
 .article-body pre code {
   @apply bg-transparent p-0 text-inherit;
 }
+
+.article-body img {
+  @apply my-4 h-auto max-w-full;
+}

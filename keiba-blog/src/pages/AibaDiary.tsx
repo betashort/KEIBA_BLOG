@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import ClubMark from "../component/ClubMark";
-import DummyBadge from "../component/DummyBadge";
 import MetaTags from "../component/MetaTags";
 import PedigreeTable from "../component/PedigreeTable";
 import {
@@ -29,6 +28,8 @@ const TABS: { id: DiaryTab; label: string }[] = [
   { id: "analysis", label: "分析" },
 ];
 
+const PHOTO_SLIDE_INTERVAL_MS = 5000;
+
 function dash(value: string | number | undefined): string {
   if (value === undefined || value === "") return "—";
   return String(value);
@@ -37,6 +38,15 @@ function dash(value: string | number | undefined): string {
 function formatRate(count: number, total: number): string {
   if (total === 0) return "—";
   return `${Math.round((count / total) * 100)}%`;
+}
+
+/** 一口の回収率 = 獲得賞金 / 募集価格 */
+function formatShareRecoveryRate(
+  prizeMan: number,
+  recruitPriceMan?: number,
+): string {
+  if (recruitPriceMan === undefined || recruitPriceMan <= 0) return "—";
+  return `${((prizeMan / recruitPriceMan) * 100).toFixed(1)}%`;
 }
 
 function countBy(values: string[]): { label: string; count: number }[] {
@@ -165,6 +175,82 @@ function ProfileTable({ horse }: { horse: HitokuchiHorse }) {
   );
 }
 
+function HorsePhotos({ photos }: { photos: HitokuchiHorse["photos"] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (photos.length <= 1) return;
+    const timer = window.setTimeout(() => {
+      setIndex((current) => (current + 1) % photos.length);
+    }, PHOTO_SLIDE_INTERVAL_MS);
+    return () => window.clearTimeout(timer);
+  }, [photos.length, index]);
+
+  if (photos.length === 0) return null;
+
+  const photo = photos[index] ?? photos[0];
+  const showControls = photos.length > 1;
+
+  return (
+    <section aria-label="写真" aria-roledescription={showControls ? "carousel" : undefined}>
+      <div className="relative max-w-xl overflow-hidden">
+        {photo.src ? (
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            className="aspect-[4/3] w-full bg-gray-200 object-cover"
+          />
+        ) : (
+          <div className="flex aspect-[4/3] items-center justify-center bg-gray-200 text-sm text-gray-500">
+            {photo.alt}
+          </div>
+        )}
+        {showControls ? (
+          <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-2">
+            <button
+              type="button"
+              className="rounded bg-white/90 px-2 py-1 text-sm text-gray-700 shadow"
+              aria-label="前の写真"
+              onClick={() =>
+                setIndex((current) => (current - 1 + photos.length) % photos.length)
+              }
+            >
+              &lt;
+            </button>
+            <button
+              type="button"
+              className="rounded bg-white/90 px-2 py-1 text-sm text-gray-700 shadow"
+              aria-label="次の写真"
+              onClick={() => setIndex((current) => (current + 1) % photos.length)}
+            >
+              &gt;
+            </button>
+          </div>
+        ) : null}
+      </div>
+      {photo.caption ? (
+        <p className="mt-1 max-w-xl text-xs text-gray-600">{photo.caption}</p>
+      ) : null}
+      {showControls ? (
+        <div className="mt-3 flex max-w-xl justify-center gap-2">
+          {photos.map((item, itemIndex) => (
+            <button
+              key={`${item.src ?? item.alt}-${itemIndex}`}
+              type="button"
+              aria-label={`写真 ${itemIndex + 1}`}
+              aria-current={itemIndex === index}
+              className={`h-2 w-2 rounded-full ${
+                itemIndex === index ? "bg-blue-600" : "bg-gray-300"
+              }`}
+              onClick={() => setIndex(itemIndex)}
+            />
+          ))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 function ProfilePanel({
   horse,
   onSelectRace,
@@ -176,6 +262,7 @@ function ProfilePanel({
 
   return (
     <div className="space-y-8">
+      <HorsePhotos photos={horse.photos} />
       <ProfileTable horse={horse} />
 
       {overviewHtml ? (
@@ -194,58 +281,61 @@ function ProfilePanel({
   );
 }
 
-function DiaryPanel({ horse }: { horse: HitokuchiHorse }) {
-  const hasContent = horse.diaries.length > 0 || horse.photos.length > 0;
+function DiaryToc({ diaries }: { diaries: HitokuchiHorse["diaries"] }) {
+  return (
+    <nav aria-label="目次">
+      <h2 className="mb-3 text-lg font-semibold text-gray-900">目次</h2>
+      <ol className="list-decimal space-y-1 pl-5 text-sm">
+        {diaries.map((entry) => (
+          <li key={entry.slug}>
+            <a href={`#${entry.slug}`} className="text-blue-600 hover:underline">
+              <time dateTime={entry.date}>{formatDate(entry.date)}</time>
+              {"　"}
+              {entry.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
 
-  if (!hasContent) {
+function DiaryPanel({ horse }: { horse: HitokuchiHorse }) {
+  if (horse.diaries.length === 0) {
     return <p className="text-sm text-gray-500">日記はまだありません。</p>;
   }
 
   return (
     <div className="space-y-8">
-      {horse.diaries.length > 0 ? (
-        <section aria-label="観戦記">
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">観戦記</h2>
-          <div className="space-y-8">
-            {horse.diaries.map((entry) => (
-              <article
-                key={entry.slug}
-                id={entry.slug}
-                className="scroll-mt-20 border-b border-gray-200 pb-8 last:border-b-0 last:pb-0"
-              >
-                <h3 className="text-base font-semibold text-gray-900">{entry.title}</h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  <time dateTime={entry.date}>{formatDate(entry.date)}</time>
-                </p>
-                {entry.contentHtml.trim() ? (
-                  <div
-                    className="article-body prose prose-gray mt-3 max-w-none"
-                    dangerouslySetInnerHTML={{ __html: entry.contentHtml }}
-                  />
-                ) : null}
-              </article>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {horse.photos.length > 0 ? (
-        <section aria-label="写真">
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">写真</h2>
-          <ul className="grid grid-cols-2 gap-3">
-            {horse.photos.map((photo) => (
-              <li key={photo.alt}>
-                <div className="flex aspect-[4/3] items-center justify-center bg-gray-200 text-sm text-gray-500">
-                  {photo.alt}
+      <DiaryToc diaries={horse.diaries} />
+      <section aria-label="観戦記">
+        <h2 className="mb-3 text-lg font-semibold text-gray-900">観戦記</h2>
+        <div className="space-y-8">
+          {horse.diaries.map((entry) => (
+            <article
+              key={entry.slug}
+              id={entry.slug}
+              className="scroll-mt-20 border-b border-gray-200 pb-8 last:border-b-0 last:pb-0"
+            >
+              <h3 className="text-base font-semibold text-gray-900">{entry.title}</h3>
+              <p className="mt-1 text-sm text-gray-600">
+                <time dateTime={entry.date}>{formatDate(entry.date)}</time>
+              </p>
+              {entry.photos.length > 0 ? (
+                <div className="mt-3">
+                  <HorsePhotos photos={entry.photos} />
                 </div>
-                {photo.caption ? (
-                  <p className="mt-1 text-xs text-gray-600">{photo.caption}</p>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+              ) : null}
+              {entry.contentHtml.trim() ? (
+                <div
+                  className="article-body prose prose-gray mt-3 max-w-none"
+                  dangerouslySetInnerHTML={{ __html: entry.contentHtml }}
+                />
+              ) : null}
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
@@ -310,10 +400,7 @@ function HorseAnalysis({ horse }: { horse: HitokuchiHorse }) {
 
   return (
     <div className="space-y-6">
-      <p className="rounded border border-dashed border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-600">
-        詳細な分析内容は未定のため、出走成績からの簡易集計を表示しています。
-      </p>
-      <dl className="grid grid-cols-3 gap-2 text-center">
+      <dl className="grid grid-cols-2 gap-2 text-center sm:grid-cols-4">
         <div className="border border-gray-200 px-2 py-3">
           <dt className="text-xs text-gray-500">出走</dt>
           <dd className="mt-1 text-lg font-semibold text-gray-900">{starts}戦</dd>
@@ -326,6 +413,12 @@ function HorseAnalysis({ horse }: { horse: HitokuchiHorse }) {
           <dt className="text-xs text-gray-500">獲得賞金</dt>
           <dd className="mt-1 text-lg font-semibold text-gray-900">
             {formatPrizeMan(horse.prizeMan)}
+          </dd>
+        </div>
+        <div className="border border-gray-200 px-2 py-3">
+          <dt className="text-xs text-gray-500">一口の回収率</dt>
+          <dd className="mt-1 text-lg font-semibold tabular-nums text-gray-900">
+            {formatShareRecoveryRate(horse.prizeMan, horse.recruitPriceMan)}
           </dd>
         </div>
       </dl>
@@ -416,7 +509,6 @@ export default function AibaDiary() {
             className={`flex flex-wrap items-center gap-2 text-2xl font-bold ${sexTextClass(horse.sex)}`}
           >
             {horse.name}
-            <DummyBadge />
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-gray-700">
             {club ? (
