@@ -11,3 +11,7 @@
 ## 参考・メモ
 
 [参考・メモ](./doc/reference/memo.md)
+
+* [Google Analytics 4 導入手順](./doc/reference/GoogleAnalytics_React.md)
+* [Google Ads 導入メモ](./doc/reference/GoogleAds_React.md)
+* [SEO（React 静的サイト）](./doc/reference/SEO_React.md)
