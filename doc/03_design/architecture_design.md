@@ -117,6 +117,7 @@ package "開発環境" as DevEnv {
 
 cloud "外部サービス" as Ext {
   component "Google Ads\n(埋め込みスクリプト)" as Ads
+  component "Google Analytics 4\n(gtag / page_view)" as Ga
 }
 
 node "ビルド成果物" as Build {
@@ -139,6 +140,7 @@ DistMap --> Host
 Visitor --> Host : HTTPS で閲覧
 Host ..> Ads : 広告スクリプト読込
 Visitor ..> Ads : 広告表示
+Visitor ..> Ga : ページビュー送信（クライアント）
 
 note right of DistHtml
   DB・CMS・バックエンドAPIなし
@@ -152,6 +154,7 @@ end note
 外部連携：
 
 - Google Ads：埋め込みスクリプトによる広告表示
+- Google Analytics 4：閲覧者ブラウザから gtag でページビューを送信（プリレンダー時は送らない）
 
 ### 2.3 処理概要
 
@@ -294,6 +297,7 @@ URL とファイルの対応は次とする。末尾スラッシュなしの公�
 **HTML に含めないもの・実行しないもの**
 
 - Google Ads のネットワーク取得（プレースホルダのみ。実広告はクライアントで読み込む）
+- Google Analytics のスクリプト挿入とイベント送信（マウント後のみ。`GoogleAnalytics`）
 - `window` に依存する絶対 URL 組み立て。`SITE_ORIGIN` 定数を使う
 
 **ハイドレーション**
@@ -375,6 +379,7 @@ stop
 - 画像は記事フォルダ配下または `public/images/` に配置
 - ビルド時にファイルを読み込み、ランタイムでは静的データとして扱う
 - 公開ドメインは `SITE_ORIGIN`（`src/utils/site.ts`）に定数として持ち、OGP・sitemap・robots.txt の絶対 URL に使う。`window.location.origin` には依存しない
+- GA4 の測定IDは `VITE_GA_MEASUREMENT_ID`。ビルド時に埋め込む。未設定なら計測しない
 
 ### 4.2 Front Matter定義
 
@@ -606,7 +611,7 @@ keiba-blog/
 
 - コメント等のユーザー入力機能は提供しない
 - `dangerouslySetInnerHTML` の入力元は管理者作成 Markdown のみ
-- 外部スクリプトは Google Ads 等、信頼されたもののみ利用
+- 外部スクリプトは Google Ads / Google Analytics 等、信頼されたもののみ利用
 - CMS・認証機能は対象外
 
 ### 6.4 保守性・拡張性
@@ -645,6 +650,7 @@ keiba-blog/
 ### 6.7 広告・クローラ対応
 
 - Google Ads：AdUnit コンポーネントで所定位置に埋め込み。プリレンダー時はプレースホルダのみ
+- Google Analytics 4：`GoogleAnalytics` がハイドレーション後に gtag を読み、`react-router-dom` の location 変化で `page_view` を送る。測定IDは `VITE_GA_MEASUREMENT_ID`。未設定時は無効。`index.html` への公式スニペット直書きはしない（SPA 遷移が取れず、プリレンダー HTML へ複製されるため）
 - CLS抑制：広告枠に min-height を指定し読み込み前のレイアウトを固定
 - robots.txt：`public/robots.txt`（Sitemap は絶対 URL）
 - sitemap.xml：ビルド時に全公開 URL を列挙（`noindex`・404・ページネーション2ページ目以降は除外）
@@ -763,3 +769,4 @@ RewriteRule ^(.*)$ /$1/index.html [L]
 | 2026-08-17 | 2.7 | 愛馬日記に5代血統表（`pedigree` Front Matter）を追加 | βshort |
 | 2026-08-17 | 2.8 | 愛馬日記の `photos` を紹介タブ先頭に表示。`src` は `public/images/` | βshort |
 | 2026-08-17 | 2.9 | 日記エントリ Front Matter に `photos` を追加 | βshort |
+| 2026-08-18 | 2.10 | Google Analytics 4 をクライアント計測として追加 | βshort |

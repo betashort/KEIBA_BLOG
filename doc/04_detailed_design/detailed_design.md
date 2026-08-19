@@ -300,6 +300,7 @@ interface Article {
 | Header | `component/Header.tsx` | グローバルナビ（NavLink） |
 | Footer | `component/Footer.tsx` | コピーライト |
 | MetaTags | `component/MetaTags.tsx` | title / description / OGP / Twitter Card |
+| GoogleAnalytics | `component/GoogleAnalytics.tsx` | GA4。マウント後に gtag を読み SPA の page_view を送信 |
 | Breadcrumb | `component/Breadcrumb.tsx` | パンくずリスト |
 | BlogCard | `component/BlogCard.tsx` | 一覧カード |
 | AdUnit | `component/AdUnit.tsx` | 広告プレースホルダ（CLS 抑制） |
@@ -353,6 +354,15 @@ interface Article {
 | 現状 | 枠線付きプレースホルダ（「広告枠」表示） |
 | CLS 対策 | `min-h-[250px]` |
 | 拡張 | Google Ads スクリプト埋め込み予定 |
+
+### 6.6 GoogleAnalytics
+
+| 項目 | 実装 |
+| ---- | ---- |
+| 配置 | `App.tsx`（Router 内側、`AppShell` の兄弟） |
+| 発火 | `useEffect`（プリレンダーでは送らない） |
+| イベント | location 変化ごとに `page_view` |
+| 測定ID | `VITE_GA_MEASUREMENT_ID`。空なら無効 |
 
 <div style="page-break-after: always;"></div>
 
@@ -577,3 +587,4 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 | 2026-08-17 | 1.1 | 出資馬・愛馬日記を `src/articles/hitokuchi/{bamei}/index.md` で管理 | βshort |
 | 2026-08-17 | 1.2 | 馬券成績を `src/articles/baken/{YYYY-MM}/index.md` で月次管理 | βshort |
 | 2026-08-17 | 1.3 | 愛馬日記を `{YYYY-MM-DD}-{slug}.md` で個別管理し、レース成績表を埋め込み | βshort |
+| 2026-08-18 | 1.4 | Google Analytics 4（`GoogleAnalytics`）を追加 | βshort |
