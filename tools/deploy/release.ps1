@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Docker で本番ビルドし、keiba-blog/dist の中身を Xserver へ転送する。
+  Docker で本番ビルドし、keiba-blog/dist で Xserver の公開ディレクトリを置き換える。
 .PARAMETER SkipBuild
   ビルドせず、既存の dist/ だけを転送する。
 .PARAMETER DryRun
@@ -51,9 +51,9 @@ function Require-Env {
     return $value
 }
 
-$envFile = Join-Path $RepoRoot ".env.deploy"
+$envFile = Join-Path $PSScriptRoot ".env.deploy"
 if (-not (Test-Path -LiteralPath $envFile)) {
-    throw ".env.deploy がありません。tools/deploy/.env.deploy.example をリポジトリルートへコピーして記入してください。"
+    throw ".env.deploy がありません。tools/deploy/.env.deploy.example を同じディレクトリへコピーして記入してください。"
 }
 Import-DotEnv $envFile
 
@@ -66,13 +66,36 @@ if ([string]::IsNullOrWhiteSpace($port)) {
 }
 $sshKey = [Environment]::GetEnvironmentVariable("XSERVER_SSH_KEY")
 
+if ($remoteDir -match "['`"\\]") {
+    throw "XSERVER_REMOTE_DIR に引用符やバックスラッシュは使えません。"
+}
+
 $distDir = Join-Path $RepoRoot "keiba-blog\dist"
+$nextDir = "${remoteDir}.next"
+$prevDir = "${remoteDir}.prev"
 $sshIdentityArgs = @()
 if (-not [string]::IsNullOrWhiteSpace($sshKey)) {
     if (-not (Test-Path -LiteralPath $sshKey)) {
         throw "XSERVER_SSH_KEY のファイルがありません: $sshKey"
     }
     $sshIdentityArgs = @("-i", $sshKey)
+}
+
+function Invoke-Remote {
+    param([string] $Command)
+    $sshArgs = @("-p", $port) + $sshIdentityArgs + @(
+        "-o", "StrictHostKeyChecking=accept-new",
+        "${userName}@${hostName}",
+        $Command
+    )
+    Write-Host ("ssh " + ($sshArgs -join " "))
+    if ($DryRun) {
+        return
+    }
+    & ssh @sshArgs
+    if ($LASTEXITCODE -ne 0) {
+        throw "ssh に失敗しました。"
+    }
 }
 
 if (-not $SkipBuild) {
@@ -104,22 +127,33 @@ if (-not $DryRun) {
     }
 }
 
+$prepRemote = "rm -rf -- '$nextDir' && mkdir -p -- '$nextDir' && chmod 755 -- '$nextDir'"
+$chmodRemote = "find '$nextDir' -type d -exec chmod 755 {} \; ; find '$nextDir' -type f -exec chmod 644 {} \;"
+$swapRemote = "rm -rf -- '$prevDir'; if [ -e '$remoteDir' ]; then mv -- '$remoteDir' '$prevDir'; fi; if mv -- '$nextDir' '$remoteDir'; then rm -rf -- '$prevDir'; else if [ -e '$prevDir' ]; then mv -- '$prevDir' '$remoteDir'; fi; exit 1; fi"
+
 $scpArgs = @("-P", $port) + $sshIdentityArgs + @(
     "-o", "StrictHostKeyChecking=accept-new",
     "-r",
     (Join-Path $distDir "."),
-    "${userName}@${hostName}:${remoteDir}/"
+    "${userName}@${hostName}:${nextDir}/"
 )
 
+Invoke-Remote $prepRemote
+
 Write-Host ("scp " + ($scpArgs -join " "))
+if (-not $DryRun) {
+    & scp @scpArgs
+    if ($LASTEXITCODE -ne 0) {
+        throw "scp による転送に失敗しました。"
+    }
+}
+
+Invoke-Remote $chmodRemote
+Invoke-Remote $swapRemote
+
 if ($DryRun) {
     Write-Host "DryRun のため転送しません。"
     exit 0
-}
-
-& scp @scpArgs
-if ($LASTEXITCODE -ne 0) {
-    throw "scp による転送に失敗しました。"
 }
 
 Write-Host "デプロイ完了: ${userName}@${hostName}:${remoteDir}/"

@@ -14,7 +14,7 @@
 | 実行場所 | 自分の PC（リポジトリルート） |
 | エントリ | `.\tools\deploy\release.ps1` |
 | ビルド | `docker compose exec` で `keiba-blog` の `npm run build` |
-| 転送 | ホストの OpenSSH `scp`（Xserver の SSH / ポート 10022） |
+| 転送 | ホストの OpenSSH `scp` と `ssh`（Xserver の SSH / ポート 10022） |
 | 対象 | `keiba-blog/dist/` の中身だけ |
 | 認証 | SSH 公開鍵。接続情報はリポジトリに置かない |
 
@@ -26,13 +26,13 @@
     ├─ docker compose で npm run build
     │     tsc → vite build → prerender → sitemap
     │     → keiba-blog/dist/
-    └─ ホストの scp
-          → Xserver の指定フォルダ（中身を上書き）
+    └─ ホストの scp + ssh
+          → 隣のフォルダへ転送し、公開ディレクトリと入れ替え
 ```
 
 ## 2. 何を出すか
 
-`dist/` の **中身** をリモートフォルダの直下に展開する。`dist` という名前のフォルダごと置かない。
+`dist/` の **中身** でリモートの公開ディレクトリを丸ごと置き換える。`dist` という名前のフォルダごと置かない。削除した記事の HTML や古い `assets/` はサーバに残らない。
 
 | 含める | 含めない |
 | ------ | -------- |
@@ -89,13 +89,13 @@ ssh -p 10022 -i $env:USERPROFILE\.ssh\xserver_keiba YOUR_USER@svXXX.xserver.jp
 
 ### 4.3 転送用設定
 
-リポジトリルートに `.env.deploy` を作る。雛形は `tools/deploy/.env.deploy.example`。**Git にコミットしない**。
+`tools/deploy/.env.deploy` を作る。雛形は同じディレクトリの `.env.deploy.example`。**Git にコミットしない**。
 
 ```env
 XSERVER_HOST=svXXX.xserver.jp
 XSERVER_USER=YOUR_USER
 XSERVER_PORT=10022
-XSERVER_REMOTE_DIR=/home/YOUR_USER/your-domain.example/public_html
+XSERVER_REMOTE_DIR=/home/YOUR_USER/your-domain.example/public_html/
 XSERVER_SSH_KEY=C:\Users\YOU\.ssh\xserver_keiba
 ```
 
@@ -104,10 +104,10 @@ XSERVER_SSH_KEY=C:\Users\YOU\.ssh\xserver_keiba
 | `XSERVER_HOST` | はい | SSH ホスト（例: `sv123.xserver.jp`） |
 | `XSERVER_USER` | はい | SSH ユーザー（サーバー ID） |
 | `XSERVER_PORT` | いいえ | 省略時 `10022` |
-| `XSERVER_REMOTE_DIR` | はい | 公開ディレクトリの絶対パス。末尾スラッシュなし |
+| `XSERVER_REMOTE_DIR` | はい | 公開ディレクトリの絶対パス。末尾スラッシュなし。**このサイト専用**であること |
 | `XSERVER_SSH_KEY` | 推奨 | 秘密鍵のパス。省略時は ssh のデフォルト鍵 |
 
-`public_html` にこのサイト以外（`.well-known` など）がある場合でも、現行の転送は **追加・上書きのみ** なので、リモートにあって `dist/` に無いファイルは消さない。
+`XSERVER_REMOTE_DIR` はデプロイのたびにフォルダごと入れ替える。`public_html` 直下だと `.well-known` など別用途のファイルも消えるので、サイト専用のサブディレクトリ（例: `.../public_html/keiba-blog`）を指定する。
 
 ## 5. 日常の公開（ワンコマンド）
 
@@ -122,7 +122,8 @@ XSERVER_SSH_KEY=C:\Users\YOU\.ssh\xserver_keiba
 1. コンテナが止まっていれば `docker compose up -d`
 2. `docker compose exec -T node sh -c "cd keiba-blog && npm run build"`
 3. `keiba-blog/dist/index.html` があることを確認
-4. `scp` で `dist/` の中身を `XSERVER_REMOTE_DIR` へ上書き
+4. `XSERVER_REMOTE_DIR.next` へ `dist/` の中身を転送する
+5. ディレクトリ `755`・ファイル `644` に直し、公開ディレクトリと入れ替える（削除済み記事は残らない。SSH 経由の `700` による 403 を防ぐ）
 
 ビルド済み `dist/` を出し直すだけなら:
 
@@ -148,10 +149,13 @@ XSERVER_SSH_KEY=C:\Users\YOU\.ssh\xserver_keiba
 ## 7. 注意事項
 
 **古いハッシュ付きアセット**  
-Vite は `assets/index-xxxxx.js` のようにファイル名を変える。現行スクリプトはリモートの余剰ファイルを消さない。ディスクを圧迫したら、サイト専用ディレクトリであること確認のうえ、手動で古い `assets/` を整理する。
+Vite は `assets/index-xxxxx.js` のようにファイル名を変える。公開ディレクトリを `dist/` で置き換えるため、前回デプロイの余剰ファイルは残らない。
 
 **アップロード中の欠け**  
-転送の途中で HTML と JS の世代がずれることがある。失敗したら同じコマンドを再実行する。
+転送は公開パスの隣（`XSERVER_REMOTE_DIR.next`）で行い、権限を直してから `mv` で入れ替える。入れ替え直前まで旧ファイルが配信される。失敗したら同じコマンドを再実行する。
+
+**Xserver の 403**  
+SSH / `scp` で作ったディレクトリは `700` になり、Apache から読めず 403 になることがある。スクリプトは入れ替え前にディレクトリ `755`・ファイル `644` へ直す。
 
 **ローカル用ビルドを本番へ出さない**  
 `VITE_SITE_ORIGIN` が開発用のままの `dist/` は転送しない。
@@ -166,11 +170,13 @@ Vite は `assets/index-xxxxx.js` のようにファイル名を変える。現�
 
 | 症状 | 確認すること |
 | ---- | ------------ |
-| `.env.deploy がありません` | リポジトリルートに `.env.deploy` があるか |
+| `.env.deploy がありません` | `tools/deploy/.env.deploy` があるか |
 | `dist/index.html がありません` | ビルドが成功したか。`-SkipBuild` を付けていないか |
 | `Permission denied` / 鍵エラー | `XSERVER_SSH_KEY`、公開鍵の登録、パスフレーズ付き鍵ならエージェント |
 | 接続タイムアウト | ポートが **10022** か。SSH がパネルで有効か |
 | ページは出るが CSS/JS が古い | ブラウザキャッシュ。または転送先が `public_html/dist` になっていないか（中身を直下へ出す） |
+| `ssh に失敗しました` | ポート 10022、鍵、リモートパスの書き込み権限。`XSERVER_REMOTE_DIR.next` が残っていれば次の実行で消して作り直す |
+| Xserver の 403 ページ | 公開ディレクトリが `755` / ファイルが `644` か。入れ替え後のデプロイをもう一度実行する |
 | OGP / sitemap のドメインが違う | `keiba-blog/.env` の `VITE_SITE_ORIGIN` を直して再ビルド |
 | `docker compose` が失敗する | リポジトリルートで実行しているか。`docker compose up -d` が通るか |
 
@@ -182,4 +188,4 @@ SSH が使えない契約のときは、同じ `dist/` を FTPS クライアン�
 - [開発環境（Docker / ビルド）](../dev_env/buildDevEnv.md)
 - [Google Analytics 4 導入手順](../reference/GoogleAnalytics_React.md)
 - スクリプト: `tools/deploy/release.ps1`
-- 設定雛形: `tools/deploy/.env.deploy.example`
+- 転送設定: `tools/deploy/.env.deploy`（雛形: `.env.deploy.example`）

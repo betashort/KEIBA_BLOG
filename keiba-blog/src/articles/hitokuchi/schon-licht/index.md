@@ -175,10 +175,10 @@ photos:
   # 例: ファイル public/images/hitokuchi/schon-licht/body.jpg
   #     src: "/images/hitokuchi/schon-licht/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
-  - alt: "シェーンリヒトの馬体"
-    caption: "鹿毛の牡馬（Schon Licht）"
-    # src: "/images/hitokuchi/schon-licht/body.jpg"
+  - alt: "シェーンリヒトの返し馬"
+    caption: "メイクデビュー新潟の返し馬"
+    src: /images/hitokuchi/schon-licht/2026-08-01-makedebut-warm-up.jpg
   - alt: "シェーンリヒトのパドック"
-    caption: "パドック"
-    # src: "/images/hitokuchi/schon-licht/paddock.jpg"
+    caption: "メイクデビュー新潟のパドック"
+    src: "/images/hitokuchi/schon-licht/2026-08-01-makedebut-paddock.jpg"
 ---
