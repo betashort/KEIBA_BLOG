@@ -1,5 +1,6 @@
 ---
 title: "馬名"
+englishName: "Sample Horse"
 date: "2025-01-01"
 description: "愛馬日記の要約（meta description に使用）"
 sex: "牡"
@@ -170,14 +171,15 @@ pedigree:
           dam:
             name: "サンプル母母母母母"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/サンプル馬/body.jpg
-  #     src: "/images/hitokuchi/サンプル馬/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/sample-horse/body.jpg
+  #     src: "/images/hitokuchi/sample-horse/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
+  # 書き出し手順: doc/manual/hitokuchi-photos.md（4:3・1200x900・JPEG・150KB以下）
   - alt: "写真の説明"
     caption: "キャプション（任意）"
-    # src: "/images/hitokuchi/サンプル馬/body.jpg"
+    # src: "/images/hitokuchi/sample-horse/body.jpg"
   - alt: "2枚目の写真の説明"
     caption: "キャプション（任意）"
-    # src: "/images/hitokuchi/サンプル馬/paddock.jpg"
+    # src: "/images/hitokuchi/sample-horse/paddock.jpg"
 ---

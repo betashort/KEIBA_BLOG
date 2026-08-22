@@ -27,3 +27,6 @@ dist-ssr
 storybook-static
 
 .env
+
+*.jpg
+*.png

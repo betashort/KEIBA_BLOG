@@ -1,19 +1,20 @@
 ---
-title: "ワディハッタの2025"
+title: "ファイナルドリームの2025"
+englishName: "Final Dream 2025"
 date: "2026-08-17"
-description: "シルクホースクラブの1歳牡馬。父コントレイル、母ワディハッタ。美浦・手塚貴久厩舎予定。未登録。"
+description: "DMMバヌーシーの1歳牡馬。父コントレイル、母ファイナルドリーム。美浦・手塚貴久厩舎予定。未登録。"
 sex: "牡"
-clubId: "silk"
+clubId: "dmm"
 stable: "美浦・手塚貴久厩舎"
 prizeMan: 0
 className: "未登録"
 record: "—"
-birthDate: "2025-05-02"
-breeder: "ノーザンファーム"
-rearingFarm: "ノーザンファーム早来"
-coatColor: "青毛"
-recruitPriceMan: 7000
-sharePriceMan: 14
+birthDate: "2025-04-03"
+breeder: "辻牧場"
+rearingFarm: "吉澤ステーブル"
+coatColor: "鹿毛"
+recruitPriceMan: 3400
+sharePriceMan: 1.7
 pedigree:
   sire:
     name: "コントレイル"
@@ -93,91 +94,91 @@ pedigree:
           dam:
             name: "Jeano"
   dam:
-    name: "ワディハッタ"
-    color: "青鹿毛"
+    name: "ファイナルドリーム"
+    color: "黒鹿毛"
     sire:
-      name: "Cape Cross"
-      color: "黒鹿毛"
+      name: "Frankel"
+      color: "鹿毛"
       sire:
-        name: "Green Desert"
+        name: "Galileo"
         color: "鹿毛"
         sire:
-          name: "Danzig"
+          name: "Sadler's Wells"
           color: "鹿毛"
           sire:
             name: "Northern Dancer"
           dam:
-            name: "Pas de Nom"
+            name: "Fairy Bridge"
         dam:
-          name: "Foreign Courier"
-          color: "鹿毛"
-          sire:
-            name: "Sir Ivor"
-          dam:
-            name: "Courtly Dee"
-      dam:
-        name: "Park Appeal"
-        color: "黒鹿毛"
-        sire:
-          name: "Ahonoora"
+          name: "Urban Sea"
           color: "栗毛"
           sire:
-            name: "Lorenzaccio"
-          dam:
-            name: "Helen Nichols"
-        dam:
-          name: "Balidaress"
-          color: "芦毛"
-          sire:
-            name: "Balidar"
-          dam:
-            name: "Innocence"
-    dam:
-      name: "Thamarat"
-      color: "黒鹿毛"
-      sire:
-        name: "Anabaa"
-        color: "鹿毛"
-        sire:
-          name: "Danzig"
-          color: "鹿毛"
-          sire:
-            name: "Northern Dancer"
-          dam:
-            name: "Pas de Nom"
-        dam:
-          name: "Balbonella"
-          color: "鹿毛"
-          sire:
-            name: "Gay Mecene"
-          dam:
-            name: "Bamieres"
-      dam:
-        name: "Al Ishq"
-        color: "栗毛"
-        sire:
-          name: "Nureyev"
-          color: "鹿毛"
-          sire:
-            name: "Northern Dancer"
-          dam:
-            name: "Special"
-        dam:
-          name: "Allez les Trois"
-          color: "栗毛"
-          sire:
-            name: "Riverman"
+            name: "Miswaki"
           dam:
             name: "Allegretta"
+      dam:
+        name: "Kind"
+        color: "鹿毛"
+        sire:
+          name: "デインヒル"
+          color: "鹿毛"
+          sire:
+            name: "Danzig"
+          dam:
+            name: "Razyana"
+        dam:
+          name: "Rainbow Lake"
+          color: "鹿毛"
+          sire:
+            name: "Rainbow Quest"
+          dam:
+            name: "Rockfest"
+    dam:
+      name: "Steel Princess"
+      color: "黒鹿毛"
+      sire:
+        name: "デインヒル"
+        color: "鹿毛"
+        sire:
+          name: "Danzig"
+          color: "鹿毛"
+          sire:
+            name: "Northern Dancer"
+          dam:
+            name: "Pas de Nom"
+        dam:
+          name: "Razyana"
+          color: "鹿毛"
+          sire:
+            name: "His Majesty"
+          dam:
+            name: "Spring Adieu"
+      dam:
+        name: "Champaka"
+        color: "鹿毛"
+        sire:
+          name: "Caerleon"
+          color: "鹿毛"
+          sire:
+            name: "Nijinsky"
+          dam:
+            name: "Foreseer"
+        dam:
+          name: "Fleur Royale"
+          color: "鹿毛"
+          sire:
+            name: "Mill Reef"
+          dam:
+            name: "Sweet Mimosa"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/ワディハッタの2025/body.jpg
-  #     src: "/images/hitokuchi/ワディハッタの2025/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/final-dream-2025/body.jpg
+  #     src: "/images/hitokuchi/final-dream-2025/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
-  - alt: "ワディハッタの2025の馬体"
-    caption: "青毛の牡馬（Wadyhatta 2025）"
-    # src: "/images/hitokuchi/ワディハッタの2025/body.jpg"
-  - alt: "ワディハッタの2025の放牧"
-    caption: "ノーザンファーム早来"
-    # src: "/images/hitokuchi/ワディハッタの2025/paddock.jpg"
+  - alt: "ファイナルドリームの2025の馬体"
+    caption: "鹿毛の牡馬（Final Dream 2025）"
+    # src: "/images/hitokuchi/final-dream-2025/body.jpg"
+  - alt: "ファイナルドリームの2025の放牧"
+    caption: "吉澤ステーブル"
+    # src: "/images/hitokuchi/final-dream-2025/paddock.jpg"
 ---

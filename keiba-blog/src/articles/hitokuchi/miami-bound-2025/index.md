@@ -1,5 +1,6 @@
 ---
 title: "マイアミバウンドの2025"
+englishName: "Miami Bound 2025"
 date: "2026-08-22"
 description: "シルクホースクラブの1歳牝馬。父キズナ、母マイアミバウンド。栗東・高柳大輔厩舎予定。未登録。"
 sex: "牝"
@@ -170,14 +171,14 @@ pedigree:
           dam:
             name: "Lady Rebecca"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/マイアミバウンドの2025/body.jpg
-  #     src: "/images/hitokuchi/マイアミバウンドの2025/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/miami-bound-2025/body.jpg
+  #     src: "/images/hitokuchi/miami-bound-2025/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   - alt: "マイアミバウンドの2025の馬体"
     caption: "鹿毛の牝馬（Miami Bound 2025）"
-    # src: "/images/hitokuchi/マイアミバウンドの2025/body.jpg"
+    # src: "/images/hitokuchi/miami-bound-2025/body.jpg"
   - alt: "マイアミバウンドの2025の放牧"
     caption: "ノーザンファーム早来"
-    # src: "/images/hitokuchi/マイアミバウンドの2025/paddock.jpg"
+    # src: "/images/hitokuchi/miami-bound-2025/paddock.jpg"
 ---

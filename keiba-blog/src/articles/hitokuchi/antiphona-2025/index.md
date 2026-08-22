@@ -1,5 +1,6 @@
 ---
 title: "アンティフォナの2025"
+englishName: "Antiphona 2025"
 date: "2026-08-17"
 description: "シルクホースクラブの1歳牝馬。父オルフェーヴル、母アンティフォナ。栗東・斉藤崇史厩舎予定。未登録。"
 sex: "牝"
@@ -169,14 +170,14 @@ pedigree:
           dam:
             name: "Light Verse"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/アンティフォナの2025/body.jpg
-  #     src: "/images/hitokuchi/アンティフォナの2025/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/antiphona-2025/body.jpg
+  #     src: "/images/hitokuchi/antiphona-2025/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   - alt: "アンティフォナの2025の馬体"
     caption: "栗毛の牝馬（Antiphona 2025）"
-    # src: "/images/hitokuchi/アンティフォナの2025/body.jpg"
+    # src: "/images/hitokuchi/antiphona-2025/body.jpg"
   - alt: "アンティフォナの2025の放牧"
     caption: "ノーザンファーム空港"
-    # src: "/images/hitokuchi/アンティフォナの2025/paddock.jpg"
+    # src: "/images/hitokuchi/antiphona-2025/paddock.jpg"
 ---

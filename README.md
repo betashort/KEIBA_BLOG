@@ -8,6 +8,10 @@
 * [画面設計書](./doc/03_design/screen_design.md)
 * [機能コンポーネント設計書](./doc/03_design/component_design.md)
 
+## 運用
+
+* [デプロイ（Xserver / ローカルワンコマンド）](./doc/manual/deploy.md)
+
 ## 参考・メモ
 
 [参考・メモ](./doc/reference/memo.md)

@@ -28,7 +28,7 @@ export interface Club {
 export interface AibaDiaryPhoto {
   alt: string;
   caption?: string;
-  /** `public/` からのサイトルートパス（例: `/images/hitokuchi/フラッシングルビー/body.jpg`） */
+  /** `public/` からのサイトルートパス（例: `/images/hitokuchi/flashing-ruby/body.jpg`） */
   src?: string;
 }
 
@@ -79,9 +79,11 @@ export interface HorsePedigree {
 }
 
 export interface HitokuchiHorse {
-  /** URL パラメータ `{bamei}`（記事フォルダ名） */
+  /** URL パラメータ `{bamei}`（英名 kebab-case の記事フォルダ名） */
   bamei: string;
   name: string;
+  /** 英名（任意） */
+  englishName?: string;
   sex: HorseSex;
   clubId: string;
   stable: string;
@@ -260,6 +262,7 @@ function parseHorse(bamei: string, raw: string): HitokuchiHorse | null {
   return {
     bamei,
     name,
+    englishName: optionalString(data.englishName),
     sex: data.sex,
     clubId: data.clubId,
     stable: data.stable,

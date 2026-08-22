@@ -1,5 +1,6 @@
 ---
 title: "ヴァストマーレ"
+englishName: "Vasto Mare"
 date: "2026-08-17"
 description: "DMMバヌーシーの2歳牡馬。父ロードカナロア、母は豪G1勝ち馬アンフィトリテII。美浦・木村哲也厩舎。未出走。"
 sex: "牡"
@@ -169,14 +170,14 @@ pedigree:
           dam:
             name: "Mellay Vite"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/ヴァストマーレ/body.jpg
-  #     src: "/images/hitokuchi/ヴァストマーレ/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/vasto-mare/body.jpg
+  #     src: "/images/hitokuchi/vasto-mare/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   - alt: "ヴァストマーレの馬体"
     caption: "黒鹿毛の牡馬（Vasto Mare）"
-    # src: "/images/hitokuchi/ヴァストマーレ/body.jpg"
+    # src: "/images/hitokuchi/vasto-mare/body.jpg"
   - alt: "ヴァストマーレのパドック"
     caption: "パドック"
-    # src: "/images/hitokuchi/ヴァストマーレ/paddock.jpg"
+    # src: "/images/hitokuchi/vasto-mare/paddock.jpg"
 ---

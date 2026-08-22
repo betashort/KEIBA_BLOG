@@ -510,6 +510,11 @@ export default function AibaDiary() {
           >
             {horse.name}
           </h1>
+          {horse.englishName ? (
+            <p className="mt-1 text-sm text-gray-500" lang="en">
+              {horse.englishName}
+            </p>
+          ) : null}
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-gray-700">
             {club ? (
               <>

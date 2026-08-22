@@ -1,5 +1,6 @@
 ---
 title: "シェーンリヒト"
+englishName: "Schon Licht"
 date: "2026-08-17"
 description: "DMMバヌーシーの2歳牡馬。父エフフォーリア、美浦・手塚貴久厩舎。2026年8月の新潟新馬戦で3着。"
 sex: "牡"
@@ -170,14 +171,14 @@ pedigree:
           dam:
             name: "Sea Symphony"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/シェーンリヒト/body.jpg
-  #     src: "/images/hitokuchi/シェーンリヒト/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/schon-licht/body.jpg
+  #     src: "/images/hitokuchi/schon-licht/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   - alt: "シェーンリヒトの馬体"
     caption: "鹿毛の牡馬（Schon Licht）"
-    # src: "/images/hitokuchi/シェーンリヒト/body.jpg"
+    # src: "/images/hitokuchi/schon-licht/body.jpg"
   - alt: "シェーンリヒトのパドック"
     caption: "パドック"
-    # src: "/images/hitokuchi/シェーンリヒト/paddock.jpg"
+    # src: "/images/hitokuchi/schon-licht/paddock.jpg"
 ---

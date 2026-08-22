@@ -1,5 +1,12 @@
 # ドキュメント一覧
 
+## マニュアル
+
+運用手順（開発者向け）。
+
+* [マニュアル一覧](manual/README.md)
+* [デプロイ（Xserver）](manual/deploy.md)
+* [愛馬日記の写真書き出し](manual/hitokuchi-photos.md)
 
 ## 用語集
 

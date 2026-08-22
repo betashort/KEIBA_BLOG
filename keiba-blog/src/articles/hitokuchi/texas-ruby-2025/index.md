@@ -1,5 +1,6 @@
 ---
 title: "テキサスルビーの2025"
+englishName: "Texas Ruby 2025"
 date: "2026-08-17"
 description: "シルクホースクラブの1歳牡馬。父サリオス、母テキサスルビー。美浦・中川公成厩舎予定。未登録。"
 sex: "牡"
@@ -170,14 +171,14 @@ pedigree:
           dam:
             name: "Qui Silent"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/テキサスルビーの2025/body.jpg
-  #     src: "/images/hitokuchi/テキサスルビーの2025/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/texas-ruby-2025/body.jpg
+  #     src: "/images/hitokuchi/texas-ruby-2025/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   - alt: "テキサスルビーの2025の馬体"
     caption: "栗毛の牡馬（Texas Ruby 2025）"
-    # src: "/images/hitokuchi/テキサスルビーの2025/body.jpg"
+    # src: "/images/hitokuchi/texas-ruby-2025/body.jpg"
   - alt: "テキサスルビーの2025の放牧"
     caption: "ノーザンファーム空港"
-    # src: "/images/hitokuchi/テキサスルビーの2025/paddock.jpg"
+    # src: "/images/hitokuchi/texas-ruby-2025/paddock.jpg"
 ---

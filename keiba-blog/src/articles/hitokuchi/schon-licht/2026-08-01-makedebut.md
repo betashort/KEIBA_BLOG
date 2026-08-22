@@ -22,18 +22,18 @@ race:
   passing: "3-3"
   burdenKg: 55
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/シェーンリヒト/2026-08-01-makedebut.jpg
-  #     src: "/images/hitokuchi/シェーンリヒト/2026-08-01-makedebut.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/schon-licht/2026-08-01-makedebut.jpg
+  #     src: "/images/hitokuchi/schon-licht/2026-08-01-makedebut.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   # 本文に直接埋め込む場合は:
-  # ![パドック](/images/hitokuchi/シェーンリヒト/2026-08-01-makedebut.jpg)
+  # ![パドック](/images/hitokuchi/schon-licht/2026-08-01-makedebut.jpg)
   - alt: "メイクデビュー新潟のパドック"
     caption: "新潟2R 2歳新馬（2026-08-01）"
-    # src: "/images/hitokuchi/シェーンリヒト/2026-08-01-makedebut-paddock.jpg"
+    # src: "/images/hitokuchi/schon-licht/2026-08-01-makedebut-paddock.jpg"
   - alt: "メイクデビュー新潟の本馬場入場"
     caption: "2枠2番"
-    # src: "/images/hitokuchi/シェーンリヒト/2026-08-01-makedebut-track.jpg"
+    # src: "/images/hitokuchi/schon-licht/2026-08-01-makedebut-track.jpg"
 ---
 
 新潟2Rの2歳新馬（芝1800m・外回り・曇・良馬場）でデビュー。2枠2番、単勝2人気（3.4倍）、鞍上は津村明秀騎手、馬体重442kg。

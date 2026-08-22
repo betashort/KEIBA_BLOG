@@ -33,14 +33,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   name: "紹介タブ",
   parameters: {
-    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
+    initialEntries: ["/profile/hitokuchi-portfolio/flashing-ruby"],
   },
 };
 
 export const Diary: Story = {
   name: "日記タブ",
   parameters: {
-    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
+    initialEntries: ["/profile/hitokuchi-portfolio/flashing-ruby"],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -51,7 +51,7 @@ export const Diary: Story = {
 export const Analysis: Story = {
   name: "分析タブ",
   parameters: {
-    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
+    initialEntries: ["/profile/hitokuchi-portfolio/flashing-ruby"],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -62,7 +62,7 @@ export const Analysis: Story = {
 export const Pedigree: Story = {
   name: "血統タブ",
   parameters: {
-    initialEntries: ["/profile/hitokuchi-portfolio/フラッシングルビー"],
+    initialEntries: ["/profile/hitokuchi-portfolio/flashing-ruby"],
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

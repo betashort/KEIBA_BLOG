@@ -145,7 +145,7 @@ keiba-blog/
 | 項目 | 規則 |
 | ---- | ---- |
 | パス | `src/articles/hitokuchi/{bamei}/index.md`（馬データ）と `{YYYY-MM-DD}-{slug}.md`（日記） |
-| bamei | URL パラメータ（フォルダ名。例: `フラッシングルビー`） |
+| bamei | URL パラメータ（英名 kebab-case のフォルダ名。例: `flashing-ruby`） |
 | URL | `/profile/hitokuchi-portfolio/{bamei}`（日記ファイルは個別 URL にしない） |
 | 読込 | `src/data/hitokuchiHorses.ts`（`template` 除外）。ブログ等の一覧には出さない |
 
@@ -588,3 +588,4 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 | 2026-08-17 | 1.2 | 馬券成績を `src/articles/baken/{YYYY-MM}/index.md` で月次管理 | βshort |
 | 2026-08-17 | 1.3 | 愛馬日記を `{YYYY-MM-DD}-{slug}.md` で個別管理し、レース成績表を埋め込み | βshort |
 | 2026-08-18 | 1.4 | Google Analytics 4（`GoogleAnalytics`）を追加 | βshort |
+| 2026-08-22 | 1.5 | 愛馬日記の `{bamei}` を英名 kebab-case（例: `flashing-ruby`）に変更 | βshort |

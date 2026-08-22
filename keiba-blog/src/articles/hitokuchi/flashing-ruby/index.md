@@ -1,5 +1,6 @@
 ---
 title: "フラッシングルビー"
+englishName: "Flashing Ruby"
 date: "2026-08-17"
 description: "DMMバヌーシーの2歳牝馬。父アドマイヤマーズ、栗東・辻野厩舎。2026年7月の小倉新馬戦で5着。"
 sex: "牝"
@@ -170,14 +171,14 @@ pedigree:
           dam:
             name: "Push a Button"
 photos:
-  # 画像は public/images/hitokuchi/{馬名}/ に配置し、src にはサイトルートからのパスを書く。
-  # 例: ファイル public/images/hitokuchi/フラッシングルビー/body.jpg
-  #     src: "/images/hitokuchi/フラッシングルビー/body.jpg"
+  # 画像は public/images/hitokuchi/{bamei}/ に配置し、src にはサイトルートからのパスを書く。
+  # 例: ファイル public/images/hitokuchi/flashing-ruby/body.jpg
+  #     src: "/images/hitokuchi/flashing-ruby/body.jpg"
   # src 未設定時はプレースホルダ（alt）を表示する。複数枚はスライドショーになる。
   - alt: "フラッシングルビーの馬体"
     caption: "黒鹿毛の牝馬（Flashing Ruby）"
-    # src: "/images/hitokuchi/フラッシングルビー/body.jpg"
+    # src: "/images/hitokuchi/flashing-ruby/body.jpg"
   - alt: "フラッシングルビーのパドック"
     caption: "パドック"
-    # src: "/images/hitokuchi/フラッシングルビー/paddock.jpg"
+    # src: "/images/hitokuchi/flashing-ruby/paddock.jpg"
 ---

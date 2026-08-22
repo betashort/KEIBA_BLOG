@@ -113,7 +113,7 @@ VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ### ⑤ 本番ビルドしてデプロイし、Realtime で確認する
 
 1. `keiba-blog` で `npm run build`（型チェック → Vite → プリレンダー → sitemap）。
-2. `dist/` を Xserver の公開ディレクトリへアップロードする（既存の静的デプロイと同じ）。
+2. `dist/` を Xserver の公開ディレクトリへアップロードする（[デプロイマニュアル](../manual/deploy.md)）。
 3. 本番ドメインでトップを開き、記事へ内部リンクで遷移する。
 4. GA4 の **レポート → リアルタイム** で、自分の閲覧とパス変化が見えることを確認する。
 5. ブラウザの開発者ツールで `gtag/js?id=G-` が 1 回だけ読み込まれ、以降の遷移で追加の `page_view` が飛んでいることを確認する。

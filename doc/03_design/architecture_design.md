@@ -135,7 +135,7 @@ Assets --> App
 App --> Prerender : npm run build\n(Vite CSR ビルド)
 Prerender --> DistHtml : 公開URLごとに HTML 生成
 Prerender --> DistMap : sitemap.xml 生成
-DistHtml --> Host : FTP等でアップロード
+DistHtml --> Host : ローカルワンコマンドでアップロード
 DistMap --> Host
 Visitor --> Host : HTTPS で閲覧
 Host ..> Ads : 広告スクリプト読込
@@ -204,6 +204,7 @@ end note
 | Reactコンポーネント | PascalCase | `BlogPost.tsx`  |
 | ファイル名（コンポーネント以外） | camelCase | `markdown.ts`   |
 | 記事フォルダ名   | kebab-case  | `howtobet-baken` |
+| 愛馬日記フォルダ | kebab-case（英名） | `flashing-ruby` |
 | URLスラッグ      | kebab-case  | `/blog/howtobet-baken` |
 
 <div style="page-break-after: always;"></div>
@@ -396,11 +397,12 @@ noindex: false                  # 任意。true で meta robots=noindex、sitema
 ---
 ```
 
-愛馬日記の馬データ（`src/articles/hitokuchi/{bamei}/index.md`）は上記に加え、馬属性を Front Matter に持つ。`category` は付けない（ブログ等の4カテゴリ一覧には出さない）。フォルダ名 `{bamei}` が URL パラメータになる。紹介は Front Matter の項目を表で表示する。観戦記は同フォルダの個別ファイル。
+愛馬日記の馬データ（`src/articles/hitokuchi/{bamei}/index.md`）は上記に加え、馬属性を Front Matter に持つ。`category` は付けない（ブログ等の4カテゴリ一覧には出さない）。フォルダ名 `{bamei}` は英名の kebab-case（例: `flashing-ruby`）で、URL パラメータになる。紹介は Front Matter の項目を表で表示する。観戦記は同フォルダの個別ファイル。
 
 ```yaml
 ---
 title: "馬名"                    # 必須。表示名（h1）
+englishName: "Uma Name"         # 任意。英名（愛馬日記の見出し下に表示）
 date: "2025-06-08"              # 推奨。sitemap lastmod のフォールバック
 description: "要約"             # 推奨。meta description
 sex: "牡"                       # 必須。牡 | 牝 | セ
@@ -428,7 +430,7 @@ pedigree:                       # 任意。5代血統表（sire/dam を入れ子
 photos:                         # 任意。紹介タブ先頭の写真
   - alt: "パドックの様子"       # 必須（各写真）
     caption: "重賞前のパドック" # 任意
-    src: "/images/hitokuchi/馬名/body.jpg"  # 任意。public/images/... に配置
+    src: "/images/hitokuchi/flashing-ruby/body.jpg"  # 任意。public/images/... に配置
 ---
 ```
 
@@ -453,9 +455,11 @@ race:                           # 任意。あるとレース成績表に載る
 photos:                         # 任意。日記タブの各観戦記に表示
   - alt: "パドック"             # 必須（各写真）
     caption: "小倉新馬戦"       # 任意
-    src: "/images/hitokuchi/フラッシングルビー/2026-07-11-makedebut.jpg"  # 任意
+    src: "/images/hitokuchi/flashing-ruby/2026-07-11-makedebut.jpg"  # 任意
 ---
 ```
+
+`photos` の画素・形式・命名・書き出し手順は [愛馬日記の写真書き出し](../manual/hitokuchi-photos.md) に従う。
 
 `hitokuchi/template/` は読み込み対象外。
 
@@ -701,7 +705,7 @@ keiba-blog/
    2. `vite build`（クライアントバンドル）
    3. 公開 URL のプリレンダー（`dist{path}/index.html`）
    4. `dist/sitemap.xml` 生成
-2. `dist/` 配下を Xserver の公開ディレクトリへアップロード
+2. `dist/` 配下を Xserver の公開ディレクトリへアップロード（運用手順は [デプロイマニュアル](../manual/deploy.md)）
 3. 次が含まれることを確認する
    - 各公開 URL に対応する HTML
    - `robots.txt` / `sitemap.xml` / 画像
@@ -770,3 +774,6 @@ RewriteRule ^(.*)$ /$1/index.html [L]
 | 2026-08-17 | 2.8 | 愛馬日記の `photos` を紹介タブ先頭に表示。`src` は `public/images/` | βshort |
 | 2026-08-17 | 2.9 | 日記エントリ Front Matter に `photos` を追加 | βshort |
 | 2026-08-18 | 2.10 | Google Analytics 4 をクライアント計測として追加 | βshort |
+| 2026-08-22 | 2.11 | 愛馬日記 `photos` の書き出し手順をマニュアルへリンク | βshort |
+| 2026-08-22 | 2.12 | 愛馬日記 Front Matter に英名 `englishName` を追加 | βshort |
+| 2026-08-22 | 2.13 | 愛馬日記のフォルダ名 `{bamei}` を英名 kebab-case に変更 | βshort |
