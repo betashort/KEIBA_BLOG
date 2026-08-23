@@ -9,62 +9,97 @@
 | 項目 | 値 |
 | ---- | -- |
 | サイズ | 1024×1024 |
-| 背景 | 純白 `#ffffff`。後で抜いて透過 PNG |
+| 背景 | プロンプトではアルファは出ない。既定は純白 `#ffffff` を焼いて後で抜く。LayerDiffuse なら前景＋アルファを直接出す |
 | 色 | 単色。最終色はテンプレート側 |
 
-Positive の先頭に付ける:
+Weight は SD WebUI / ComfyUI の `(token:1.x)`。重要句だけ付ける（1.2〜1.5。全部に付けると効かなくなる）。
 
-```
-isolated object, centered, flat vector graphic, solid color, clean hard edges, high contrast, no photorealism, no texture, no text, no numbers, no logo, pure white background
-```
+`transparent background` は書かない。チェッカー柄や白い背景が RGB に焼けるだけ。
 
 Negative（共通）:
 
 ```
-photograph, photorealism, 3d render, cinematic lighting, glossy, rust, dirt, engraving, text, numbers, letters, watermark, club logo, JRA logo, horse, horse head, crowd, scenery, shadow, reflection, blurry, watercolor, extra objects
+(photograph:1.4), (photorealism:1.5), (3d render:1.3), cinematic lighting, (glossy:1.3), (rust:1.4), (dirt:1.3), engraving, (text:1.5), (numbers:1.5), (letters:1.4), watermark, (club logo:1.3), (JRA logo:1.3), (horse:1.4), (horse head:1.4), crowd, scenery, (shadow:1.3), (reflection:1.3), blurry, watercolor, extra objects, (checkerboard:1.4), transparency grid, checkered background
 ```
 
-## 2. バリエーション
+## 2. Positive（白抜き・既定）
 
-共通 Positive のあとに続ける。
+そのまま貼る。
 
-### 正面（U字・開いた側が下）
+### 正面（U字・開いた側が上）
 
 ```
-single horseshoe, front view, U-shape opening facing down, classic lucky horseshoe icon, simple geometric silhouette, one object only
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (pure white background:1.4), (single horseshoe:1.4), (front view:1.2), (U-shape opening facing up:1.4), classic lucky horseshoe icon, (simple geometric silhouette:1.3), (one object only:1.3)
 ```
 
 ### アウトライン
 
 ```
-single horseshoe, front view, U-shape opening facing down, outline only, hollow center, even stroke width, no fill, line icon
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (pure white background:1.4), (single horseshoe:1.4), (front view:1.2), (U-shape opening facing down:1.4), (outline only:1.4), (hollow center:1.3), (even stroke width:1.3), (no fill:1.3), (line icon:1.2)
 ```
 
 ### 塗りつぶし
 
 ```
-single horseshoe, front view, U-shape opening facing down, solid fill silhouette, no inner holes except the U opening, no outline stroke
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (pure white background:1.4), (single horseshoe:1.4), (front view:1.2), (U-shape opening facing down:1.4), (solid fill silhouette:1.4), no inner holes except the U opening, (no outline stroke:1.3)
 ```
 
 ### 2つ重ね
 
 ```
-two horseshoes overlapping, both U-shape opening facing down, slightly offset, same size, solid fill, still readable as horseshoes, no extra objects
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (pure white background:1.4), (two horseshoes overlapping:1.3), both U-shape opening facing down, slightly offset, (same size:1.3), (solid fill:1.2), (still readable as horseshoes:1.3), (no extra objects:1.3)
 ```
 
 ### 斜め
 
 ```
-single horseshoe rotated 30 degrees, U-shape opening facing down-right, solid fill silhouette, one object, centered
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (pure white background:1.4), (single horseshoe:1.4), (rotated 30 degrees:1.3), (U-shape opening facing down-right:1.3), (solid fill silhouette:1.3), (one object:1.3), (centered:1.2)
 ```
 
-## 3. 禁止
+## 3. Positive（LayerDiffuse）
+
+白背景句なし。サイズは 64 の倍数（1024×1024 のまま）。そのまま貼る。
+
+### 正面（U字・開いた側が上）
+
+```
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (single horseshoe:1.4), (front view:1.2), (U-shape opening facing up:1.4), classic lucky horseshoe icon, (simple geometric silhouette:1.3), (one object only:1.3)
+```
+
+### アウトライン
+
+```
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (single horseshoe:1.4), (front view:1.2), (U-shape opening facing down:1.4), (outline only:1.4), (hollow center:1.3), (even stroke width:1.3), (no fill:1.3), (line icon:1.2)
+```
+
+### 塗りつぶし
+
+```
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (single horseshoe:1.4), (front view:1.2), (U-shape opening facing down:1.4), (solid fill silhouette:1.4), no inner holes except the U opening, (no outline stroke:1.3)
+```
+
+### 2つ重ね
+
+```
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (two horseshoes overlapping:1.3), both U-shape opening facing down, slightly offset, (same size:1.3), (solid fill:1.2), (still readable as horseshoes:1.3), (no extra objects:1.3)
+```
+
+### 斜め
+
+```
+(isolated object:1.3), (centered:1.2), (flat vector graphic:1.4), (solid color:1.3), (clean hard edges:1.2), (high contrast:1.2), (no photorealism:1.3), (no texture:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (single horseshoe:1.4), (rotated 30 degrees:1.3), (U-shape opening facing down-right:1.3), (solid fill silhouette:1.3), (one object:1.3), (centered:1.2)
+```
+
+## 4. 禁止
 
 - 実物の錆びた蹄鉄写真
 - 釘・ブランド刻印・文字
 
-## 4. 変更履歴
+## 5. 変更履歴
 
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
+| 2026-08-23 | 1.3 | Positive をコピペ用の完成形にまとめた | βshort |
+| 2026-08-23 | 1.2 | 透過は白抜き／LayerDiffuse。`transparent background` は使わない | βshort |
+| 2026-08-23 | 1.1 | プロンプトに weight を追加 | βshort |
 | 2026-08-23 | 1.0 | 初版 | βshort |

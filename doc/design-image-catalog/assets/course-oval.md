@@ -14,16 +14,18 @@
 | 背景 | 純白 `#ffffff`。後で抜いて透過 PNG |
 | 色 | 芝／ダートはテンプレート側で分ける。形は同じ |
 
+Weight は SD WebUI / ComfyUI の `(token:1.x)`。重要句だけ付ける（1.2〜1.5。全部に付けると効かなくなる）。
+
 Positive の先頭に付ける:
 
 ```
-isolated racecourse oval graphic, centered, top-down view, flat vector, concentric ellipses, clean hard edges, no photorealism, no text, no numbers, no logo, pure white background
+(isolated racecourse oval graphic:1.3), (centered:1.2), (top-down view:1.4), (flat vector:1.4), (concentric ellipses:1.4), (clean hard edges:1.2), (no photorealism:1.3), (no text:1.4), (no numbers:1.4), (no logo:1.3), (pure white background:1.4)
 ```
 
 Negative（共通）:
 
 ```
-photograph, photorealism, satellite photo, map screenshot, JRA official map, club logo, side-view horse, horse body silhouette, jockey, grandstand photo, people, text, letters, numbers, distance markers, watermark, 3d render, isometric city
+(photograph:1.4), (photorealism:1.5), (satellite photo:1.4), (map screenshot:1.4), (JRA official map:1.5), (club logo:1.3), (side-view horse:1.5), (horse body silhouette:1.5), jockey, (grandstand photo:1.3), people, (text:1.5), (letters:1.4), (numbers:1.5), distance markers, watermark, (3d render:1.3), isometric city
 ```
 
 ## 2. バリエーション
@@ -31,7 +33,7 @@ photograph, photorealism, satellite photo, map screenshot, JRA official map, clu
 ### 同心楕円（上から見た競馬場）
 
 ```
-three concentric ovals, thick outer ring as the track, thinner inner rings, simple geometric racetrack icon, no buildings, no infield lake details, no labels
+(three concentric ovals:1.4), (thick outer ring as the track:1.3), thinner inner rings, (simple geometric racetrack icon:1.3), (no buildings:1.3), (no infield lake details:1.3), (no labels:1.4)
 ```
 
 ### 馬は点のみ
@@ -39,7 +41,7 @@ three concentric ovals, thick outer ring as the track, thinner inner rings, simp
 個体にしない。点は3〜5個まで。
 
 ```
-top-down racecourse oval, horses as tiny dots on the track only, three to five small circles, no horse shapes, no silhouettes of horses, dots along the outer ring
+(top-down racecourse oval:1.3), (horses as tiny dots on the track only:1.4), (three to five small circles:1.3), (no horse shapes:1.5), (no silhouettes of horses:1.5), dots along the outer ring
 ```
 
 ### 芝／ダート（形は同じ）
@@ -49,13 +51,13 @@ top-down racecourse oval, horses as tiny dots on the track only, three to five s
 芝:
 
 ```
-same concentric racecourse oval, turf green fill on the track ring, dark infield, no grass texture photo, flat color
+(same concentric racecourse oval:1.3), (turf green fill on the track ring:1.3), dark infield, (no grass texture photo:1.4), (flat color:1.3)
 ```
 
 ダート:
 
 ```
-same concentric racecourse oval, brown dirt fill on the track ring, dark infield, no sand texture photo, flat color
+(same concentric racecourse oval:1.3), (brown dirt fill on the track ring:1.3), dark infield, (no sand texture photo:1.4), (flat color:1.3)
 ```
 
 ## 3. 禁止
@@ -68,4 +70,5 @@ same concentric racecourse oval, brown dirt fill on the track ring, dark infield
 
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
+| 2026-08-23 | 1.1 | プロンプトに weight を追加 | βshort |
 | 2026-08-23 | 1.0 | 初版 | βshort |

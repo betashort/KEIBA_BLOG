@@ -12,16 +12,18 @@
 | 背景 | 純白 `#ffffff`。後で抜いて透過 PNG |
 | 中身 | 抽象バーのみ。数字も英字も入れない |
 
+Weight は SD WebUI / ComfyUI の `(token:1.x)`。重要句だけ付ける（1.2〜1.5。全部に付けると効かなくなる）。
+
 Positive の先頭に付ける:
 
 ```
-isolated betting ticket graphic, centered, flat vector, rectangular ticket, clean hard edges, no photorealism, no text, no numbers, no letters, no barcode, no logo, pure white background
+(isolated betting ticket graphic:1.3), (centered:1.2), (flat vector:1.4), (rectangular ticket:1.3), (clean hard edges:1.2), (no photorealism:1.3), (no text:1.5), (no numbers:1.5), (no letters:1.5), (no barcode:1.4), (no logo:1.3), (pure white background:1.4)
 ```
 
 Negative（共通）:
 
 ```
-photograph, photorealism, real printed ticket, JRA ticket photo, barcode, QR code, numbers, yen, odds, horse names, horse silhouette, prediction marks, pie chart, screenshot, watermark, 3d render, paper grain, handwritten text, kanji, latin letters
+(photograph:1.4), (photorealism:1.5), (real printed ticket:1.5), (JRA ticket photo:1.5), (barcode:1.5), (QR code:1.5), (numbers:1.5), (yen:1.4), (odds:1.4), (horse names:1.4), (horse silhouette:1.5), (prediction marks:1.4), (pie chart:1.4), screenshot, watermark, (3d render:1.3), paper grain, (handwritten text:1.4), (kanji:1.5), (latin letters:1.5)
 ```
 
 ## 2. バリエーション
@@ -29,7 +31,7 @@ photograph, photorealism, real printed ticket, JRA ticket photo, barcode, QR cod
 ### 券面内の抽象バー（数字なし）
 
 ```
-rectangular betting slip, dark inner panel, three or four horizontal abstract bars of different lengths instead of writing, no readable characters, no perforation required, ledger look, simple geometric ticket
+(rectangular betting slip:1.3), (dark inner panel:1.2), (three or four horizontal abstract bars of different lengths instead of writing:1.4), (no readable characters:1.5), no perforation required, ledger look, (simple geometric ticket:1.3)
 ```
 
 バーが文字に見えたら捨てて再生成する。
@@ -45,4 +47,5 @@ rectangular betting slip, dark inner panel, three or four horizontal abstract ba
 
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
+| 2026-08-23 | 1.1 | プロンプトに weight を追加 | βshort |
 | 2026-08-23 | 1.0 | 初版 | βshort |
