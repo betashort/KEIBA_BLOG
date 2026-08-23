@@ -18,11 +18,18 @@ export type HorseClass = (typeof HORSE_CLASSES)[number];
 
 export type HorseSex = "牡" | "牝" | "セ";
 
+/** 勝負服風の幾何学模様。未指定は単色塗り */
+export type ClubSilkPattern = "vertical-thirds" | "horizontal-thirds";
+
 export interface Club {
   id: string;
   name: string;
   code: string;
+  /** 主色（胴など） */
   color: string;
+  /** 副色（中央ストライプなど）。silkPattern 指定時に使用 */
+  secondaryColor?: string;
+  silkPattern?: ClubSilkPattern;
 }
 
 export interface AibaDiaryPhoto {
@@ -117,10 +124,24 @@ export interface HitokuchiHorse {
 export const CLUBS: Club[] = [
   { id: "shadai", name: "社台サラブレッドクラブ", code: "ST", color: "#c41e3a" },
   { id: "carrot", name: "キャロットクラブ", code: "CR", color: "#e67e22" },
-  { id: "silk", name: "シルクホースクラブ", code: "SK", color: "#8e44ad" },
+  {
+    id: "silk",
+    name: "シルクホースクラブ",
+    code: "SLK",
+    color: "#45b5d4",
+    secondaryColor: "#dc1f2e",
+    silkPattern: "vertical-thirds",
+  },
   { id: "sunday", name: "サンデーサラブレッドクラブ", code: "SD", color: "#2980b9" },
   { id: "hiroo", name: "広尾レース", code: "HR", color: "#27ae60" },
-  { id: "dmm", name: "DMMバヌーシー", code: "DM", color: "#111111" },
+  {
+    id: "dmm",
+    name: "DMMバヌーシー",
+    code: "DMM",
+    color: "#111111",
+    secondaryColor: "#00a33a",
+    silkPattern: "horizontal-thirds",
+  },
 ];
 
 const horseArticleModules = import.meta.glob("../articles/hitokuchi/*/*.md", {
