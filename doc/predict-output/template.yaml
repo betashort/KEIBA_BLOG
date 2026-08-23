@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=./schema.json
+# レース予想出力テンプレート（schema version 1）
+# ファイル名: {YYYY-MM-DD}.yaml（date と一致）
+# 仕様: ./README.md
+#
+# horses は出走全頭。馬番昇順。
+# finishRank: 着順予想（1 が 1 着予想）。レース内で一意、1..runners
+# placeProb: 3 着以内確率（0 以上 1 以下）
+# marks は README の印ルールで horses から算出する。キーは必ず引用符。
+# 〇 は U+3007。articleSlug は出力しない。
+
+version: 1
+date: "YYYY-MM-DD"
+generatedAt: "YYYY-MM-DDTHH:MM:SS+09:00"
+meetings:
+  - venue: "競馬場名"
+    races:
+      - number: 1
+        className: "未勝利"
+        name: "レース名"
+        course: "芝1200m"
+        runners: 5
+        horses:
+          - number: 1
+            name: "馬名"
+            finishRank: 1
+            placeProb: 0.0
+          - number: 2
+            name: "馬名"
+            finishRank: 2
+            placeProb: 0.0
+          - number: 3
+            name: "馬名"
+            finishRank: 3
+            placeProb: 0.0
+          - number: 4
+            name: "馬名"
+            finishRank: 4
+            placeProb: 0.0
+          - number: 5
+            name: "馬名"
+            finishRank: 5
+            placeProb: 0.0
+        marks:
+          "◎": "1 馬名"
+          "〇": "2 馬名"
+          "▲": "3 馬名"
+          "★": "4 馬名"
+          "△": "5 馬名"
+        bets:
+          - "単勝 1"
+          - "馬連 1-2"

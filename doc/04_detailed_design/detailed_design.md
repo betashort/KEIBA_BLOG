@@ -390,7 +390,7 @@ interface Article {
 ### 7.4 プロフィール（Profile）
 
 - **URL:** `/profile`
-- **内容:** 運営者紹介・サイト概要（静的テキスト）
+- **内容:** 運営者紹介（アイコン・表示名・肩書き・SNS・スタンス・好み・免責）・サイト概要（静的テキスト）
 
 ### 7.5 404（NotFound）
 
@@ -589,3 +589,5 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 | 2026-08-17 | 1.3 | 愛馬日記を `{YYYY-MM-DD}-{slug}.md` で個別管理し、レース成績表を埋め込み | βshort |
 | 2026-08-18 | 1.4 | Google Analytics 4（`GoogleAnalytics`）を追加 | βshort |
 | 2026-08-22 | 1.5 | 愛馬日記の `{bamei}` を英名 kebab-case（例: `flashing-ruby`）に変更 | βshort |
+| 2026-08-23 | 1.6 | プロフィールに作者アイコン・表示名・SNSを追加 | βshort |
+| 2026-08-23 | 1.7 | プロフィールに肩書き・スタンス・好み・免責を追加 | βshort |

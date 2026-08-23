@@ -3,6 +3,34 @@ export const SITE_DESCRIPTION =
   "競馬に関するブログ・研究・レース分析・レース予想を発信する個人サイトです。";
 export const DEFAULT_OG_IMAGE = "/images/og-default.jpg";
 
+export const AUTHOR_NAME = "βshort";
+export const AUTHOR_TITLE = "運営者 / ソフトウェアエンジニア";
+export const AUTHOR_ICON = "/images/author/icon.png";
+export const AUTHOR_STANCE = "再現性のある予想を!";
+export const AUTHOR_FAVORITE_COURSE = "東京競馬場";
+export const AUTHOR_FAVORITE_RACE = "ジャパンカップ";
+export const AUTHOR_FAVORITE_TICKETS = [
+  "ワイド",
+  "三連複",
+  "3連単",
+  "WIN5",
+] as const;
+export const AUTHOR_DISCLAIMER =
+  "当サイトの予想・買い目は個人の見解です。馬券の購入は自己責任でお願いします。的中を保証するものではありません。";
+
+export const AUTHOR_SOCIALS = [
+  {
+    id: "x",
+    label: "X",
+    href: "https://x.com/i_thinking_reed",
+  },
+  {
+    id: "github",
+    label: "GitHub",
+    href: "https://github.com/betashort",
+  },
+] as const;
+
 /** 公開オリジン。末尾スラッシュなし。OGP・sitemap の絶対 URL に使う */
 export const SITE_ORIGIN = (
   import.meta.env.VITE_SITE_ORIGIN ?? "https://example.com"

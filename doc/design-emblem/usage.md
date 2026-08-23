@@ -10,7 +10,7 @@
 | ブラウザ favicon | エンブレム | 16 / 32 | `favicon.ico` + `favicon.svg` | 作者アイコンが入っている |
 | Apple タッチ | エンブレム（バッジ） | 180×180 | `/apple-touch-icon.png` | なし |
 | Header | エンブレム＋ワードマーク | マーク 28–32px | インライン SVG を推奨 | テキストのみ |
-| プロフィール顔 | 作者アイコン | 128–256 | `/images/author/icon.png` | 未実装 |
+| プロフィール顔 | 作者アイコン | 128–256 | `/images/author/icon.png` | `/profile` に表示 |
 | X プロフィール | 作者アイコン | 400×400 推奨 | SNS 側にアップロード | `favicon.ico` を流用 |
 | PWA | エンブレム（バッジ） | 192 / 512 | マニフェスト用 PNG | PWA 未導入 |
 | 記事 OGP / 一覧サムネ | 使わない（またはラベルに小さく） | 1200×630 | カタログ側 | [design-image-catalog](../design-image-catalog/README.md) |
@@ -69,6 +69,7 @@ doc/design-emblem/assets/author-icon-current.png
 
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
+| 2026-08-23 | 1.3 | プロフィール顔 `/images/author/icon.png` を実装済みに更新 | βshort |
 | 2026-08-23 | 1.2 | 寸法 SVG のパスを削除。生成は prompts.md | βshort |
 | 2026-08-23 | 1.1 | エンブレム構成変更に合わせ、完成判定は [emblem.md](./emblem.md) に委譲 | βshort |
 | 2026-08-23 | 1.0 | 初版 | βshort |

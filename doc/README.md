@@ -8,6 +8,14 @@
 * [デプロイ（Xserver）](manual/deploy.md)
 * [愛馬日記の写真書き出し](manual/hitokuchi-photos.md)
 
+## レース予想の外部出力
+
+別プロジェクトが生成する開催日 YAML の契約。ブログの `predict/{YYYY-MM-DD}/index.md` へ反映する。
+
+* [仕様](predict-output/README.md)
+* [テンプレート](predict-output/template.yaml)
+* [サンプル](predict-output/sample.yaml)
+
 ## 用語集
 
 ### ドキュメント

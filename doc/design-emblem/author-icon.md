@@ -43,7 +43,7 @@ X などの SNS アイコンとして、サイトの `favicon.ico` を流用し�
 | ---- | ---- |
 | X（旧 Twitter）プロフィール | 正とする。円クロップは SNS 側 |
 | その他 SNS の顔写真 | 同じ画像を使う |
-| サイト `/profile` | 将来ここに出す。現状は未実装 |
+| サイト `/profile` | `/images/author/icon.png` を円表示 |
 | ブラウザ favicon | **使わない**（エンブレムへ移行） |
 | Header ロゴ | **使わない** |
 
@@ -54,7 +54,7 @@ X などの SNS アイコンとして、サイトの `favicon.ico` を流用し�
 | 種類 | パス |
 | ---- | ---- |
 | 参照（本仕様） | `doc/design-emblem/assets/author-icon-current.png` |
-| 本番（予定） | `/images/author/icon.png` |
+| 本番 | `keiba-blog/public/images/author/icon.png`（URL `/images/author/icon.png`） |
 
 推奨マスターは **400×400 PNG**（X の推奨に合わせる）。現行 256 を引き伸ばさない。必要なら 256 を正とし、それ以上は作らない。
 
@@ -71,3 +71,4 @@ X などの SNS アイコンとして、サイトの `favicon.ico` を流用し�
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
 | 2026-08-23 | 1.0 | 初版。現行 favicon.ico を作者アイコンとして記録 | βshort |
+| 2026-08-23 | 1.1 | `/profile` 向けに本番パスへ配置 | βshort |
