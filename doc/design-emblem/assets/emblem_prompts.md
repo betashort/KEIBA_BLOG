@@ -13,7 +13,7 @@
 
 | 位置 | 形 |
 | ---- | -- |
-| 中央 | 蹄鉄。U 字、開いた側が下 |
+| 中央 | 蹄鉄。U 字、開いた側が上 |
 | 左 | β の左右反転。ステムが蹄鉄側、ボウルが外側（翼） |
 | 右 | β そのまま。ステムが蹄鉄側、ボウルが外側（翼） |
 
@@ -23,7 +23,7 @@
 
 1. 下のプロンプトでマークだけを生成する（白地・正方形）
 2. 生成物を [assets](./assets/) に置く
-3. 左右がミラー対か、蹄鉄の開口が下かを確認する
+3. 左右がミラー対か、蹄鉄の開口が上かを確認する
 4. 必要なら Inkscape / Figma でパスにトレースし、色をトークンへ寄せる
 5. Header・favicon へはトレース後の単色マークを使う
 
@@ -82,7 +82,7 @@ HEX: ink `#171717` / paper `#ffffff` / inverse `#f4f1ea` / accent `#9f1239`
 白地にインク。Header・favicon の正。
 
 ```
-website emblem, solid fill #171717 on white, one horseshoe in the exact center, front view U-shape horseshoe opening facing down, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, no bird feathers, no extra ornaments, logo mark only
+website emblem, solid fill #171717 on white, one horseshoe in the exact center, front view U-shape horseshoe opening facing up, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, no bird feathers, no extra ornaments, logo mark only
 ```
 
 ### 5.2 ダーク
@@ -90,7 +90,7 @@ website emblem, solid fill #171717 on white, one horseshoe in the exact center, 
 暗地用。背景は生成せず透過で抜くか、後で置換する。
 
 ```
-website emblem, solid fill off-white #f4f1ea, same composition as the light emblem, one centered horseshoe U-shape opening down, mirrored greek beta on the left, upright greek beta on the right, stems attached to the horseshoe, outward bowls as wings, isolated mark, white background for knockout
+website emblem, solid fill off-white #f4f1ea, same composition as the light emblem, one centered horseshoe U-shape opening facing up, mirrored greek beta on the left, upright greek beta on the right, stems attached to the horseshoe, outward bowls as wings, isolated mark, white background for knockout
 ```
 
 色は後処理で `#f4f1ea` に寄せてよい。生成時点でオフホワイトになっていなくても、シルエットが正しければ採用する。
@@ -100,7 +100,7 @@ website emblem, solid fill off-white #f4f1ea, same composition as the light embl
 円の中にマーク。翼が円からはみ出さない。
 
 ```
-app icon badge, filled dark circle #171717, centered emblem in off-white #f4f1ea, horseshoe U-shape opening down in the middle, mirrored greek beta left, upright greek beta right, wings inside the circle with padding, no outer square frame, no text, circular icon
+app icon badge, filled dark circle #171717, centered emblem in off-white #f4f1ea, horseshoe U-shape opening facing up in the middle, mirrored greek beta left, upright greek beta right, wings inside the circle with padding, no outer square frame, no text, circular icon
 ```
 
 ### 5.4 アクセント（カウンター赤）
@@ -108,7 +108,7 @@ app icon badge, filled dark circle #171717, centered emblem in off-white #f4f1ea
 ライトと同じ形。左右 β の閉じた穴だけ `#9f1239`。16px では使わない。
 
 ```
-website emblem, solid fill #171717 on white, centered horseshoe U-shape opening down, mirrored greek beta left, upright greek beta right, stems attached to the horseshoe, each beta counter filled with a small round accent #9f1239, left and right accents symmetric, no other red, no bird feathers
+website emblem, solid fill #171717 on white, centered horseshoe U-shape opening facing up, mirrored greek beta left, upright greek beta right, stems attached to the horseshoe, each beta counter filled with a small round accent #9f1239, left and right accents symmetric, no other red, no bird feathers
 ```
 
 左右で赤の位置が違う生成は捨てる。
@@ -128,25 +128,25 @@ photograph, photorealism, realistic photo, 3d render, cinematic lighting, glossy
 ### 6.1 ライト（既定）
 
 ```
-isolated logo mark, centered, square 1:1 composition, flat vector graphic, graphic design emblem, website favicon, solid fill #171717 on pure white background, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing down, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no bird feathers, no extra ornaments, no other letters, no numbers, logo mark only
+isolated logo mark, centered, square 1:1 composition, flat vector graphic, graphic design emblem, website favicon, solid fill #171717 on pure white background, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing up, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no bird feathers, no extra ornaments, no other letters, no numbers, logo mark only
 ```
 
 ### 6.2 ダーク
 
 ```
-isolated logo mark, centered, square 1:1 composition, flat vector graphic, graphic design emblem, website favicon, solid fill off-white #f4f1ea on pure white background for knockout, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing down, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no bird feathers, no extra ornaments, no other letters, no numbers, logo mark only
+isolated logo mark, centered, square 1:1 composition, flat vector graphic, graphic design emblem, website favicon, solid fill off-white #f4f1ea on pure white background for knockout, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing up, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no bird feathers, no extra ornaments, no other letters, no numbers, logo mark only
 ```
 
 ### 6.3 バッジ（apple-touch / PWA）
 
 ```
-isolated app icon badge, centered, square 1:1 composition, flat vector graphic, graphic design emblem, filled dark circle #171717, emblem in off-white #f4f1ea inside the circle, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing down, rounded ends, even stroke, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, wings stay inside the circle with padding, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no outer square frame, no bird feathers, no extra ornaments, no text, no other letters, no numbers
+isolated app icon badge, centered, square 1:1 composition, flat vector graphic, graphic design emblem, filled dark circle #171717, emblem in off-white #f4f1ea inside the circle, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing up, rounded ends, even stroke, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, wings stay inside the circle with padding, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no outer square frame, no bird feathers, no extra ornaments, no text, no other letters, no numbers
 ```
 
 ### 6.4 アクセント（カウンター赤）
 
 ```
-isolated logo mark, centered, square 1:1 composition, flat vector graphic, graphic design emblem, website favicon, solid fill #171717 on pure white background, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing down, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, each beta counter filled with a small round accent #9f1239, left and right accents symmetric, no other red, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no bird feathers, no extra ornaments, no other letters, no numbers, logo mark only
+isolated logo mark, centered, square 1:1 composition, flat vector graphic, graphic design emblem, website favicon, solid fill #171717 on pure white background, clean hard edges, high contrast silhouette, no photorealism, no texture, no paper grain, no film grain, sRGB, simple shapes only, one horseshoe in the exact center, front view U-shape horseshoe opening facing up, rounded ends, even stroke, not a photo, greek small letter beta as wings attached to the horseshoe, left side is a horizontally mirrored greek letter beta, right side is an upright greek letter beta, both beta stems touch the outer sides of the horseshoe, beta bowls face outward like wings, left and right are perfect mirrors, each beta counter filled with a small round accent #9f1239, left and right accents symmetric, no other red, all important shapes inside the center 80%, 10% empty margin on all sides, circular crop safe, no bird feathers, no extra ornaments, no other letters, no numbers, logo mark only
 ```
 
 ## 7. 分割生成
@@ -155,11 +155,7 @@ isolated logo mark, centered, square 1:1 composition, flat vector graphic, graph
 
 ### 7.1 蹄鉄
 
-[horseshoe.md 正面](../design-image-catalog/assets/horseshoe.md) を使う。エンブレム用に開き側が下の1個。
-
-```
-single horseshoe, front view, U-shape opening facing down, classic lucky horseshoe icon, simple geometric silhouette, one object only
-```
+[horseshoe.md 正面](../design-image-catalog/assets/horseshoe.md) の Positive / Negative をそのまま使う。開き側は上。
 
 ### 7.2 右翼（β 原形）
 
@@ -191,7 +187,7 @@ latin B, eszett, ampersand, treble clef, bird, feather, ribbon, horseshoe, kanji
 
 生成直後に次を捨てる。
 
-- 蹄鉄の開口が上・横を向いている
+- 蹄鉄の開口が下・横を向いている
 - 左右の β が同じ向き
 - β がラテン B、エスツェット、リボン、鳥の羽になっている
 - 蹄鉄の**内側**に β がある
@@ -224,5 +220,6 @@ latin B, eszett, ampersand, treble clef, bird, feather, ribbon, horseshoe, kanji
 
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
+| 2026-08-24 | 1.2 | 蹄鉄の開口を素材と同じ上に揃えた。分割生成は horseshoe.md を参照 | βshort |
 | 2026-08-23 | 1.1 | 一括生成のコピペ用プロンプト（§6）を追加 | βshort |
 | 2026-08-23 | 1.0 | 初版。寸法 SVG の代わりに生成プロンプトを追加 | βshort |
