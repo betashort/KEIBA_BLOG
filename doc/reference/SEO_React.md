@@ -112,7 +112,7 @@ SNSシェアや検索結果の見栄え改善のため、`meta` タグに以下�
 ### ⑥ Googleへの登録・分析
 
 * Google Search Console にサイトマップ登録
-* Google Analytics や GA4 を導入して解析
+* Google Analytics 4 を導入して解析（手順は [GoogleAnalytics_React.md](./GoogleAnalytics_React.md)）
 
 ---
 

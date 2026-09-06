@@ -1,0 +1,101 @@
+# 構築
+1. [docker 開発環境構築](#docker-開発環境構築)
+   1. [Cursor Agent 向け設定](#cursor-agent-向け設定)
+2. [ビルドコマンド](#ビルドコマンド)
+3. [プロジェクトを作成する](#プロジェクトを作成する)
+4. [ライブラリ](#ライブラリ)
+   1. [react-router-dom](#react-router-dom)
+   2. [tailwindをインストールする](#tailwindをインストールする)
+
+## docker 開発環境構築
+
+```bash
+docker compose up -d
+docker compose exec node bash
+```
+
+### Cursor Agent 向け設定
+
+Agent がホストの `npm` ではなく Docker 上でビルドするよう、プロジェクトルールを置いている。
+
+| ファイル | 内容 |
+| -------- | ---- |
+| `.cursor/rules/docker-compose-build.mdc` | `alwaysApply: true` で npm / Vite をコンテナ経由に固定 |
+
+Agent / ターミナルで使うコマンド例（リポジトリルートで実行）:
+
+```bash
+docker compose exec node sh -c "cd keiba-blog && npm install"
+docker compose exec node sh -c "cd keiba-blog && npm run build"
+```
+
+ルールを変更したら、Cursor を再読み込みするか新しいチャットで反映を確認する。
+
+## ビルドコマンド
+
+```bash
+npm run dev
+```
+
+```bash
+npm run build
+```
+
+## プロジェクトを作成する
+
+```bash
+npm create vite@latest keiba-blog --template react-ts
+```
+
+## ライブラリ
+
+* react-router-dom
+* gray-matter
+* react-markdown
+
+```bash
+npm install gray-matter react-markdown
+npm install react-router-dom
+```
+
+### react-router-dom
+
+* https://www.npmjs.com/package/react-router-dom
+
+```bash
+npm i react-router-dom
+```
+
+### tailwindをインストールする
+
+* https://tailwindcss.com/docs/guides/create-react-app
+
+1. tailwind cssのインストールと初期化
+
+```bash
+npm i -D tailwindcss
+npx tailwindcss init
+```
+
+2. tailwind.config.jsの編集
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+3. index.cssの編集
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```

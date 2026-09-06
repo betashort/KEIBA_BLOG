@@ -5,30 +5,50 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run prerender",
+    "prerender": "tsx scripts/prerender.ts",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006 --host 0.0.0.0",
+    "build-storybook": "storybook build",
+    "ui-design:screenshots": "tsx scripts/ui-design-screenshots/index.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
-    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "marked": "^15.0.12",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-markdown": "^10.1.0",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.7.0",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "latest",
     "@eslint/js": "^9.30.1",
+    "@storybook/addon-a11y": "^10.5.7",
+    "@storybook/addon-docs": "^10.5.7",
+    "@storybook/addon-mcp": "latest",
+    "@storybook/addon-vitest": "^10.5.7",
+    "@storybook/react-vite": "^10.5.7",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^26.2.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
+    "@vitest/browser-playwright": "latest",
+    "@vitest/coverage-v8": "latest",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-storybook": "^10.5.7",
     "globals": "^16.3.0",
+    "playwright": "latest",
+    "storybook": "^10.5.7",
+    "tsx": "latest",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.4"
+    "vite": "^7.0.4",
+    "vitest": "latest"
   }
 }

@@ -1,0 +1,139 @@
+# yaml-language-server: $schema=./schema.json
+# 印ルールのサンプル。福島 R1 は 1 着予想より 3 着以内確率が高い馬が ★ になる。
+version: 1
+date: "2025-07-19"
+generatedAt: "2025-07-19T10:00:00+09:00"
+meetings:
+  - venue: "福島"
+    races:
+      - number: 1
+        className: "未勝利"
+        name: "3歳未勝利"
+        course: "芝1200m"
+        runners: 8
+        horses:
+          - number: 1
+            name: "サンプルホース"
+            finishRank: 1
+            placeProb: 0.351
+          - number: 2
+            name: "ダミーダンサー"
+            finishRank: 5
+            placeProb: 0.210
+          - number: 3
+            name: "プレースホルダ"
+            finishRank: 6
+            placeProb: 0.448
+          - number: 4
+            name: "テストクイーン"
+            finishRank: 8
+            placeProb: 0.089
+          - number: 5
+            name: "テストスター"
+            finishRank: 2
+            placeProb: 0.402
+          - number: 7
+            name: "モックダイヤ"
+            finishRank: 7
+            placeProb: 0.156
+          - number: 8
+            name: "ダミージョッキー"
+            finishRank: 3
+            placeProb: 0.274
+          - number: 12
+            name: "モックランナー"
+            finishRank: 4
+            placeProb: 0.318
+        marks:
+          "◎": "1 サンプルホース"
+          "〇": "5 テストスター"
+          "▲": "8 ダミージョッキー"
+          "★": "3 プレースホルダ"
+          "△": "12 モックランナー"
+        bets:
+          - "単勝 1"
+          - "馬連 1-5"
+      - number: 2
+        className: "1勝クラス"
+        name: "いわき特別"
+        course: "ダート1700m"
+        runners: 5
+        horses:
+          - number: 2
+            name: "ダミージョッキー"
+            finishRank: 3
+            placeProb: 0.288
+          - number: 4
+            name: "サンプルホース"
+            finishRank: 1
+            placeProb: 0.510
+          - number: 7
+            name: "テストスター"
+            finishRank: 2
+            placeProb: 0.355
+          - number: 9
+            name: "ワイドランナー"
+            finishRank: 4
+            placeProb: 0.241
+          - number: 11
+            name: "モックライト"
+            finishRank: 5
+            placeProb: 0.120
+        marks:
+          "◎": "4 サンプルホース"
+          "〇": "7 テストスター"
+          "▲": "2 ダミージョッキー"
+          "★": "9 ワイドランナー"
+          "△": "11 モックライト"
+        bets:
+          - "単勝 4"
+          - "ワイド 4-7"
+  - venue: "小倉"
+    races:
+      - number: 11
+        className: "G3"
+        name: "中京記念"
+        course: "芝1600m"
+        runners: 8
+        horses:
+          - number: 1
+            name: "ダミージョッキー"
+            finishRank: 3
+            placeProb: 0.198
+          - number: 3
+            name: "ダミーダンサー"
+            finishRank: 6
+            placeProb: 0.140
+          - number: 6
+            name: "サンプルホース"
+            finishRank: 1
+            placeProb: 0.410
+          - number: 8
+            name: "モックダイヤ"
+            finishRank: 7
+            placeProb: 0.095
+          - number: 9
+            name: "プレースホルダ"
+            finishRank: 5
+            placeProb: 0.332
+          - number: 10
+            name: "テストスター"
+            finishRank: 2
+            placeProb: 0.365
+          - number: 11
+            name: "テストクイーン"
+            finishRank: 8
+            placeProb: 0.072
+          - number: 14
+            name: "モックランナー"
+            finishRank: 4
+            placeProb: 0.251
+        marks:
+          "◎": "6 サンプルホース"
+          "〇": "10 テストスター"
+          "▲": "1 ダミージョッキー"
+          "★": "9 プレースホルダ"
+          "△": "14 モックランナー"
+        bets:
+          - "単勝 6"
+          - "3連複 6-10-1"

@@ -1,0 +1,56 @@
+---
+description: keiba-blog の npm / Vite は docker-compose の node コンテナで実行する
+alwaysApply: true
+---
+
+# ビルド・npm は Docker Compose 経由
+
+このリポジトリの Node.js / npm / Vite コマンドは、**ホストの npm を使わない**。必ず `docker-compose.yml` の `node` サービスで実行する。
+
+## 前提
+
+- リポジトリルート: `KEIBA_BLOG/`（`docker-compose.yml` があるディレクトリ）
+- コンテナ内の作業ディレクトリ: `/projects`
+- アプリ: `keiba-blog/` → コンテナ内では `/projects/keiba-blog`
+
+## コンテナの起動
+
+コンテナが止まっている、または未作成のときは先に起動する:
+
+```bash
+docker compose up -d
+```
+
+（`docker-compose up -d` でも可）
+
+## コマンドの書き方
+
+シェルツールで npm / npx / node を実行するときは、次の形式を使う:
+
+```bash
+docker compose exec node sh -c "cd keiba-blog && <コマンド>"
+```
+
+例:
+
+```bash
+docker compose exec node sh -c "cd keiba-blog && npm install"
+docker compose exec node sh -c "cd keiba-blog && npm run dev"
+docker compose exec node sh -c "cd keiba-blog && npm run build"
+docker compose exec node sh -c "cd keiba-blog && npm run lint"
+docker compose exec node sh -c "cd keiba-blog && npm run storybook"
+```
+
+対話的に入る場合:
+
+```bash
+docker compose exec node bash
+# コンテナ内で: cd keiba-blog
+```
+
+## 注意
+
+- 開発サーバーは `vite.config.ts` の `host: true` と compose の `5173:5173` でホストから `http://localhost:5173` にアクセスできる
+- Storybook は compose の `6006:6006` と `--host 0.0.0.0` でホストから `http://localhost:6006` にアクセスできる
+- `npm run dev` / `npm run storybook` は長時間プロセスのため、必要なら `block_until_ms: 0` でバックグラウンド実行する
+- 依存追加後はコンテナ内で `npm install` を実行する（ボリュームマウントで `node_modules` はホストと共有される）
