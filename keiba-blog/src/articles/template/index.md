@@ -4,8 +4,8 @@ date: "2025-07-16"
 description: "記事の要約（meta description・OGPに使用）"
 category: "blog"
 tags: ["タグ1", "タグ2"]
-thumbnail: "/images/example/thumbnail.jpg"
-ogImage: "/images/example/og.jpg"
+thumbnail: "/images/example/thumbnail.png"
+ogImage: "/images/example/og.png"
 noindex: false
 ---
 

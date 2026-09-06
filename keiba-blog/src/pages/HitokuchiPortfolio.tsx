@@ -147,6 +147,7 @@ export default function HitokuchiPortfolio() {
         title="一口馬主ポートフォリオ"
         description={`一口馬主の出資馬一覧とポートフォリオ。${SITE_DESCRIPTION}`}
         path="/profile/hitokuchi-portfolio"
+        ogImage="/images/og/hitokuchi/default.png"
       />
       <div className="mx-auto max-w-4xl px-4 py-8">
         <Breadcrumb

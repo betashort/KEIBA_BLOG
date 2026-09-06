@@ -98,6 +98,25 @@ function Invoke-Remote {
     }
 }
 
+function Copy-DistWithoutGitkeep {
+    param(
+        [Parameter(Mandatory = $true)][string] $Source,
+        [Parameter(Mandatory = $true)][string] $Destination
+    )
+    $sourceRoot = (Resolve-Path -LiteralPath $Source).Path.TrimEnd("\", "/")
+    Get-ChildItem -LiteralPath $sourceRoot -Recurse -Force -File | Where-Object {
+        $_.Name -ne ".gitkeep"
+    } | ForEach-Object {
+        $relative = $_.FullName.Substring($sourceRoot.Length).TrimStart("\", "/")
+        $destPath = Join-Path $Destination $relative
+        $destParent = Split-Path -Parent $destPath
+        if (-not (Test-Path -LiteralPath $destParent)) {
+            New-Item -ItemType Directory -Path $destParent | Out-Null
+        }
+        Copy-Item -LiteralPath $_.FullName -Destination $destPath
+    }
+}
+
 if (-not $SkipBuild) {
     Write-Host "docker compose up -d"
     if (-not $DryRun) {
@@ -131,25 +150,43 @@ $prepRemote = "rm -rf -- '$nextDir' && mkdir -p -- '$nextDir' && chmod 755 -- '$
 $chmodRemote = "find '$nextDir' -type d -exec chmod 755 {} \; ; find '$nextDir' -type f -exec chmod 644 {} \;"
 $swapRemote = "rm -rf -- '$prevDir'; if [ -e '$remoteDir' ]; then mv -- '$remoteDir' '$prevDir'; fi; if mv -- '$nextDir' '$remoteDir'; then rm -rf -- '$prevDir'; else if [ -e '$prevDir' ]; then mv -- '$prevDir' '$remoteDir'; fi; exit 1; fi"
 
-$scpArgs = @("-P", $port) + $sshIdentityArgs + @(
-    "-o", "StrictHostKeyChecking=accept-new",
-    "-r",
-    (Join-Path $distDir "."),
-    "${userName}@${hostName}:${nextDir}/"
-)
+$scpSourceDir = $distDir
+$stageDir = $null
+Write-Host ".gitkeep は転送しません"
 
-Invoke-Remote $prepRemote
+try {
+    if (-not $DryRun) {
+        $stageDir = Join-Path ([System.IO.Path]::GetTempPath()) ("keiba-blog-dist-" + [guid]::NewGuid().ToString("N"))
+        New-Item -ItemType Directory -Path $stageDir | Out-Null
+        Copy-DistWithoutGitkeep -Source $distDir -Destination $stageDir
+        $scpSourceDir = $stageDir
+    }
 
-Write-Host ("scp " + ($scpArgs -join " "))
-if (-not $DryRun) {
-    & scp @scpArgs
-    if ($LASTEXITCODE -ne 0) {
-        throw "scp による転送に失敗しました。"
+    $scpArgs = @("-P", $port) + $sshIdentityArgs + @(
+        "-o", "StrictHostKeyChecking=accept-new",
+        "-r",
+        (Join-Path $scpSourceDir "."),
+        "${userName}@${hostName}:${nextDir}/"
+    )
+
+    Invoke-Remote $prepRemote
+
+    Write-Host ("scp " + ($scpArgs -join " "))
+    if (-not $DryRun) {
+        & scp @scpArgs
+        if ($LASTEXITCODE -ne 0) {
+            throw "scp による転送に失敗しました。"
+        }
+    }
+
+    Invoke-Remote $chmodRemote
+    Invoke-Remote $swapRemote
+}
+finally {
+    if ($stageDir -and (Test-Path -LiteralPath $stageDir)) {
+        Remove-Item -LiteralPath $stageDir -Recurse -Force
     }
 }
-
-Invoke-Remote $chmodRemote
-Invoke-Remote $swapRemote
 
 if ($DryRun) {
     Write-Host "DryRun のため転送しません。"

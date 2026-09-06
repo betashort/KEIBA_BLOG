@@ -410,8 +410,8 @@ date: "2025-07-16"              # 必須（欠落時 1970-01-01）
 description: "記事の要約"       # 任意
 category: "blog"                # 必須（blog | study | analysis | predict）
 tags: ["競馬", "予想"]          # 任意
-thumbnail: "/images/.../thumb.jpg"  # 任意
-ogImage: "/images/.../og.jpg"       # 任意
+thumbnail: "/images/.../thumb.png"  # 任意
+ogImage: "/images/.../og.png"       # 任意
 noindex: false                  # 任意（MetaTags に反映）
 ---
 ```
@@ -552,7 +552,7 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 | 旧記事パス | `src/article/*.md` | 廃止 → `src/articles/{category}/{slug}/index.md` |
 | analysis / predict 記事 | 設計上あり | コンポーネントのみ・記事未配置 |
 | Google Ads | AdUnit 埋め込み | プレースホルダのみ |
-| OGP デフォルト画像 | `/images/og-default.jpg` | パス定義済み・ファイルは要配置 |
+| OGP デフォルト画像 | `/images/og-default.png` | パス定義済み・ファイルは要配置 |
 | sitemap.xml | public 配置 | 未実装（手動または将来スクリプト） |
 
 <div style="page-break-after: always;"></div>
@@ -570,7 +570,7 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 
 ### 13.2 拡張候補
 
-- `public/images/og-default.jpg` の配置
+- `public/images/og-default.png` の配置
 - Google Ads スクリプトを `AdUnit` に統合
 - `analysis` / `predict` 記事の追加
 - ビルド時 sitemap.xml 生成

@@ -49,10 +49,10 @@
 本番ファイル名の例:
 
 ```
-/images/og/blog/default.jpg
-/images/og/blog/howtobet-baken.jpg
-/images/og/hitokuchi/flashing-ruby.jpg
-/images/og/baken/2025-08.jpg
+/images/og/blog/default.png
+/images/og/blog/howtobet-baken.png
+/images/og/hitokuchi/flashing-ruby.png
+/images/og/baken/2025-08.png
 ```
 
 ## 5. 変更履歴

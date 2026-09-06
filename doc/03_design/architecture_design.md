@@ -391,8 +391,8 @@ date: "2025-07-16"              # 必須。一覧のソート・表示に使用
 description: "記事の要約"       # 推奨。meta description・og:descriptionに使用
 category: "blog"                # 必須。blog | study | analysis | predict
 tags: ["競馬", "予想"]          # 任意。配列
-thumbnail: "/images/.../thumb.jpg"  # 任意。一覧サムネイル
-ogImage: "/images/.../og.jpg"       # 任意。未設定時はデフォルトOGP画像
+thumbnail: "/images/.../thumb.png"  # 任意。一覧サムネイル
+ogImage: "/images/.../og.png"       # 任意。未設定時はデフォルトOGP画像
 noindex: false                  # 任意。true で meta robots=noindex、sitemap から除外
 ---
 ```

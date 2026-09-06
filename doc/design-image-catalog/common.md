@@ -19,8 +19,8 @@
 **推奨運用:** 記事ごとにマスター1枚を置き、`thumbnail` と `ogImage` に同じパスを書く。
 
 ```yaml
-thumbnail: "/images/og/blog/howtobet-baken.jpg"
-ogImage: "/images/og/blog/howtobet-baken.jpg"
+thumbnail: "/images/og/blog/howtobet-baken.png"
+ogImage: "/images/og/blog/howtobet-baken.png"
 ```
 
 ## 2. レイアウトグリッド
@@ -79,8 +79,8 @@ ogImage: "/images/og/blog/howtobet-baken.jpg"
 フォールバック順:
 
 1. 記事の `ogImage` / `thumbnail`
-2. カテゴリ既定（`/images/og/{category}/default.jpg`）
-3. サイト既定 `DEFAULT_OG_IMAGE`（`/images/og-default.jpg`）
+2. カテゴリ既定（`/images/og/{category}/default.png`）
+3. サイト既定 `DEFAULT_OG_IMAGE`（`/images/og-default.png`）
 
 2 を実装するまでは 3 に落ちる。本カタログは 1 と 2 の見た目を定義する。
 
@@ -96,7 +96,7 @@ ogImage: "/images/og/blog/howtobet-baken.jpg"
 | 項目 | 指定 |
 | ---- | ---- |
 | マスター | 1200×630 |
-| 形式 | JPG（写真を混ぜないので品質 80–85）。文字が滲むなら PNG |
+| 形式 | PNG |
 | 目安容量 | 120KB 前後（200KB 超えない） |
 | 色空間 | sRGB |
 | 素材 | モチーフは [assets](./assets/) に置く。本番はテンプレートへ配置してから書き出す |

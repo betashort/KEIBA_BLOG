@@ -37,8 +37,8 @@
 
 | 種類 | パス例 |
 | ---- | ------ |
-| 既定 | `/images/og/study/default.jpg` |
-| 記事 | `/images/og/study/{slug}.jpg` |
+| 既定 | `/images/og/study/default.png` |
+| 記事 | `/images/og/study/{slug}.png` |
 
 ## 7. 禁止
 
