@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import AdUnit from "./AdUnit";
+// import AdUnit from "./AdUnit";
 import Breadcrumb from "./Breadcrumb";
 import MetaTags from "./MetaTags";
 import NotFound from "../pages/NotFound";
@@ -76,12 +76,12 @@ export default function ArticlePost({ category }: ArticlePostProps) {
             </ul>
           )}
         </header>
-        <AdUnit />
+        {/* <AdUnit /> */}
         <div
           className="article-body prose prose-gray max-w-none"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
-        <AdUnit />
+        {/* <AdUnit /> */}
       </article>
     </>
   );

@@ -22,4 +22,5 @@ raceNumber: 11
 - 馬連: 1-2
 
 `template` フォルダは読み込み対象外です。
-日付フォルダ直下にコピーし、開催日の `index.md` の該当レースに `articleSlug` を書いてリンクします。
+日付フォルダ直下へ `{venueSlug}-{number}R/index.md` としてコピーします（例: `kokura-11R`）。
+`venue` と `raceNumber` を開催日ファイルのレースと一致させると、詳細記事へリンクされます。

@@ -60,5 +60,5 @@ export const CATEGORY_CONFIG: Record<
   blog: { label: "ブログ", path: "/blog" },
   study: { label: "競馬研究", path: "/study" },
   analysis: { label: "レース分析", path: "/analysis" },
-  predict: { label: "レース予想", path: "/predict" },
+  predict: { label: "レース予想", path: "/race-predict" },
 };

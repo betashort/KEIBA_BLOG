@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogCard from "../component/BlogCard";
 import MetaTags from "../component/MetaTags";
-import { getAllArticles, getArticlesByCategory } from "../utils/markdown";
+import {
+  getAllArticles,
+  getArticlePath,
+  getArticlesByCategory,
+} from "../utils/markdown";
 import {
   CATEGORY_CONFIG,
   SITE_DESCRIPTION,
@@ -60,7 +64,7 @@ export default function Home() {
           {currentSlide ? (
             <div className="relative overflow-hidden border border-gray-200 bg-gray-50">
               <Link
-                to={`${CATEGORY_CONFIG[currentSlide.category].path}/${currentSlide.slug}`}
+                to={getArticlePath(currentSlide)}
                 className="block"
               >
                 {currentSlide.frontMatter.thumbnail ? (

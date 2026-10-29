@@ -46,5 +46,4 @@ meetings:
         bets:
           - "単勝 6"
           - "3連複 6-10-1"
-        articleSlug: "sample-predict"
 ---

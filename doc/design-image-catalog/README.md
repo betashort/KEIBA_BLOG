@@ -15,7 +15,7 @@
 | `blog/` | ブログ | 記事（`{slug}/index.md`） | [blog.md](./blog.md) |
 | `study/` | 競馬研究 | 記事 | [study.md](./study.md) |
 | `analysis/` | レース分析 | レース記事 | [analysis.md](./analysis.md) |
-| `predict/` | レース予想 | 注目レース記事（開催日インデックスは対象外） | [predict.md](./predict.md) |
+| `predict/` | レース予想 | レース詳細記事（`{venueSlug}-{number}R`。開催日インデックスは対象外） | [predict.md](./predict.md) |
 | `hitokuchi/` | 一口馬主 | 馬ごと（愛馬日記）。日記ファイルは個別 URL なし | [hitokuchi.md](./hitokuchi.md) |
 | `baken/` | 馬券成績 | 月次記事（`{YYYY-MM}/index.md`） | [baken.md](./baken.md) |
 
@@ -59,6 +59,7 @@
 
 | 日付 | 版 | 内容 | 担当 |
 | ---- | -- | ---- | ---- |
+| 2026-10-24 | 1.4 | レース予想の画像対象を `{venueSlug}-{number}R` の詳細記事に更新 | βshort |
 | 2026-08-23 | 1.3 | 素材ごとのプロンプト md を追加 | βshort |
 | 2026-08-23 | 1.2 | assets を素材置き場に変更。記事モック SVG を削除 | βshort |
 | 2026-08-23 | 1.1 | ComfyUI / SD WebUI 向けプロンプト（prompts.md）を追加 | βshort |

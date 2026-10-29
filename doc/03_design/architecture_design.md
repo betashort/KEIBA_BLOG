@@ -261,8 +261,9 @@ tsc -b
 
 | 種別 | 対象 | 生成元 |
 | ---- | ---- | ------ |
-| 固定ページ | `/`, `/blog`, `/study`, `/analysis`, `/predict`, `/profile`, `/profile/hitokuchi-portfolio`, `/profile/baken-portfolio` | ルート定義 |
-| 記事詳細 | `/blog/{article_name}` 等（4カテゴリ） | `src/articles/{blog,study,analysis,predict}/**/index.md`（`template` 除外） |
+| 固定ページ | `/`, `/blog`, `/study`, `/analysis`, `/race-predict`, `/profile`, `/profile/hitokuchi-portfolio`, `/profile/baken-portfolio` | ルート定義 |
+| 記事詳細 | `/blog/{article_name}` 等（blog / study / analysis）。レース予想詳細は `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` | `src/articles/{blog,study,analysis}/**/index.md` と `src/articles/predict/{YYYY-MM-DD}/{venueSlug}-{number}R/index.md`（`template` 除外） |
+| レース予想の開催日 | `/race-predict/{YYYYMMDD}` | `src/articles/predict/{YYYY-MM-DD}/index.md`（`template` 除外） |
 | 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | `src/articles/hitokuchi/{bamei}/index.md` と `{YYYY-MM-DD}-{slug}.md`（`template` 除外）。日記は個別 URL にしない |
 | 月次馬券成績 | `/profile/baken-portfolio/{YYYY-MM}` | `src/articles/baken/{YYYY-MM}/index.md`（`template` 除外） |
 
@@ -376,7 +377,7 @@ stop
 - 記事データは Markdown ファイルで管理
 - 一口馬主の出資馬データは Markdown（`src/articles/hitokuchi/{bamei}/index.md`）で管理する。愛馬日記の各投稿は同フォルダの `{YYYY-MM-DD}-{slug}.md`。所属クラブ定義のみ `src/data/hitokuchiHorses.ts` に置く。表示は愛馬日記1ページに埋め込む
 - 馬券成績は月次 Markdown（`src/articles/baken/{YYYY-MM}/index.md`）で管理する。ポートフォリオ画面はこれを集計する
-- レース予想の開催データは Markdown（`src/articles/predict/{YYYY-MM-DD}/index.md`）で日ごとに管理する。注目レースの詳細記事は同日付フォルダ直下の `{article_name}/index.md`。型と読込は `src/data/predictMeetings.ts`
+- レース予想の開催データは Markdown（`src/articles/predict/{YYYY-MM-DD}/index.md`）で日ごとに管理する。公開 URL は `/race-predict/{YYYYMMDD}`。注目レースの詳細記事は同日付フォルダ直下の `{venueSlug}-{number}R/index.md`。型と読込は `src/data/predictMeetings.ts`
 - 画像は記事フォルダ配下または `public/images/` に配置
 - ビルド時にファイルを読み込み、ランタイムでは静的データとして扱う
 - 公開ドメインは `SITE_ORIGIN`（`src/utils/site.ts`）に定数として持ち、OGP・sitemap・robots.txt の絶対 URL に使う。`window.location.origin` には依存しない
@@ -492,7 +493,32 @@ noindex: false                  # 任意
 
 本文は当月の振り返り（Markdown）。`baken/template/` は読み込み対象外。
 
-レース予想の開催日ファイル（`src/articles/predict/{YYYY-MM-DD}/index.md`）は一覧用データであり、記事詳細 URL にはしない。`predict/template/` は読み込み対象外。
+レース予想の開催日ファイル（`src/articles/predict/{YYYY-MM-DD}/index.md`）は、その日のレース予想ページ（`/race-predict/{YYYYMMDD}`）の元データである。記事詳細 URL にはしない。`predict/template/` は読み込み対象外。
+
+#### レース予想の URL
+
+| 画面 | URL | 例 |
+| ---- | --- | -- |
+| 一覧 | `/race-predict` | `/race-predict` |
+| 開催日 | `/race-predict/{YYYYMMDD}` | `/race-predict/20261025` |
+| 詳細 | `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` | `/race-predict/20261025/kyoto-11R` |
+
+ファイル上の日付フォルダは `{YYYY-MM-DD}` のままとする。公開 URL の日付セグメントはハイフンを除いた `YYYYMMDD`。
+
+`venueSlug` は次の英名（小文字）で固定する。詳細記事のフォルダ名は `{venueSlug}-{number}R`（例: `kyoto-11R`）とし、自由な `articleSlug` は使わない。
+
+| 競馬場 | venueSlug |
+| ------ | --------- |
+| 札幌 | `sapporo` |
+| 函館 | `hakodate` |
+| 福島 | `fukushima` |
+| 新潟 | `niigata` |
+| 東京 | `tokyo` |
+| 中山 | `nakayama` |
+| 中京 | `chukyo` |
+| 京都 | `kyoto` |
+| 阪神 | `hanshin` |
+| 小倉 | `kokura` |
 
 ```yaml
 ---
@@ -509,11 +535,12 @@ meetings:
         marks:                  # 任意。◎ 〇 ▲ △ ★
           "◎": "1 サンプルホース"
         bets: ["単勝 1"]        # 任意
-        articleSlug: "sample-predict"  # 任意。注目レース記事のフォルダ名。未指定時は記事 Front Matter の venue + raceNumber で紐付け
 ---
 ```
 
-注目レース記事（`src/articles/predict/{YYYY-MM-DD}/{article_name}/index.md`）は共通 Front Matter に加え、一覧との紐付け用フィールドを持つ。URL は `/predict/{article_name}`（日付はパスに含めない。`article_name` は一意にする）。
+詳細記事の有無は、同じ日付フォルダに `{venueSlug}-{number}R/index.md` があるかで決める。開催日ファイルに `articleSlug` は書かない。
+
+注目レース記事（`src/articles/predict/{YYYY-MM-DD}/{venueSlug}-{number}R/index.md`）は共通 Front Matter に加え、開催日データとの照合用フィールドを持つ。URL は `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R`。
 
 ```yaml
 ---
@@ -522,8 +549,8 @@ date: "2025-07-19"
 description: "2025年7月19日 小倉 R11 中京記念のレース予想"
 category: "predict"
 tags: ["予想", "小倉", "G3"]
-venue: "小倉"                   # 必須（自動紐付け時）。開催日ファイルの venue と一致
-raceNumber: 11                  # 必須（自動紐付け時）。開催日ファイルの number と一致
+venue: "小倉"                   # 必須。開催日ファイルの venue と一致。フォルダ名は kokura-11R
+raceNumber: 11                  # 必須。開催日ファイルの number と一致
 ---
 ```
 
@@ -554,8 +581,8 @@ keiba-blog/
 │  │  │     └─ hero.png
 │  │  ├─ predict/
 │  │  │  └─ {YYYY-MM-DD}/
-│  │  │     ├─ index.md          # その日の開催・レース一覧（予想印・買い目）
-│  │  │     └─ {article_name}/   # 注目レースの詳細記事
+│  │  │     ├─ index.md                 # その日の開催・レース一覧（予想印・買い目）
+│  │  │     └─ {venueSlug}-{number}R/   # 注目レースの詳細記事（例: kyoto-11R）
 │  │  │        ├─ index.md
 │  │  │        └─ hero.png
 │  │  ├─ hitokuchi/
@@ -632,7 +659,7 @@ keiba-blog/
 | title / meta description | MetaTags コンポーネントでページ・記事単位に設定。プリレンダー HTML の `<head>` に書き出す |
 | 見出し構造               | Markdown 内で h2〜h3 を論理階層に。h1 はタイトルのみ1つ |
 | パンくずリスト           | Breadcrumb コンポーネントを記事ページに設置        |
-| URL形式                  | `/blog/{article_name}` 等の4カテゴリ、`/profile/hitokuchi-portfolio/{bamei}`、`/profile/baken-portfolio/{YYYY-MM}` |
+| URL形式                  | `/blog/{article_name}` 等、レース予想は `/race-predict` と `/race-predict/{YYYYMMDD}` と `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R`、`/profile/hitokuchi-portfolio/{bamei}`、`/profile/baken-portfolio/{YYYY-MM}` |
 | モバイルファースト       | Tailwind CSS のレスポンシブ設計                    |
 | noindex制御              | Front Matter `noindex`。meta robots を出力し sitemap から除外 |
 | sitemap.xml              | ビルド時に公開 URL から自動生成し `dist/sitemap.xml` へ出力（§3.4.3） |
@@ -675,7 +702,7 @@ keiba-blog/
 
 ### 7.2 結合テスト観点
 
-- 記事一覧 → 記事詳細への遷移（/blog, /study, /analysis, /predict）
+- 記事一覧 → 記事詳細への遷移（/blog, /study, /analysis）。レース予想は一覧 → 開催日 → 詳細（/race-predict）
 - SEO：title / meta description が記事ごとにユニークであること
 - OGP・Twitter Card タグが記事・一覧・ホームで正しく出力されること
 - プリレンダー済み HTML を JS 無効相当で開いても、h1・本文・title / OGP が含まれること
@@ -777,3 +804,4 @@ RewriteRule ^(.*)$ /$1/index.html [L]
 | 2026-08-22 | 2.11 | 愛馬日記 `photos` の書き出し手順をマニュアルへリンク | βshort |
 | 2026-08-22 | 2.12 | 愛馬日記 Front Matter に英名 `englishName` を追加 | βshort |
 | 2026-08-22 | 2.13 | 愛馬日記のフォルダ名 `{bamei}` を英名 kebab-case に変更 | βshort |
+| 2026-10-24 | 2.14 | レース予想の公開 URL を `/race-predict` 配下の一覧・開催日・詳細に変更。詳細フォルダを `{venueSlug}-{number}R` に変更 | βshort |

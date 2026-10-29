@@ -48,7 +48,7 @@
 | `meetings[].venue` | 同左 |
 | `meetings[].races[]` の `number` / `className` / `name` / `course` / `runners` / `marks` / `bets` | 同左 |
 
-`articleSlug` はブログ側の手書き。出力 YAML には含めない。反映時は既存の `articleSlug` を残す。
+詳細記事の URL はブログ側で決める。出力 YAML に `articleSlug` は含めない。詳細ファイルは `src/articles/predict/{YYYY-MM-DD}/{venueSlug}-{number}R/index.md`（例: `kyoto-11R`）に置き、公開 URL は `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` とする。競馬場と `venueSlug` の対応はアーキテクチャ設計書の「レース予想の URL」に従う。
 
 `bets` は一覧表示用の文字列配列。買い目の生成ルールはこの契約の対象外（未設定なら `[]`）。
 
@@ -57,3 +57,4 @@
 | 日付 | 内容 |
 | ---- | ---- |
 | 2026-08-23 | 初版（schema `version: 1`） |
+| 2026-10-24 | 詳細記事の置き場を `{venueSlug}-{number}R` に変更。`articleSlug` は使わない |

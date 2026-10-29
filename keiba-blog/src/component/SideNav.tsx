@@ -13,7 +13,7 @@ const navItems: NavItem[] = [
   { to: "/blog", label: "ブログ" },
   { to: "/study", label: "競馬研究" },
   { to: "/analysis", label: "レース分析" },
-  { to: "/predict", label: "レース予想" },
+  { to: "/race-predict", label: "レース予想" },
   {
     to: "/profile",
     label: "プロフィール",

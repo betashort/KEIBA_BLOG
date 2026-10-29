@@ -1,32 +1,37 @@
-# UI設計：レース予想記事
+# UI設計：レース予想詳細
 
-上位文書: [画面設計書 §3.5](../../screen_design.md#35-レース予想一覧記事) / [本ディレクトリ README](../README.md)  
+上位文書: [画面設計書 §3.5](../../screen_design.md#35-レース予想) / [本ディレクトリ README](../README.md)  
 共通: [common.md](../common.md)  
-関連: [一覧](./list.md)
+関連: [一覧](./list.md) / [開催日](./day.md)
 
 ## 1. 基本情報
 
 | 項目 | 内容 |
 | ---- | ---- |
-| URL | `/predict/{article_name}` |
-| 説明 | Markdown から変換されたレース予想記事を表示 |
+| URL | `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` |
+| 説明 | Markdown から変換された、1レースの予想記事を表示する |
 | 対応コンポーネント | `PredictPost` |
 | og:type | `article` |
 
+例: `/race-predict/20261025/kyoto-11R`（2026年10月25日・京都11R）。  
+`venueSlug` は [アーキテクチャ設計書の競馬場スラッグ](../../architecture_design.md#レース予想の-url) に従う。該当記事がないときは 404 とする。
+
 ## 2. レイアウト
 
-* パンくず（ホーム > レース予想 > 記事タイトル）
+* パンくず（ホーム > レース予想 > 開催日 > 記事タイトル）
+  * 「レース予想」は一覧 `/race-predict`
+  * 開催日は `/race-predict/{YYYYMMDD}`
 * タイトル（h1）・公開日・カテゴリ・タグを表示
 * 本文（Markdown → HTML）を表示
 * 所定位置に広告枠を確保
-* 構成は [ブログ記事](../blog/article.md) と同様（パンくずの親のみ異なる）
+* 本文の構成は [ブログ記事](../blog/article.md) と同様（パンくずの階層が異なる）
 
 **ワイヤーフレーム**
 ```
 +--------------------------------------------------------+
 |                        Header                          |
 +--------------------------------------------------------+
-|  ホーム > レース予想 > 記事タイトル                    |
+|  ホーム > レース予想 > 2026/10/25 > 記事タイトル       |
 |                                                        |
 |  記事タイトル（h1）                                    |
 |  公開日 / カテゴリ / タグ                              |
@@ -46,7 +51,7 @@
 
 **実装スクリーンショット**（Storybook 自動撮影）
 
-![レース予想記事（Storybook）](./predict-article-storybook.png)
+![レース予想詳細（Storybook）](./predict-article-storybook.png)
 
 <!-- ui-design-screenshot:end -->
 
@@ -56,3 +61,4 @@
 | ---- | -- | ---- | ---- |
 | 2026-08-10 | 1.0 | 初版 | βshort |
 | 2026-08-10 | 1.1 | home.md の粒度に合わせて簡素化 | βshort |
+| 2026-10-24 | 1.2 | URL を `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` に変更。パンくずに開催日を追加 | βshort |

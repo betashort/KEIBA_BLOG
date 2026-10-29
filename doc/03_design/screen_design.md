@@ -13,7 +13,7 @@
    2. [3.2 ブログ一覧・記事](#32-ブログ一覧記事)
    3. [3.3 競馬研究一覧・記事](#33-競馬研究一覧記事)
    4. [3.4 レース分析一覧・記事](#34-レース分析一覧記事)
-   5. [3.5 レース予想一覧・記事](#35-レース予想一覧記事)
+   5. [3.5 レース予想](#35-レース予想)
    6. [3.6 プロフィール](#36-プロフィール)
       1. [3.6.1 一口馬主ポートフォリオ](#361-一口馬主ポートフォリオ)
          1. [3.6.1.1 愛馬日記](#3611-愛馬日記)
@@ -51,8 +51,9 @@ UI実装および画面テストの基準とすることを目的とする。
 | 競馬研究記事 | `/study/{article_name}` | 研究記事詳細 | [article.md](./UI_design/study/article.md) |
 | レース分析一覧 | `/analysis` | 分析記事の新着カード一覧 | [list.md](./UI_design/analysis/list.md) |
 | レース分析記事 | `/analysis/{article_name}` | 対象レースの分析記事 | [article.md](./UI_design/analysis/article.md) |
-| レース予想一覧 | `/predict` | 開催日・競馬場単位のレース予想一覧 | [list.md](./UI_design/predict/list.md) |
-| レース予想記事 | `/predict/{article_name}` | 予想記事詳細 | [article.md](./UI_design/predict/article.md) |
+| レース予想一覧 | `/race-predict` | 開催日カードの一覧 | [list.md](./UI_design/predict/list.md) |
+| レース予想ページ | `/race-predict/{YYYYMMDD}` | その日の競馬場・レースの予想印 | [day.md](./UI_design/predict/day.md) |
+| レース予想詳細 | `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` | 1レースの予想記事 | [article.md](./UI_design/predict/article.md) |
 | プロフィール | `/profile` | 自己紹介 | [profile.md](./UI_design/profile/profile.md) |
 | 一口馬主ポートフォリオ | `/profile/hitokuchi-portfolio` | 出資馬の保有状況一覧・可視化 | [hitokuchi-portfolio.md](./UI_design/profile/hitokuchi-portfolio.md) |
 | 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | 出資馬ごとの日記・観戦記 | [aiba-diary.md](./UI_design/profile/aiba-diary.md) |
@@ -102,8 +103,9 @@ package "レース分析" as AnalysisPkg {
 }
 
 package "レース予想" as PredictPkg {
-  rectangle "レース予想一覧\n/predict" as PredictList
-  rectangle "レース予想記事\n/predict/{article_name}" as PredictArticle
+  rectangle "レース予想一覧\n/race-predict" as PredictList
+  rectangle "レース予想ページ\n/race-predict/{YYYYMMDD}" as PredictDay
+  rectangle "レース予想詳細\n/race-predict/{YYYYMMDD}/{venue}-{n}R" as PredictArticle
 }
 
 package "プロフィール" as ProfilePkg {
@@ -125,8 +127,9 @@ Home --> Profile : 導線
 BlogList <--> BlogArticle : 記事選択 / パンくず
 StudyList <--> StudyArticle : 記事選択 / パンくず
 AnalysisList <--> AnalysisArticle : 記事選択 / パンくず
-PredictList --> PredictArticle : 詳細記事リンク（任意）
-PredictArticle --> PredictList : パンくず
+PredictList <--> PredictDay : 日付カード / パンくず
+PredictDay --> PredictArticle : 詳細記事リンク（任意）
+PredictArticle --> PredictDay : パンくず
 
 Profile --> HitokuchiPortfolio : 導線
 Profile --> BakenPortfolio : 導線
@@ -149,8 +152,14 @@ note bottom of Home
 end note
 
 note bottom of PredictList
-  開催日・競馬場でレースを絞り込み
-  詳細記事があるレースのみ記事へ遷移可
+  開催日ごとのカード一覧
+  カードからその日の予想ページへ
+end note
+
+note bottom of PredictDay
+  その日の競馬場タブと
+  レースごとの予想印・買い目
+  詳細記事があるレースのみ詳細へ
 end note
 
 note bottom of HitokuchiPortfolio
@@ -231,19 +240,26 @@ end note
 - 説明：対象レースの分析記事を表示。上部にレース名・レース情報、本文は Markdown
 - UI設計：[analysis/article.md](./UI_design/analysis/article.md)
 
-### 3.5 レース予想一覧・記事
+### 3.5 レース予想
 
 **レース予想一覧**
 
-- URL：`/predict`
-- 説明：年・開催日・競馬場で対象を選び、当日のレース一覧を表示
-- 主な表示項目：レース番号、クラス、レース名、コース、頭数、予想印（◎〇▲△★）、買い目。詳細記事がある場合はリンクで遷移
+- URL：`/race-predict`
+- 説明：開催日ごとのレース予想ページを、ブログ一覧と同じカードで新しい順に表示する（10件/ページ＋ページネーション）
+- 主な表示項目：サムネイル、開催日、その日の競馬場
 - UI設計：[predict/list.md](./UI_design/predict/list.md)
 
-**レース予想記事**
+**レース予想ページ**
 
-- URL：`/predict/{article_name}`
-- 説明・表示項目：ブログ記事と同様。パンくずの親を「レース予想」とする
+- URL：`/race-predict/{YYYYMMDD}`（例: `/race-predict/20261025`）
+- 説明：指定した開催日の競馬場・レースごとの予想印と買い目を表示する
+- 主な表示項目：競馬場タブ、レース番号、クラス、レース名、コース、頭数、予想印（◎〇▲△★）、買い目。詳細記事がある場合はリンクで遷移
+- UI設計：[predict/day.md](./UI_design/predict/day.md)
+
+**レース予想詳細**
+
+- URL：`/race-predict/{YYYYMMDD}/{venueSlug}-{number}R`（例: `/race-predict/20261025/kyoto-11R`）
+- 説明・表示項目：ブログ記事と同様。パンくずはホーム > レース予想 > 開催日 > 記事タイトル
 - UI設計：[predict/article.md](./UI_design/predict/article.md)
 
 ### 3.6 プロフィール
@@ -312,3 +328,4 @@ end note
 | 2026-08-17 | 2.7 | 月次馬券成績画面を追加。成績を article で月次管理 | βshort |
 | 2026-08-23 | 2.8 | プロフィールの表示項目に作者アイコン・SNSリンクを追加 | βshort |
 | 2026-08-23 | 2.9 | プロフィールに肩書き・スタンス・好み・免責を追加 | βshort |
+| 2026-10-24 | 2.10 | レース予想を一覧・開催日・詳細の3画面にし、URL を `/race-predict` 配下に変更 | βshort |

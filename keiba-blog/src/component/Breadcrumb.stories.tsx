@@ -60,7 +60,7 @@ export const PredictArticle: Story = {
   args: {
     items: [
       { label: "ホーム", path: "/" },
-      { label: "レース予想", path: "/predict" },
+      { label: "レース予想", path: "/race-predict" },
       { label: "日本ダービー 予想" },
     ],
   },

@@ -51,7 +51,7 @@
 | 機能名                   | 概要                                                         |
 | ------------------------ | ------------------------------------------------------------ |
 | 記事表示                 | Markdownから変換したHTMLを表示                               |
-| 記事一覧表示             | 新着順のカード一覧、または開催日単位のレース予想一覧を表示   |
+| 記事一覧表示             | 新着順のカード一覧を表示する。レース予想は開催日カード       |
 | カテゴリ・タグ管理       | 記事を分類して管理                                           |
 | OGP表示                  | SNS共有時のOGP対応                                           |
 | 広告表示                 | Google Ads 用の広告枠を表示                                  |
@@ -68,7 +68,7 @@
 #### 2.2.1 記事表示
 
 - 概要：MarkdownをHTMLへ変換し表示する
-- 入力：Markdownファイル（`src/articles/{category}/{article_name}/index.md`。predict の注目レースは `src/articles/predict/{YYYY-MM-DD}/{article_name}/index.md`）
+- 入力：Markdownファイル（`src/articles/{category}/{article_name}/index.md`。predict の注目レースは `src/articles/predict/{YYYY-MM-DD}/{venueSlug}-{number}R/index.md`）
 - 出力：記事詳細画面
 - 処理内容：
   1. `import.meta.glob` でビルド時にMarkdownファイルを収集
@@ -76,15 +76,15 @@
   3. marked で Markdown 本文を HTML に変換
   4. React コンポーネントで `dangerouslySetInnerHTML` により本文を描画
 - 画面実装：
-  - **blog / study / predict**：`BlogPost` / `StudyPost` / `PredictPost` が共通の `ArticlePost` に委譲
+  - **blog / study / predict**：`BlogPost` / `StudyPost` / `PredictPost` が共通の `ArticlePost` に委譲。predict の URL は `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R`
   - **analysis**：`AnalysisPost` が独自実装。ヘッダーに `raceName`（未設定時は title）と `raceInfo`（未設定時は description）を表示
 - セキュリティ：入力元は管理者作成の Markdown のみ。ユーザー入力は受け付けない
 - 例外処理：記事未存在時・slug 欠落時は `NotFound` を表示
 
 #### 2.2.2 記事一覧表示
 
-- 概要：カテゴリ別に記事・レース情報を一覧表示する
-- 入力：該当カテゴリ（blog / study / analysis / predict）配下の Markdown 一覧。predict の開催データは `src/articles/predict/{YYYY-MM-DD}/index.md`（読込は `src/data/predictMeetings.ts`）
+- 概要：カテゴリ別に記事・開催日を一覧表示する
+- 入力：該当カテゴリ（blog / study / analysis）配下の Markdown 一覧。predict の開催データは `src/articles/predict/{YYYY-MM-DD}/index.md`（読込は `src/data/predictMeetings.ts`）
 - 出力：一覧画面
 - 処理内容：
   - **blog / study / analysis**（カード一覧）
@@ -93,11 +93,15 @@
     3. カード形式でタイトル・日付・サムネイル・タグを表示（10件/ページ＋`Pagination`）
     4. カードクリックで記事詳細へ遷移
     5. 記事が 0 件のときは「記事はまだありません。」を表示
-  - **predict**（開催日・競馬場単位のレース一覧）
-    1. `PredictList` が開催データから年・開催日・競馬場で対象を絞り込む
-    2. レース行に番号・クラス・レース名・コース・頭数・予想印・買い目を表示
-    3. 詳細記事があるレースのみ記事詳細へリンク（`articleSlug`。開催日 YAML の指定、または注目レース記事の `venue` + `raceNumber` で自動紐付け）
-    4. ダミーデータであることを `DummyBadge` で明示
+  - **predict**（開催日カード一覧）
+    1. `PredictList` が開催日を新しい順にカード表示する（サムネイル・開催日・競馬場。10件/ページ＋`Pagination`）
+    2. カードクリックで `/race-predict/{YYYYMMDD}` へ遷移する
+    3. 開催データが 0 件のときは「開催データはまだありません。」を表示
+  - **predict の開催日ページ**（`PredictDay`）
+    1. URL の `YYYYMMDD` に対応する開催データを読む
+    2. 競馬場タブで場を切り替え、レース行に番号・クラス・レース名・コース・頭数・予想印・買い目を表示する
+    3. 同じ日付の詳細記事で `venue` と `raceNumber` が一致するレースだけ、`/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` へリンクする
+    4. 該当日が無いときは `NotFound` を表示する
 
 #### 2.2.3 カテゴリ・タグ管理
 
@@ -105,7 +109,7 @@
 - 入力：Front Matter の `category` / `tags`
 - 出力：一覧・詳細画面での分類表示、将来のフィルタ拡張
 - 処理内容：
-  - `category`：`blog` / `study` / `analysis` / `predict` で記事のルート（/blog / /study / /analysis / /predict）を決定（`CATEGORY_CONFIG`）
+  - `category`：`blog` / `study` / `analysis` の記事ルートは `/blog` / `/study` / `/analysis`。`predict` の一覧ルートは `/race-predict`、詳細は `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R`（`CATEGORY_CONFIG`）
   - `tags`：文字列配列。記事詳細・一覧カードで表示。タグ別一覧は将来拡張
 - 設計方針：DBを使わずファイルベースで拡張可能とする
 
@@ -239,9 +243,11 @@ App
 | 画面ルート | ページコンポーネント | 実体 |
 | ---------- | -------------------- | ---- |
 | `/blog` `/study` `/analysis` | `BlogList` / `StudyList` / `AnalysisList` | `ArticleList` に委譲 |
-| `/blog/:article_name` `/study/:article_name` `/predict/:article_name` | `BlogPost` / `StudyPost` / `PredictPost` | `ArticlePost` に委譲 |
+| `/blog/:article_name` `/study/:article_name` | `BlogPost` / `StudyPost` | `ArticlePost` に委譲 |
 | `/analysis/:article_name` | `AnalysisPost` | レース情報ヘッダー付きの独自実装 |
-| `/predict` | `PredictList` | 開催データ駆動の独自実装 |
+| `/race-predict` | `PredictList` | 開催日カード一覧 |
+| `/race-predict/:date` | `PredictDay` | その日の競馬場・レースの予想印 |
+| `/race-predict/:date/:race` | `PredictPost` | `ArticlePost` に委譲。`:race` は `{venueSlug}-{number}R` |
 
 ### 3.2 コンポーネント一覧
 
@@ -263,11 +269,12 @@ App
 | BlogList | ブログ記事一覧（`ArticleList` へ委譲） | ブログ一覧、記事一覧表示 |
 | StudyList | 研究記事一覧（`ArticleList` へ委譲） | 競馬研究一覧、記事一覧表示 |
 | AnalysisList | レース分析記事一覧（`ArticleList` へ委譲） | レース分析一覧、記事一覧表示 |
-| PredictList | 開催日・場単位のレース予想一覧 | レース予想一覧、記事一覧表示 |
+| PredictList | 開催日カードのレース予想一覧 | レース予想一覧、記事一覧表示 |
+| PredictDay | 指定日の競馬場・レースの予想印と買い目 | レース予想ページ |
 | BlogPost | ブログ記事詳細（`ArticlePost` へ委譲） | ブログ記事、記事表示、OGP表示 |
 | StudyPost | 研究記事詳細（`ArticlePost` へ委譲） | 競馬研究記事、記事表示、OGP表示 |
 | AnalysisPost | レース分析記事詳細（レース名・レース情報） | レース分析記事、記事表示、OGP表示 |
-| PredictPost | レース予想記事詳細（`ArticlePost` へ委譲） | レース予想記事、記事表示、OGP表示 |
+| PredictPost | レース予想詳細（`ArticlePost` へ委譲） | レース予想詳細、記事表示、OGP表示 |
 | Profile | プロフィール本文とポートフォリオへの導線 | プロフィール |
 | HitokuchiPortfolio | 出資馬マトリクス・分析タブ | 一口馬主ポートフォリオ |
 | AibaDiary | 出資馬ごとの紹介／日記／血統／分析タブ | 愛馬日記 |
@@ -298,7 +305,7 @@ App
 | frontMatter（utils） | YAML Front Matter 解析（`js-yaml`） | 記事表示、記事一覧表示 |
 | site（utils） | サイト名・説明・カテゴリ設定・絶対URL | OGP表示、全画面 |
 | routes（utils） | 公開ルート一覧（プリレンダー・sitemap 用） | ビルド、SEO |
-| predictMeetings（data） | レース予想一覧の開催データ（`articles/predict/{YYYY-MM-DD}` から読込） | レース予想一覧 |
+| predictMeetings（data） | レース予想の開催データ（`articles/predict/{YYYY-MM-DD}` から読込） | レース予想一覧、レース予想ページ |
 | hitokuchiHorses（data） | クラブ定義と出資馬記事の読込 | 一口馬主ポートフォリオ、愛馬日記 |
 | bakenPortfolio（data） | 月次 article の読込・集計 | 馬券ポートフォリオ、月次馬券成績 |
 
@@ -315,8 +322,9 @@ App
 | /study/:article_name | StudyPost |
 | /analysis | AnalysisList |
 | /analysis/:article_name | AnalysisPost |
-| /predict | PredictList |
-| /predict/:article_name | PredictPost |
+| /race-predict | PredictList |
+| /race-predict/:date | PredictDay |
+| /race-predict/:date/:race | PredictPost |
 | /profile | Profile |
 | /profile/hitokuchi-portfolio | HitokuchiPortfolio |
 | /profile/hitokuchi-portfolio/:bamei | AibaDiary |
@@ -351,3 +359,4 @@ App
 | 2026-08-17 | 2.15 | 愛馬日記の分析タブに一口の回収率を追加 | βshort |
 | 2026-08-18 | 2.16 | Google Analytics 4（`GoogleAnalytics`）を追加 | βshort |
 | 2026-08-22 | 2.17 | 愛馬日記ヘッダーに英名（`englishName`）を表示 | βshort |
+| 2026-10-24 | 2.18 | レース予想を一覧・開催日（`PredictDay`）・詳細の3画面にし、URL を `/race-predict` 配下に変更 | βshort |

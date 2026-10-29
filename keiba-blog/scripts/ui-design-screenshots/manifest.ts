@@ -110,11 +110,20 @@ export const SCREENSHOT_TARGETS: ScreenshotTarget[] = [
   },
   {
     kind: "page",
+    docPath: "predict/day.md",
+    entry: {
+      storyId: "pages-predict-day--default",
+      filename: "predict-day-storybook.png",
+      label: "レース予想ページ",
+    },
+  },
+  {
+    kind: "page",
     docPath: "predict/article.md",
     entry: {
       storyId: "pages-predict-article--default",
       filename: "predict-article-storybook.png",
-      label: "レース予想記事",
+      label: "レース予想詳細",
     },
   },
   {

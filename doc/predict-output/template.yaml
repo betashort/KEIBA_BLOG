@@ -7,7 +7,7 @@
 # finishRank: 着順予想（1 が 1 着予想）。レース内で一意、1..runners
 # placeProb: 3 着以内確率（0 以上 1 以下）
 # marks は README の印ルールで horses から算出する。キーは必ず引用符。
-# 〇 は U+3007。articleSlug は出力しない。
+# 〇 は U+3007。articleSlug は出力しない。詳細記事のフォルダ名はブログ側で {venueSlug}-{number}R とする。
 
 version: 1
 date: "YYYY-MM-DD"

@@ -18,10 +18,9 @@ meetings:
         bets:
           - "単勝 1"
           - "馬連 1-2"
-        # 注目レースの詳細記事がある場合。同じ日付フォルダ直下の {articleSlug}/index.md
-        articleSlug: "sample-predict"
 ---
 
 `template` フォルダは読み込み対象外です。
 コピーして `src/articles/predict/{YYYY-MM-DD}/index.md` として使います。
-注目レースの詳細は `src/articles/predict/{YYYY-MM-DD}/{articleSlug}/index.md` に置きます。
+注目レースの詳細は `src/articles/predict/{YYYY-MM-DD}/{venueSlug}-{number}R/index.md` に置きます（例: `kyoto-11R`）。
+公開 URL は `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` です。

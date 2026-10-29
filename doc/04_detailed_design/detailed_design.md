@@ -184,8 +184,9 @@ keiba-blog/
 | `/study/:article_name` | StudyPost | `pages/StudyPost.tsx` |
 | `/analysis` | AnalysisList | `pages/AnalysisList.tsx` |
 | `/analysis/:article_name` | AnalysisPost | `pages/AnalysisPost.tsx` |
-| `/predict` | PredictList | `pages/PredictList.tsx` |
-| `/predict/:article_name` | PredictPost | `pages/PredictPost.tsx` |
+| `/race-predict` | PredictList | `pages/PredictList.tsx` |
+| `/race-predict/:date` | PredictDay | `pages/PredictDay.tsx` |
+| `/race-predict/:date/:race` | PredictPost | `pages/PredictPost.tsx` |
 | `/profile` | Profile | `pages/Profile.tsx` |
 | `/profile/hitokuchi-portfolio` | HitokuchiPortfolio | `pages/HitokuchiPortfolio.tsx` |
 | `/profile/hitokuchi-portfolio/:bamei` | AibaDiary | `pages/AibaDiary.tsx` |
@@ -201,7 +202,8 @@ keiba-blog/
 BlogList  → ArticleList(category="blog")
 BlogPost  → ArticlePost(category="blog")
 StudyList → ArticleList(category="study")
-…（analysis / predict も同様）
+AnalysisList → ArticleList(category="analysis")
+PredictList は開催日カードの独自実装。PredictDay はその日の予想印。PredictPost は日付と `{venueSlug}-{number}R` で記事を引く。
 ```
 
 <div style="page-break-after: always;"></div>
@@ -376,7 +378,7 @@ interface Article {
 
 ### 7.2 記事一覧（ArticleList）
 
-- **URL:** `/blog`, `/study`, `/analysis`, `/predict`
+- **URL:** `/blog`, `/study`, `/analysis`, `/race-predict`
 - **データ:** `getArticlesByCategory(category)`
 - **空状態:** 「記事はまだありません。」
 - **広告:** 一覧上下に `AdUnit` 各 1 つ
@@ -591,3 +593,5 @@ docker compose exec node sh -c "cd keiba-blog && npm run build"
 | 2026-08-22 | 1.5 | 愛馬日記の `{bamei}` を英名 kebab-case（例: `flashing-ruby`）に変更 | βshort |
 | 2026-08-23 | 1.6 | プロフィールに作者アイコン・表示名・SNSを追加 | βshort |
 | 2026-08-23 | 1.7 | プロフィールに肩書き・スタンス・好み・免責を追加 | βshort |
+| 2026-10-24 | 1.8 | 基本設計のレース予想 URL 変更を差分として記録（実装は未変更） | βshort |
+| 2026-10-24 | 1.9 | レース予想を `/race-predict` の一覧・開催日・詳細として実装 | βshort |

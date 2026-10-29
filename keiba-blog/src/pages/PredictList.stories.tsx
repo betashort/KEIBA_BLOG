@@ -3,8 +3,8 @@ import PredictList from "./PredictList";
 import { withAppLayout } from "../storybook/decorators";
 
 /**
- * UI設計: predict/list.md — レース予想一覧 `/predict`
- * 年・開催日・競馬場タブ。レース行に予想印・買い目。詳細記事は任意リンク
+ * UI設計: predict/list.md — レース予想一覧 `/race-predict`
+ * 開催日カード（サムネ・日付・競馬場）＋ 10件/ページのページネーション
  */
 const meta = {
   title: "Pages/Predict/List",
@@ -12,11 +12,11 @@ const meta = {
   tags: ["autodocs"],
   decorators: [withAppLayout],
   parameters: {
-    initialEntries: ["/predict"],
+    initialEntries: ["/race-predict"],
     docs: {
       description: {
         component:
-          "開催日・競馬場単位のレース予想一覧。予想印（◎〇▲△★）・買い目・詳細記事リンク（UI_design/predict/list.md）。",
+          "開催日ごとのレース予想ページを新しい順のカードで表示する（UI_design/predict/list.md）。",
       },
     },
   },
@@ -26,5 +26,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "開催日・場のレース一覧",
+  name: "開催日カード",
 };

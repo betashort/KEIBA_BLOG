@@ -1,6 +1,11 @@
 import { marked } from "marked";
 import { parseFrontMatter } from "./frontMatter";
-import type { ArticleCategory } from "./site";
+import {
+  compactDate,
+  predictRacePath,
+  raceSegment,
+} from "./predictUrl";
+import { CATEGORY_CONFIG, type ArticleCategory } from "./site";
 
 export interface ArticleFrontMatter {
   title: string;
@@ -26,6 +31,8 @@ export interface Article {
   category: ArticleCategory;
   frontMatter: ArticleFrontMatter;
   contentHtml: string;
+  /** レース予想詳細の開催日フォルダ（YYYY-MM-DD） */
+  predictDate?: string;
 }
 
 const articleModules = import.meta.glob(
@@ -44,12 +51,18 @@ const articleModules = import.meta.glob(
 
 function parseArticlePath(
   path: string,
-): { category: ArticleCategory; slug: string } | null {
+): { category: ArticleCategory; slug: string; predictDate?: string } | null {
+  if (path.includes("/template/")) return null;
+
   const predictRace = path.match(
-    /articles\/predict\/\d{4}-\d{2}-\d{2}\/([^/]+)\/index\.md$/,
+    /articles\/predict\/(\d{4}-\d{2}-\d{2})\/([^/]+)\/index\.md$/,
   );
   if (predictRace) {
-    return { category: "predict", slug: predictRace[1] };
+    return {
+      category: "predict",
+      slug: predictRace[2],
+      predictDate: predictRace[1],
+    };
   }
 
   const match = path.match(
@@ -126,6 +139,7 @@ function parseArticle(path: string, raw: string): Article | null {
     category: parsed.category,
     frontMatter,
     contentHtml: marked.parse(content, { async: false }) as string,
+    predictDate: parsed.predictDate,
   };
 }
 
@@ -159,6 +173,37 @@ export function getArticle(
   return getAllArticles().find(
     (article) => article.category === category && article.slug === slug,
   );
+}
+
+export function getArticlePath(article: Article): string {
+  if (
+    article.category === "predict" &&
+    article.predictDate &&
+    article.frontMatter.venue &&
+    article.frontMatter.raceNumber
+  ) {
+    const compact = compactDate(article.predictDate);
+    const segment = raceSegment(
+      article.frontMatter.venue,
+      article.frontMatter.raceNumber,
+    );
+    if (compact && segment) return predictRacePath(compact, segment);
+  }
+  return `${CATEGORY_CONFIG[article.category].path}/${article.slug}`;
+}
+
+export function getPredictArticle(
+  compact: string,
+  raceKey: string,
+): Article | undefined {
+  return getAllArticles().find((article) => {
+    if (article.category !== "predict" || !article.predictDate) return false;
+    if (compactDate(article.predictDate) !== compact) return false;
+    const venue = article.frontMatter.venue;
+    const raceNumber = article.frontMatter.raceNumber;
+    if (!venue || !raceNumber) return false;
+    return raceSegment(venue, raceNumber) === raceKey;
+  });
 }
 
 const TOKYO_TIME_ZONE = "Asia/Tokyo";

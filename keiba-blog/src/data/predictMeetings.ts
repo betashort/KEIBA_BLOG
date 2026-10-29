@@ -1,6 +1,12 @@
 /** レース予想一覧。開催データは `src/articles/predict/{YYYY-MM-DD}/index.md` */
 
 import { parseFrontMatter } from "../utils/frontMatter";
+import {
+  compactDate,
+  displaySlashDate,
+  predictRacePath,
+  raceSegment,
+} from "../utils/predictUrl";
 
 export type PredictMark = "◎" | "〇" | "▲" | "△" | "★";
 
@@ -14,15 +20,25 @@ export interface PredictRace {
   runners: number;
   marks: Partial<Record<PredictMark, string>>;
   bets: string[];
-  /** 詳細記事がある場合の slug（/predict/{slug}） */
-  articleSlug?: string;
+  /** 詳細記事がある場合の公開パス */
+  detailPath?: string;
 }
 
 export interface PredictMeeting {
   year: number;
-  date: string; // M/D
+  isoDate: string;
+  compactDate: string;
+  /** カード・見出し用。`2026/10/25` */
+  label: string;
   venue: string;
   races: PredictRace[];
+}
+
+export interface PredictDaySummary {
+  isoDate: string;
+  compactDate: string;
+  label: string;
+  venues: string[];
 }
 
 const meetingModules = import.meta.glob("../articles/predict/*/index.md", {
@@ -55,28 +71,29 @@ function toPositiveInt(value: unknown): number | null {
   return n;
 }
 
-function formatListDate(isoDate: string): string {
-  const match = isoDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!match) return isoDate;
-  return `${Number(match[2])}/${Number(match[3])}`;
-}
-
 function raceArticleKey(isoDate: string, venue: string, raceNumber: number): string {
   return `${isoDate}\0${venue}\0${raceNumber}`;
 }
 
-function loadRaceArticleSlugs(): Map<string, string> {
-  const slugs = new Map<string, string>();
+function loadRaceDetailPaths(): Map<string, string> {
+  const paths = new Map<string, string>();
   for (const [path, raw] of Object.entries(raceArticleModules)) {
+    if (path.includes("/template/")) continue;
     const match = path.match(RACE_ARTICLE_RE);
-    if (!match || match[2] === "template") continue;
+    if (!match) continue;
     const { data } = parseFrontMatter(raw);
     if (typeof data.venue !== "string") continue;
     const raceNumber = toPositiveInt(data.raceNumber);
     if (raceNumber === null) continue;
-    slugs.set(raceArticleKey(match[1], data.venue, raceNumber), match[2]);
+    const segment = raceSegment(data.venue, raceNumber);
+    const compact = compactDate(match[1]);
+    if (!segment || !compact) continue;
+    paths.set(
+      raceArticleKey(match[1], data.venue, raceNumber),
+      predictRacePath(compact, segment),
+    );
   }
-  return slugs;
+  return paths;
 }
 
 function parseMarks(value: unknown): Partial<Record<PredictMark, string>> {
@@ -101,7 +118,7 @@ function parseRace(
   value: unknown,
   isoDate: string,
   venue: string,
-  articleSlugs: Map<string, string>,
+  detailPaths: Map<string, string>,
 ): PredictRace | null {
   const rec = asRecord(value);
   if (!rec) return null;
@@ -117,9 +134,6 @@ function parseRace(
     return null;
   }
 
-  const explicitSlug =
-    typeof rec.articleSlug === "string" ? rec.articleSlug : undefined;
-
   return {
     number,
     className: rec.className,
@@ -128,22 +142,22 @@ function parseRace(
     runners,
     marks: parseMarks(rec.marks),
     bets: parseBets(rec.bets),
-    articleSlug:
-      explicitSlug ?? articleSlugs.get(raceArticleKey(isoDate, venue, number)),
+    detailPath: detailPaths.get(raceArticleKey(isoDate, venue, number)),
   };
 }
 
 function parseMeetingFile(
   path: string,
   raw: string,
-  articleSlugs: Map<string, string>,
+  detailPaths: Map<string, string>,
 ): PredictMeeting[] {
   const isoDate = path.match(DATE_FOLDER_RE)?.[1];
-  if (!isoDate) return [];
+  const compact = isoDate ? compactDate(isoDate) : undefined;
+  if (!isoDate || !compact) return [];
 
   const { data } = parseFrontMatter(raw);
   const year = Number(isoDate.slice(0, 4));
-  const date = formatListDate(isoDate);
+  const label = displaySlashDate(isoDate);
   if (!Array.isArray(data.meetings)) return [];
 
   return data.meetings.flatMap((item) => {
@@ -152,74 +166,57 @@ function parseMeetingFile(
     const venue = rec.venue;
     const races = Array.isArray(rec.races)
       ? rec.races
-          .map((race) => parseRace(race, isoDate, venue, articleSlugs))
+          .map((race) => parseRace(race, isoDate, venue, detailPaths))
           .filter((race): race is PredictRace => race !== null)
           .sort((a, b) => a.number - b.number)
       : [];
-    return [{ year, date, venue, races }];
+    return [{ year, isoDate, compactDate: compact, label, venue, races }];
   });
 }
 
 function loadMeetings(): PredictMeeting[] {
-  const articleSlugs = loadRaceArticleSlugs();
+  const detailPaths = loadRaceDetailPaths();
   return Object.entries(meetingModules)
-    .flatMap(([path, raw]) => parseMeetingFile(path, raw, articleSlugs))
-    .sort((a, b) => {
-      const byYear = b.year - a.year;
-      if (byYear !== 0) return byYear;
-      return compareListDate(b.date, a.date);
-    });
-}
-
-function compareListDate(a: string, b: string): number {
-  const [aMonth, aDay] = a.split("/").map(Number);
-  const [bMonth, bDay] = b.split("/").map(Number);
-  return aMonth - bMonth || aDay - bDay;
+    .filter(([path]) => !path.includes("/template/"))
+    .flatMap(([path, raw]) => parseMeetingFile(path, raw, detailPaths))
+    .sort((a, b) => b.compactDate.localeCompare(a.compactDate));
 }
 
 export const PREDICT_MEETINGS: PredictMeeting[] = loadMeetings();
 
-export function getPredictYears(meetings = PREDICT_MEETINGS): number[] {
-  return [...new Set(meetings.map((meeting) => meeting.year))].sort(
-    (a, b) => b - a,
+export function getPredictDays(meetings = PREDICT_MEETINGS): PredictDaySummary[] {
+  const byDate = new Map<string, PredictDaySummary>();
+  for (const meeting of meetings) {
+    const existing = byDate.get(meeting.compactDate);
+    if (!existing) {
+      byDate.set(meeting.compactDate, {
+        isoDate: meeting.isoDate,
+        compactDate: meeting.compactDate,
+        label: meeting.label,
+        venues: [meeting.venue],
+      });
+      continue;
+    }
+    if (!existing.venues.includes(meeting.venue)) {
+      existing.venues.push(meeting.venue);
+    }
+  }
+  return [...byDate.values()].sort((a, b) =>
+    b.compactDate.localeCompare(a.compactDate),
   );
 }
 
-export function getPredictDates(
-  year: number,
+export function getPredictDay(
+  compact: string,
   meetings = PREDICT_MEETINGS,
-): string[] {
-  return [
-    ...new Set(
-      meetings.filter((meeting) => meeting.year === year).map((m) => m.date),
-    ),
-  ].sort((a, b) => compareListDate(b, a));
-}
-
-export function getPredictVenues(
-  year: number,
-  date: string,
-  meetings = PREDICT_MEETINGS,
-): string[] {
-  return [
-    ...new Set(
-      meetings
-        .filter((meeting) => meeting.year === year && meeting.date === date)
-        .map((m) => m.venue),
-    ),
-  ];
-}
-
-export function getPredictMeeting(
-  year: number,
-  date: string,
-  venue: string,
-  meetings = PREDICT_MEETINGS,
-): PredictMeeting | undefined {
-  return meetings.find(
-    (meeting) =>
-      meeting.year === year &&
-      meeting.date === date &&
-      meeting.venue === venue,
+): { label: string; isoDate: string; meetings: PredictMeeting[] } | undefined {
+  const dayMeetings = meetings.filter(
+    (meeting) => meeting.compactDate === compact,
   );
+  if (dayMeetings.length === 0) return undefined;
+  return {
+    label: dayMeetings[0].label,
+    isoDate: dayMeetings[0].isoDate,
+    meetings: dayMeetings,
+  };
 }

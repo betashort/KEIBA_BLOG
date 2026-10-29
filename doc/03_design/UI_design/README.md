@@ -20,8 +20,9 @@
 | 競馬研究記事 | `/study/{article_name}` | [study/article.md](./study/article.md) |
 | レース分析一覧 | `/analysis` | [analysis/list.md](./analysis/list.md) |
 | レース分析記事 | `/analysis/{article_name}` | [analysis/article.md](./analysis/article.md) |
-| レース予想一覧 | `/predict` | [predict/list.md](./predict/list.md) |
-| レース予想記事 | `/predict/{article_name}` | [predict/article.md](./predict/article.md) |
+| レース予想一覧 | `/race-predict` | [predict/list.md](./predict/list.md) |
+| レース予想ページ | `/race-predict/{YYYYMMDD}` | [predict/day.md](./predict/day.md) |
+| レース予想詳細 | `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R` | [predict/article.md](./predict/article.md) |
 | プロフィール | `/profile` | [profile/profile.md](./profile/profile.md) |
 | 一口馬主ポートフォリオ | `/profile/hitokuchi-portfolio` | [profile/hitokuchi-portfolio.md](./profile/hitokuchi-portfolio.md) |
 | 愛馬日記 | `/profile/hitokuchi-portfolio/{bamei}` | [profile/aiba-diary.md](./profile/aiba-diary.md) |
@@ -32,8 +33,8 @@
 
 | パターン | 対象 | 概要 |
 | -------- | ---- | ---- |
-| 新着カード一覧 | blog / study / analysis | サムネ・タイトル・公開日・タグ。10件/ページ＋ページネーション |
-| 開催日・場のレース一覧 | predict | 年・開催日・競馬場タブ。レース行に予想印・買い目。詳細記事は任意リンク |
+| 新着カード一覧 | blog / study / analysis / predict 一覧 | サムネ・タイトル・日付。10件/ページ＋ページネーション。predict は開催日カード |
+| 開催日のレース一覧 | predict 開催日 | 競馬場タブ。レース行に予想印・買い目。詳細記事は任意リンク |
 
 ## 各文書の記載方針
 
@@ -91,3 +92,4 @@ docker compose exec node sh -c "cd keiba-blog && STORYBOOK_URL=http://127.0.0.1:
 | 2026-08-13 | 1.4 | 一口馬主ポートフォリオ・愛馬日記・馬券ポートフォリオを追加 | βshort |
 | 2026-08-13 | 1.5 | 愛馬日記の文書名を aiba-diary.md に変更 | βshort |
 | 2026-08-17 | 1.6 | 月次馬券成績を追加 | βshort |
+| 2026-10-24 | 1.7 | レース予想を一覧・開催日・詳細の3画面にし、URL を `/race-predict` 配下に変更 | βshort |

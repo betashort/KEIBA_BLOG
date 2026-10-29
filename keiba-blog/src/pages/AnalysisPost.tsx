@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import AdUnit from "../component/AdUnit";
+// import AdUnit from "../component/AdUnit";
 import Breadcrumb from "../component/Breadcrumb";
 import MetaTags from "../component/MetaTags";
 import NotFound from "./NotFound";
@@ -57,12 +57,12 @@ export default function AnalysisPost() {
             <p className="mt-2 text-sm text-gray-600">{raceInfo}</p>
           ) : null}
         </header>
-        <AdUnit />
+        {/* <AdUnit /> */}
         <div
           className="article-body prose prose-gray max-w-none"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
-        <AdUnit />
+        {/* <AdUnit /> */}
       </article>
     </>
   );

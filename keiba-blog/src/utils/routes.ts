@@ -1,7 +1,12 @@
 import { getBakenMonths } from "../data/bakenPortfolio";
 import { HITOKUCHI_HORSES } from "../data/hitokuchiHorses";
-import { getAllArticles, getArticlesByCategory } from "./markdown";
-import { CATEGORY_CONFIG, type ArticleCategory } from "./site";
+import { getPredictDays } from "../data/predictMeetings";
+import {
+  getAllArticles,
+  getArticlePath,
+  getArticlesByCategory,
+} from "./markdown";
+import { type ArticleCategory } from "./site";
 
 export interface PublicRoute {
   path: string;
@@ -65,9 +70,9 @@ export function getPublicRoutes(): PublicRoute[] {
       priority: "0.8",
     },
     {
-      path: "/predict",
+      path: "/race-predict",
       includeInSitemap: true,
-      lastmod: latestArticleDate("predict"),
+      lastmod: getPredictDays()[0]?.isoDate ?? latestArticleDate("predict"),
       changefreq: "weekly",
       priority: "0.8",
     },
@@ -94,9 +99,19 @@ export function getPublicRoutes(): PublicRoute[] {
 
   for (const article of getAllArticles()) {
     routes.push({
-      path: `${CATEGORY_CONFIG[article.category].path}/${article.slug}`,
+      path: getArticlePath(article),
       includeInSitemap: article.frontMatter.noindex !== true,
       lastmod: article.frontMatter.date,
+      changefreq: "monthly",
+      priority: "0.7",
+    });
+  }
+
+  for (const day of getPredictDays()) {
+    routes.push({
+      path: `/race-predict/${day.compactDate}`,
+      includeInSitemap: true,
+      lastmod: day.isoDate,
       changefreq: "monthly",
       priority: "0.7",
     });

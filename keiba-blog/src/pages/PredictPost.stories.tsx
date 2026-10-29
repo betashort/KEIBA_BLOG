@@ -4,7 +4,7 @@ import PredictPost from "./PredictPost";
 import { withAppLayout } from "../storybook/decorators";
 
 /**
- * UI設計: predict/article.md — レース予想記事 `/predict/{article_name}`
+ * UI設計: predict/article.md — レース予想詳細 `/race-predict/{YYYYMMDD}/{venueSlug}-{number}R`
  */
 const meta = {
   title: "Pages/Predict/Article",
@@ -15,13 +15,13 @@ const meta = {
     docs: {
       description: {
         component:
-          "ブログ記事と同様。パンくずの親は「レース予想」（UI_design/predict/article.md）。",
+          "パンくずはホーム > レース予想 > 開催日 > 記事タイトル（UI_design/predict/article.md）。",
       },
     },
   },
   render: () => (
     <Routes>
-      <Route path="/predict/:article_name" element={<PredictPost />} />
+      <Route path="/race-predict/:date/:race" element={<PredictPost />} />
     </Routes>
   ),
 } satisfies Meta<typeof PredictPost>;
@@ -32,13 +32,13 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   name: "通常",
   parameters: {
-    initialEntries: ["/predict/sample-predict"],
+    initialEntries: ["/race-predict/20250719/kokura-11R"],
   },
 };
 
 export const NotFoundArticle: Story = {
   name: "記事なし（404）",
   parameters: {
-    initialEntries: ["/predict/does-not-exist"],
+    initialEntries: ["/race-predict/20250719/kyoto-11R"],
   },
 };

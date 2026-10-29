@@ -13,6 +13,7 @@ import BlogList from "./pages/BlogList.tsx";
 import StudyList from "./pages/StudyList.tsx";
 import AnalysisList from "./pages/AnalysisList.tsx";
 import PredictList from "./pages/PredictList.tsx";
+import PredictDay from "./pages/PredictDay.tsx";
 import BlogPost from "./pages/BlogPost.tsx";
 import StudyPost from "./pages/StudyPost.tsx";
 import AnalysisPost from "./pages/AnalysisPost.tsx";
@@ -32,8 +33,12 @@ export default function App() {
           <Route path="/study/:article_name" element={<StudyPost />} />
           <Route path="/analysis" element={<AnalysisList />} />
           <Route path="/analysis/:article_name" element={<AnalysisPost />} />
-          <Route path="/predict" element={<PredictList />} />
-          <Route path="/predict/:article_name" element={<PredictPost />} />
+          <Route path="/race-predict" element={<PredictList />} />
+          <Route path="/race-predict/:date" element={<PredictDay />} />
+          <Route
+            path="/race-predict/:date/:race"
+            element={<PredictPost />}
+          />
           <Route path="/profile" element={<Profile />} />
           <Route
             path="/profile/hitokuchi-portfolio"

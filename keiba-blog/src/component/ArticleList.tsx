@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import BlogCard from "./BlogCard";
-import AdUnit from "./AdUnit";
+// import AdUnit from "./AdUnit";
 import MetaTags from "./MetaTags";
 import Pagination from "./Pagination";
 import { getArticlesByCategory } from "../utils/markdown";
@@ -38,7 +38,7 @@ export default function ArticleList({ category }: ArticleListProps) {
       />
       <div className="mx-auto max-w-4xl px-4 py-8">
         <h1 className="mb-6 text-2xl font-bold text-gray-900">{config.label}</h1>
-        <AdUnit />
+        {/* <AdUnit /> */}
         {articles.length === 0 ? (
           <p className="text-gray-600">記事はまだありません。</p>
         ) : (
@@ -57,7 +57,7 @@ export default function ArticleList({ category }: ArticleListProps) {
             />
           </>
         )}
-        <AdUnit />
+        {/* <AdUnit /> */}
       </div>
     </>
   );

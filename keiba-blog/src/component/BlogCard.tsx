@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Article } from "../utils/markdown";
-import { formatDate } from "../utils/markdown";
-import { CATEGORY_CONFIG } from "../utils/site";
+import { formatDate, getArticlePath } from "../utils/markdown";
 
 interface BlogCardProps {
   article: Article;
@@ -13,9 +12,8 @@ export default function BlogCard({
   article,
   showExcerpt = false,
 }: BlogCardProps) {
-  const { frontMatter, slug, category } = article;
-  const basePath = CATEGORY_CONFIG[category].path;
-  const articlePath = `${basePath}/${slug}`;
+  const { frontMatter } = article;
+  const articlePath = getArticlePath(article);
 
   return (
     <article className="py-4">
