@@ -2,13 +2,13 @@
 title: "フラッシングルビー"
 englishName: "Flashing Ruby"
 date: "2026-08-17"
-description: "DMMバヌーシーの2歳牝馬。父アドマイヤマーズ、栗東・辻野厩舎。2026年7月の小倉新馬戦で5着。"
+description: "DMMバヌーシーの2歳牝馬。父アドマイヤマーズ、栗東・辻野厩舎。3戦0勝。2026年10月の京都未勝利（ダート1800m）は6着。"
 sex: "牝"
 clubId: "dmm"
 stable: "栗東・辻野泰之厩舎"
-prizeMan: 78
+prizeMan: 167
 className: "未勝利"
-record: "1戦0勝"
+record: "3戦0勝"
 birthDate: "2024-01-29"
 breeder: "社台コーポレーション白老ファーム"
 rearingFarm: "社台ファーム"
