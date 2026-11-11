@@ -15,7 +15,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "パンくずはホーム > レース予想 > 開催日 > 記事タイトル（UI_design/predict/article.md）。",
+          "パンくず、印・買い目、注目馬、出馬表、本文（UI_design/predict/article.md）。",
       },
     },
   },

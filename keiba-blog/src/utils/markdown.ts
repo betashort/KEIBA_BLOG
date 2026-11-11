@@ -7,6 +7,29 @@ import {
 } from "./predictUrl";
 import { CATEGORY_CONFIG, type ArticleCategory } from "./site";
 
+const PREDICT_MARKS = ["◎", "〇", "▲", "△", "★"] as const;
+
+export type PredictArticleMark = (typeof PREDICT_MARKS)[number];
+
+export interface PredictFeaturedHorse {
+  number: number;
+  name: string;
+  note: string;
+}
+
+export interface PredictEntry {
+  number: number;
+  name: string;
+  speed: number;
+  stamina: number;
+  power: number;
+  guts: number;
+  intelligence: number;
+  timeIndex: number;
+  matchIndex: number;
+  rating: number;
+}
+
 export interface ArticleFrontMatter {
   title: string;
   date: string;
@@ -24,6 +47,14 @@ export interface ArticleFrontMatter {
   venue?: string;
   /** レース予想（注目レース）向け: レース番号 */
   raceNumber?: number;
+  /** レース予想詳細: 予想印 */
+  marks?: Partial<Record<PredictArticleMark, string>>;
+  /** レース予想詳細: 買い目 */
+  bets?: string[];
+  /** レース予想詳細: 注目馬 */
+  featured?: PredictFeaturedHorse[];
+  /** レース予想詳細: 出馬表 */
+  entries?: PredictEntry[];
 }
 
 export interface Article {
@@ -119,7 +150,111 @@ function normalizeFrontMatter(
       typeof data.raceNumber === "number" && Number.isInteger(data.raceNumber)
         ? data.raceNumber
         : undefined,
+    marks: parsePredictMarks(data.marks),
+    bets: parseStringList(data.bets),
+    featured: parseFeatured(data.featured),
+    entries: parseEntries(data.entries),
   };
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  return value as Record<string, unknown>;
+}
+
+function finiteNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function positiveInt(value: unknown): number | null {
+  const n = finiteNumber(value);
+  if (n === null || !Number.isInteger(n) || n <= 0) return null;
+  return n;
+}
+
+function parsePredictMarks(
+  value: unknown,
+): Partial<Record<PredictArticleMark, string>> | undefined {
+  const rec = asRecord(value);
+  if (!rec) return undefined;
+  const marks: Partial<Record<PredictArticleMark, string>> = {};
+  for (const mark of PREDICT_MARKS) {
+    const horse = rec[mark];
+    if (typeof horse === "string" && horse.trim()) marks[mark] = horse;
+  }
+  return Object.keys(marks).length > 0 ? marks : undefined;
+}
+
+function parseStringList(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const items = value.filter(
+    (item): item is string => typeof item === "string" && item.trim() !== "",
+  );
+  return items.length > 0 ? items : undefined;
+}
+
+function parseFeatured(value: unknown): PredictFeaturedHorse[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const horses = value.flatMap((item) => {
+    const rec = asRecord(item);
+    if (!rec) return [];
+    const number = positiveInt(rec.number);
+    if (number === null || typeof rec.name !== "string" || !rec.name.trim()) {
+      return [];
+    }
+    const note = typeof rec.note === "string" ? rec.note : "";
+    return [{ number, name: rec.name, note }];
+  });
+  return horses.length > 0 ? horses : undefined;
+}
+
+function parseEntries(value: unknown): PredictEntry[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const entries = value.flatMap((item) => {
+    const rec = asRecord(item);
+    if (!rec) return [];
+    const number = positiveInt(rec.number);
+    const speed = finiteNumber(rec.speed);
+    const stamina = finiteNumber(rec.stamina);
+    const power = finiteNumber(rec.power);
+    const guts = finiteNumber(rec.guts);
+    const intelligence = finiteNumber(rec.intelligence);
+    const timeIndex = finiteNumber(rec.timeIndex);
+    const matchIndex = finiteNumber(rec.matchIndex);
+    const rating = finiteNumber(rec.rating);
+    if (
+      number === null ||
+      typeof rec.name !== "string" ||
+      !rec.name.trim() ||
+      speed === null ||
+      stamina === null ||
+      power === null ||
+      guts === null ||
+      intelligence === null ||
+      timeIndex === null ||
+      matchIndex === null ||
+      rating === null
+    ) {
+      return [];
+    }
+    return [
+      {
+        number,
+        name: rec.name,
+        speed,
+        stamina,
+        power,
+        guts,
+        intelligence,
+        timeIndex,
+        matchIndex,
+        rating,
+      },
+    ];
+  });
+  return entries.length > 0
+    ? entries.sort((a, b) => a.number - b.number)
+    : undefined;
 }
 
 function parseArticle(path: string, raw: string): Article | null {

@@ -70,7 +70,10 @@ export async function captureScreenshots({
   repoRoot,
   viewport = DEFAULT_VIEWPORT,
 }: CaptureOptions): Promise<void> {
-  const entries = collectEntries();
+  const only = process.env.SCREENSHOT_STORY_ID;
+  const entries = collectEntries().filter(
+    (entry) => !only || entry.storyId === only,
+  );
   const browser: Browser = await launchBrowser();
 
   try {

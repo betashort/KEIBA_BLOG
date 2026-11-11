@@ -1,9 +1,15 @@
 import { Link, useParams } from "react-router-dom";
-// import AdUnit from "../component/AdUnit";
+import AdUnit from "../component/AdUnit";
 import Breadcrumb from "../component/Breadcrumb";
 import MetaTags from "../component/MetaTags";
 import NotFound from "./NotFound";
-import { formatDate, getPredictArticle } from "../utils/markdown";
+import {
+  formatDate,
+  getPredictArticle,
+  type PredictArticleMark,
+  type PredictEntry,
+  type PredictFeaturedHorse,
+} from "../utils/markdown";
 import {
   displaySlashDate,
   isoDateFromCompact,
@@ -15,6 +21,144 @@ import {
   DEFAULT_OG_IMAGE,
   SITE_DESCRIPTION,
 } from "../utils/site";
+
+const MARK_ORDER: PredictArticleMark[] = ["◎", "〇", "▲", "△", "★"];
+
+const ENTRY_PARAMS: {
+  key: "speed" | "stamina" | "power" | "guts" | "intelligence";
+  label: string;
+}[] = [
+  { key: "speed", label: "スピード" },
+  { key: "stamina", label: "スタミナ" },
+  { key: "power", label: "パワー" },
+  { key: "guts", label: "根性" },
+  { key: "intelligence", label: "賢さ" },
+];
+
+function PredictMarks({
+  marks,
+  bets,
+}: {
+  marks?: Partial<Record<PredictArticleMark, string>>;
+  bets?: string[];
+}) {
+  const shown = MARK_ORDER.filter((mark) => marks?.[mark]);
+  if (shown.length === 0 && !bets?.length) return null;
+
+  return (
+    <section className="mb-8">
+      <h2 className="mb-3 text-xl font-semibold text-gray-900">印・買い目</h2>
+      <dl className="space-y-2 text-sm text-gray-800">
+        {shown.length > 0 && (
+          <div>
+            <dt className="mb-1 font-medium">予想印</dt>
+            <dd className="flex flex-wrap gap-x-3 gap-y-1">
+              {shown.map((mark) => (
+                <span key={mark}>
+                  {mark} {marks?.[mark]}
+                </span>
+              ))}
+            </dd>
+          </div>
+        )}
+        {bets && bets.length > 0 && (
+          <div>
+            <dt className="mb-1 font-medium">買い目</dt>
+            <dd>{bets.join(" / ")}</dd>
+          </div>
+        )}
+      </dl>
+    </section>
+  );
+}
+
+function FeaturedHorses({ horses }: { horses?: PredictFeaturedHorse[] }) {
+  if (!horses?.length) return null;
+
+  return (
+    <section className="mb-8">
+      <h2 className="mb-3 text-xl font-semibold text-gray-900">注目馬</h2>
+      <ul className="space-y-3">
+        {horses.map((horse) => (
+          <li key={horse.number}>
+            <p className="font-semibold text-gray-900">
+              {horse.number} {horse.name}
+            </p>
+            {horse.note && (
+              <p className="text-sm leading-relaxed text-gray-700">
+                {horse.note}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function EntryTable({ entries }: { entries?: PredictEntry[] }) {
+  if (!entries?.length) return null;
+
+  const head =
+    "border border-gray-300 bg-gray-50 px-2 py-1 text-center font-semibold whitespace-nowrap";
+  const cell =
+    "border border-gray-300 px-2 py-1 text-center tabular-nums whitespace-nowrap";
+
+  return (
+    <section className="mb-8">
+      <h2 className="mb-3 text-xl font-semibold text-gray-900">出馬表</h2>
+      <div className="overflow-x-auto">
+        <table className="w-max border-collapse text-xs">
+          <thead>
+            <tr>
+              <th className={head} rowSpan={2}>
+                馬番
+              </th>
+              <th className={head} rowSpan={2}>
+                馬名
+              </th>
+              <th className={head} colSpan={ENTRY_PARAMS.length}>
+                馬パラメータ
+              </th>
+              <th className={head} rowSpan={2}>
+                タイム指数
+              </th>
+              <th className={head} rowSpan={2}>
+                対戦指数
+              </th>
+              <th className={head} rowSpan={2}>
+                レーティング
+              </th>
+            </tr>
+            <tr>
+              {ENTRY_PARAMS.map((param) => (
+                <th key={param.key} className={head}>
+                  {param.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((entry) => (
+              <tr key={entry.number}>
+                <td className={cell}>{entry.number}</td>
+                <td className={`${cell} text-left`}>{entry.name}</td>
+                {ENTRY_PARAMS.map((param) => (
+                  <td key={param.key} className={cell}>
+                    {entry[param.key]}
+                  </td>
+                ))}
+                <td className={cell}>{entry.timeIndex}</td>
+                <td className={cell}>{entry.matchIndex}</td>
+                <td className={cell}>{entry.rating}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
 
 export default function PredictPost() {
   const { date, race } = useParams<{ date: string; race: string }>();
@@ -76,12 +220,14 @@ export default function PredictPost() {
             </ul>
           )}
         </header>
-        {/* <AdUnit /> */}
+        <AdUnit />
+        <PredictMarks marks={frontMatter.marks} bets={frontMatter.bets} />
+        <FeaturedHorses horses={frontMatter.featured} />
+        <EntryTable entries={frontMatter.entries} />
         <div
           className="article-body prose prose-gray max-w-none"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
-        {/* <AdUnit /> */}
       </article>
     </>
   );

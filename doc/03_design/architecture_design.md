@@ -551,6 +551,24 @@ category: "predict"
 tags: ["予想", "小倉", "G3"]
 venue: "小倉"                   # 必須。開催日ファイルの venue と一致。フォルダ名は kokura-11R
 raceNumber: 11                  # 必須。開催日ファイルの number と一致
+marks:                          # 任意。印・買い目
+  "◎": "6 サンプルホース"
+bets: ["単勝 6"]                # 任意
+featured:                       # 任意。注目馬
+  - number: 6
+    name: サンプルホース
+    note: 前走好内容
+entries:                        # 任意。出馬表
+  - number: 6
+    name: サンプルホース
+    speed: 80                   # 馬パラメータ: スピード
+    stamina: 72                 # スタミナ
+    power: 70                   # パワー
+    guts: 75                    # 根性
+    intelligence: 78            # 賢さ
+    timeIndex: 92               # タイム指数
+    matchIndex: 88              # 対戦指数
+    rating: 112                 # レーティング
 ---
 ```
 
@@ -805,3 +823,4 @@ RewriteRule ^(.*)$ /$1/index.html [L]
 | 2026-08-22 | 2.12 | 愛馬日記 Front Matter に英名 `englishName` を追加 | βshort |
 | 2026-08-22 | 2.13 | 愛馬日記のフォルダ名 `{bamei}` を英名 kebab-case に変更 | βshort |
 | 2026-10-24 | 2.14 | レース予想の公開 URL を `/race-predict` 配下の一覧・開催日・詳細に変更。詳細フォルダを `{venueSlug}-{number}R` に変更 | βshort |
+| 2026-10-29 | 2.15 | レース予想詳細の Front Matter に印・買い目、注目馬、出馬表を追加 | βshort |

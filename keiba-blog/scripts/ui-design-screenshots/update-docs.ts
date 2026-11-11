@@ -86,14 +86,13 @@ export async function updateDesignDocs(repoRoot: string): Promise<void> {
     const entries = target.kind === "page" ? [target.entry] : target.entries;
     const block = renderScreenshotBlock(entries);
 
-    let updated = replaceMarkedBlock(original, block);
-
-    if (updated === original) {
-      updated =
-        target.kind === "page"
-          ? insertAfterWireframe(original, block)
-          : insertBeforeHeading(original, target.insertBefore, block);
-    }
+    const hasMarker =
+      original.includes(MARKER_BEGIN) && original.includes(MARKER_END);
+    const updated = hasMarker
+      ? replaceMarkedBlock(original, block)
+      : target.kind === "page"
+        ? insertAfterWireframe(original, block)
+        : insertBeforeHeading(original, target.insertBefore, block);
 
     if (updated !== original) {
       await writeFile(filePath, updated, "utf8");
