@@ -17,7 +17,7 @@
 
 * ページ見出し「プロフィール」を表示
 * 作者アイコン（円）と表示名を並べて表示
-  * 画像は `/images/author/icon.png`（[作者アイコン](../../../design-emblem/author-icon.md)）
+  * 画像は `/images/author/icon.png`
   * 肩書き「運営者 / ソフトウェアエンジニア」
 * SNSリンクを表示（新規タブ）
   * X（`https://x.com/i_thinking_reed`）

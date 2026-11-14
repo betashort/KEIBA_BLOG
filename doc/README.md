@@ -57,16 +57,6 @@
 * [素材一覧](design-image-catalog/assets/README.md)
 * [サムネ生成プロンプト（ComfyUI / SD WebUI）](design-image-catalog/prompts.md)
 
-## サイトエンブレム／アイコン
-
-サイト識別マークと作者アイコン。実装の差し込みは別作業。
-
-* [索引](design-emblem/README.md)
-* [作者アイコン](design-emblem/author-icon.md)（現行 `favicon.ico` / X）
-* [サイトエンブレム](design-emblem/emblem.md)
-* [生成プロンプト（ComfyUI / SD WebUI）](design-emblem/prompts.md)
-* [用途とサイズ](design-emblem/usage.md)
-
 ## 詳細設計書
 
 * 実装したモジュール・ファイル・処理フロー
