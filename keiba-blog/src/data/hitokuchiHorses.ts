@@ -378,6 +378,11 @@ export function getHorsesByClass(className: HorseClass): HitokuchiHorse[] {
 }
 
 export function formatPrizeMan(prizeMan: number): string {
+  // 1円募集など、万円だと小数4桁になる金額は円で出す
+  if (prizeMan > 0 && prizeMan < 0.01) {
+    const yen = Math.round(prizeMan * 10000);
+    return `${yen.toLocaleString("ja-JP")}円`;
+  }
   return `${prizeMan.toLocaleString("ja-JP")}万円`;
 }
 

@@ -2,13 +2,13 @@
 title: "シェーンリヒト"
 englishName: "Schon Licht"
 date: "2026-08-17"
-description: "DMMバヌーシーの2歳牡馬。父エフフォーリア、美浦・手塚貴久厩舎。2026年8月の新潟新馬戦で3着。"
+description: "DMMバヌーシーの2歳牡馬。父エフフォーリア、美浦・手塚貴久厩舎。2026年11月の東京未勝利（芝2000m）で初勝利。"
 sex: "牡"
 clubId: "dmm"
 stable: "美浦・手塚貴久厩舎"
-prizeMan: 200
-className: "未勝利"
-record: "1戦0勝"
+prizeMan: 790
+className: "1勝クラス"
+record: "2戦1勝"
 birthDate: "2024-02-08"
 breeder: "社台ファーム"
 rearingFarm: "社台ファーム"
